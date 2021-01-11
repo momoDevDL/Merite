@@ -1,0 +1,21 @@
+# Backend
+
+backend/node_modules
+backend/build
+backend/npm-debug.log
+backend/.env
+backend/.DS_Store
+
+# Frontend
+
+# dependencies
+frontend/node_modules
+
+# logs
+frontend/npm-debug.log
+
+# Nuxt build
+frontend/.nuxt
+
+# Nuxt generate
+frontend/dist

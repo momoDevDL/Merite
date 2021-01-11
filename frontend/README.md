@@ -1,21 +1,6 @@
-# merite
+# frontend
 
-## C'est quoi ?
-
-Plateforme d'apprentissage en ligne créé dans le cadre de l'UE projet des master développement logiciel et master interaction homme machine
-
-### Backend Setup
-
-```bash
-# install dependencies
-$ npm install
-
-# run server with nodemon and esm
-$ npm start
-
-```
-
-### Build Frontend Setup
+## Build Setup
 
 ```bash
 # install dependencies
