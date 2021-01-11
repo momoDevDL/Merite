@@ -3,7 +3,7 @@ const router = require('express').Router();
 router.get('/', function(req, res) {
     res.json({
         status: 'API en marche',
-        message: 'API RESTful de Gretagram'
+        message: 'API RESTful du projet Merite'
     });
 });
 
