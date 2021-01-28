@@ -1,18 +1,11 @@
 <template>
   <div>
-    <div class="nav">
-      <h1 class="nav-title">Application</h1>
-      <div class="nav-items">
-        <nuxt-link to="/">lien 1</nuxt-link>
-        <nuxt-link to="/about">lien 2</nuxt-link>
-      </div>
-    </div>
     <Nuxt />
   </div>
 </template>
 
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 .nav {
   display: flex;
   flex-direction: row;
@@ -34,6 +27,7 @@
 
 html {
   font-family:
+  'Poppins',
     'Source Sans Pro',
     -apple-system,
     BlinkMacSystemFont,
@@ -147,46 +141,10 @@ html {
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
     Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   margin: 0;
 }
 
-nav a {
-  color: inherit;
-  text-decoration: none;
-}
-a.nuxt-link-exact-active {
-  color: #00c58e;
-}
-
-main {
-  margin: 0 auto;
-  margin-top: 100px;
-  padding: 0 1rem;
-  max-width: 1280px;
-  text-align: center;
-}
-
-img {
-  margin-bottom: 1rem;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-li {
-  margin: 0 0.5rem;
-  padding: 0.25rem;
-  font-size: 1.2rem;
-}
-
-nav {
-  padding: 0 1rem;
-}
 </style>
