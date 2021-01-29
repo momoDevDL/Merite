@@ -6,7 +6,7 @@ import apiRoutes from "./api/api-routes"
 const app = express()
 const port = 3001
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 app.use(cors())
 
