@@ -40,9 +40,14 @@ async function createDB() {
 // crée les tables dans la base de donnée
 async function createTables() {
     return new Promise(async resolve => {
-        var sql = "CREATE TABLE users (login VARCHAR(255), password VARCHAR(255))";
+        var sql = `CREATE TABLE users (
+                    login VARCHAR(255) NOT NULL,
+                    password VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (login)
+                    )`;
         con.query(sql, function(err, result) {
             if (err) {
+                console.log(err);
                 console.log("Tables already exists, skipped.");
             } else {
                 console.log("Tables created.");
