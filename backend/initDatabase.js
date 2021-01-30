@@ -1,6 +1,7 @@
 //ce script as pour but de créer localement la base de donnée afin de pouvoir faire des tests
 
 const mysql = require("mysql");
+const statements = require('./dbTables');
 
 //lance le script de création de la base de donnée
 async function launchScript() {
@@ -40,19 +41,22 @@ async function createDB() {
 // crée les tables dans la base de donnée
 async function createTables() {
     return new Promise(async resolve => {
-        var sql = `CREATE TABLE users (
-                    login VARCHAR(255) NOT NULL,
-                    password VARCHAR(255) NOT NULL,
-                    PRIMARY KEY (login)
-                    )`;
-        con.query(sql, function(err, result) {
-            if (err) {
-                console.log(err);
-                console.log("Tables already exists, skipped.");
-            } else {
-                console.log("Tables created.");
-            }
-            resolve();
+        let sql = "";
+        let cpt = 0;
+        statements.statements.forEach(statement => {
+            con.query(statement, function(err, result) {
+                if (err) {
+                    // console.log(err);
+                    console.log("Table " + statement.split(' ')[2] +
+                        " already exists, skipped.");
+                } else {
+                    console.log("Table " + statement.split(' ')[2] + " created.");
+                }
+                cpt++;
+                if (cpt === statements.statements.length) {
+                    resolve();
+                }
+            });
         });
     });
 }
