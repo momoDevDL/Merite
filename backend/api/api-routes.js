@@ -9,10 +9,14 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
+const { register,login } = require('./Controller/userController');
 
 //Routes API
 router.route('/test')
     .get(getTest)
     .post(postTest)
+
+router.route('/user/register')
+    .post(register)
 
 export default router;
