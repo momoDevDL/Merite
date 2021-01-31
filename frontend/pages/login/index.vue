@@ -1,11 +1,15 @@
 <template>
   <div>
-       <Sidebar>
-     <ul class="sidebar-panel-nav">
-       <li><nuxt-link class="item" to="/">à propos</nuxt-link></li>
-       <li><nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link></li>
-     </ul>
-   </Sidebar>
+    <Sidebar v-if="window.width < 660">
+      <ul class="sidebar-panel-nav">
+        <li>
+          <nuxt-link class="item" to="/about">à propos</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
+        </li>
+      </ul>
+    </Sidebar>
 
     <div class="login-background">
       <div class="left"></div>
@@ -16,8 +20,9 @@
         <div class="login-title">
           <h1>Merite</h1>
         </div>
+
         <div v-if="window.width > 660" class="items">
-          <nuxt-link class="item" to="/">à propos</nuxt-link>
+          <nuxt-link class="item" to="/about">à propos</nuxt-link>
           <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
         </div>
         <Burger v-else></Burger>
@@ -27,14 +32,15 @@
       <div class="login-body">
         <div class="login-form-container">
           <form ref="connect_form" @submit.prevent="connect" class="login-form">
-            <h2>Content de vous revoir</h2>
+            <h2>Content de vous <span class="accentuated-word">revoir</span></h2>
+            <p v-if="errorIdentifiant" class="warning-message-login">L'indentifiant ou le mot de passe que vous avez rentré est incorrect. Rééssayez.</p>
             <input type="text" v-model="form.username" class="login-form-input" placeholder="Nom d'utilisateur">
             <input type="password" v-model="form.password" class="login-form-input" placeholder="Mot de passe">
             <div class="mdpoublie">
               <div class="stay-connect">
                 <input type="checkbox" name="stay-connect" id=""><label for="stay-connect">Rester connecté ?</label>
               </div>
-              <nuxt-link to="/">mot de passe oublié ?</nuxt-link>
+              <nuxt-link class="mdpstyle" to="/">mot de passe oublié ?</nuxt-link>
             </div>
             <button id="login-connexion">Connexion</button>
           </form>
@@ -52,28 +58,54 @@
 </template>
 
 <script>
-import Burger from '~/components/Burger.vue';
-import Sidebar from '~/components/Sidebar.vue';
+  import Burger from '~/components/Burger.vue';
+  import Sidebar from '~/components/Sidebar.vue';
 
   export default {
-    components : { Burger, Sidebar },
+    components: {
+      Burger,
+      Sidebar
+    },
     data() {
       return {
         window: {
           height: 0,
           width: 0
         },
-        form : {
-          username : '',
-          password : ''
+        form: {
+          username: 'jeremie',
+          password: 'bonjour'
         },
-        hambOpen: false
+        errorIdentifiant : false
       }
     },
     created() {
       if (process.client) {
         window.addEventListener("resize", this.winResize);
         this.window.width = window.innerWidth
+        console.log();
+        if (!this.$cookies.get("acceptedCookie")) {
+          this.$toast.show("Ce site web utilise des cookies pour enrichir votre experience.", {
+            position: "bottom-center",
+            action: [{
+              text: 'Cookies?',
+              onClick: (e, toastObject) => {
+                this.$router.push("/cookieInfo")
+                toastObject.goAway(0);
+              }
+            },{
+              text: 'OK',
+              onClick: (e, toastObject) => {
+                this.$cookies.set("acceptedCookie", true, {
+                  path: '/',
+                  maxAge: 60 * 60
+                })
+                toastObject.goAway(0);
+              }
+            } ]
+          })
+        }
+
       }
     },
     destroyed() {
@@ -84,8 +116,18 @@ import Sidebar from '~/components/Sidebar.vue';
     },
     methods: {
       async connect() {
-        console.log(this.form.username);
-        console.log({username : this.form.username, password : this.form.password});
+        this.$auth.loginWith('local', {
+          data: this.form
+        }).then(() => {
+          this.$toast.success('Vous êtes connecté !', {
+            theme: "toasted-primary",
+            position: "bottom-center",
+            duration: 1000
+          })
+          this.$router.push('/')
+        }).catch((err)=>{
+          this.errorIdentifiant = true
+        })
       },
       winResize(e) {
         if (process.client) {
@@ -93,9 +135,8 @@ import Sidebar from '~/components/Sidebar.vue';
           this.window.width = window.innerWidth
         }
       },
-      toggleHamb() {
-        this.hambOpen = !this.hambOpen
-        console.log(this.hambOpen);
+      showUser() {
+        console.log(this.$auth.user);
       }
     }
   }
@@ -103,17 +144,23 @@ import Sidebar from '~/components/Sidebar.vue';
 </script>
 
 <style lang="scss">
- ul.sidebar-panel-nav {
-   list-style-type: none;
- }
+  ul.sidebar-panel-nav {
+    list-style-type: none;
+  }
 
- ul.sidebar-panel-nav > li > a {
-   color: #fff;
-   text-decoration: none;
-   font-size: 1.5rem;
-   display: block;
-   padding-bottom: 0.5em;
- }
+  .warning-message-login {
+    max-width: 400px;
+    color: #fb3a3a;
+    font-size: .8em;
+  }
+
+  ul.sidebar-panel-nav>li>a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    display: block;
+    padding-bottom: 0.5em;
+  }
 
   .login-background {
     position: absolute;
@@ -285,6 +332,7 @@ import Sidebar from '~/components/Sidebar.vue';
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 400px;
 
     h2 {
       padding-bottom: 50px;
@@ -361,6 +409,10 @@ import Sidebar from '~/components/Sidebar.vue';
     }
   }
 
+  .accentuated-word {
+    color: #130f40;
+  }
+
   #login-connexion {
     color: #fff;
     width: 100%;
@@ -404,6 +456,10 @@ import Sidebar from '~/components/Sidebar.vue';
   .slide-fade-leave-to {
     transform: translateY(-10px);
     opacity: 0;
+  }
+
+  .mdpstyle {
+    text-decoration: none;
   }
 
 </style>
