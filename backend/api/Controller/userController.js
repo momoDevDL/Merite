@@ -1,8 +1,9 @@
 var bcrypt = require('bcrypt');
 var models = require('../../models');
+var Tokens = require('./jwt.token');
 
 export function register(req,res){
-    var email = req.body.email;
+        var email = req.body.email;
         var username = req.body.username;
         var password = req.body.password;
         var isAdmin = req.body.isAdmin;
@@ -19,7 +20,7 @@ export function register(req,res){
                 email: email
             }
         }).then(function(userfound){
-            if (userfound) {
+            if (userfound !== null) {
                 return res.status(500).send({
                     error: "request error user already exist" 
                 });
@@ -44,7 +45,7 @@ export function register(req,res){
                         })
                     })
                 }else{
-                    return res.status(500).send({
+                    return res.status(400).send({
                         error: "request error you don't have the right to add new user"
                     });
                 }
@@ -59,5 +60,47 @@ export function register(req,res){
 };
 
 export function login(req,res){
-    
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if (email == null || password == null) {
+        return res.status(400).send({
+            error: "missing field "
+        });
+    }
+
+    models.User.findOne({
+        attribute : ['email'],
+        where : {
+            email : email,
+        }
+    }).then( (userfound)=>{
+
+        if(userfound === null ){
+
+            return res.status(400).send({error : "User not found please verify your email"});
+
+        }else{
+            bcrypt.compare(password,userfound.password,(cryptErr,cryptResponse)=>{
+
+                if(cryptResponse){
+                    return res.status(200).send({
+                        userId : userfound.id,
+                        token : Tokens.generateTokenforUser(userfound)
+                    })
+                }else{
+                    return res.status(400).send({
+                        error : " Invalid password ! " + cryptErr
+                    })
+                }
+            });
+        }
+    }).catch( (err) =>{
+        return res.status(500).send({
+            error: "Db request error Unable to verify user" + err 
+        });
+    })
+
+
+
 }

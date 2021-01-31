@@ -9,6 +9,7 @@ backend/npm-debug.log
 backend/.env
 backend/.DS_Store
 backend/seeders
+backend/.env
 
 # Frontend
 

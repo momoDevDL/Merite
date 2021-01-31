@@ -19,4 +19,7 @@ router.route('/test')
 router.route('/user/register')
     .post(register)
 
+router.route('/user/login')
+    .post(login)
+
 export default router;
