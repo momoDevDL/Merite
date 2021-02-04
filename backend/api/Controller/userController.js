@@ -1,3 +1,5 @@
+import { generateAccessTokenforUser, generateRefreshTokenforUser } from './jwt.token';
+
 var bcrypt = require('bcrypt');
 var models = require('../../models');
 var Tokens = require('./jwt.token');
@@ -84,10 +86,27 @@ export function login(req,res){
             bcrypt.compare(password,userfound.password,(cryptErr,cryptResponse)=>{
 
                 if(cryptResponse){
-                    return res.status(200).send({
-                        userId : userfound.id,
-                        token : Tokens.generateTokenforUser(userfound)
-                    })
+                    let refreshToken = generateRefreshTokenforUser(userfound);
+
+                    models.User.update(
+                    {
+                        refreshToken: refreshToken
+                    },{
+                        where :
+                        {
+                            id : userfound.id
+                        }
+                    }).then((updated) => {
+                        if(updated){
+                            res.send(updated);
+                        }
+                    }).catch((error)=>{
+                        return res.status(500).send("DB update query failed");
+                    });
+                    
+                    res.cookie("jwt",generateAccessTokenforUser(userfound),{httpOnly:true});
+
+                    return  res.status(200).send("Cookie sent with jwt access token");
                 }else{
                     return res.status(400).send({
                         error : " Invalid password ! " + cryptErr
@@ -100,7 +119,48 @@ export function login(req,res){
             error: "Db request error Unable to verify user" + err 
         });
     })
+};
 
 
+export function refresh(req, res) {
+    let UserAccesToken = req.cookies.jwt;
 
-}
+    if (!UserAccesToken) {
+        return res.status(403).send("missed field : token not found in cookie");
+    } else {
+        let verifyTokenPayload;
+        try {
+            verifiedTokenPayload = jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY);
+        } catch (error) {
+            return res.status(401).send("Failed to match Access Token the payload has been tampered with");
+        }
+
+        let refreshToken;
+
+        models.User.findOne({
+            attribute: ['refreshToken'],
+            where:{
+                id : req.body.id
+            }
+        }).then((token) =>{
+            refreshToken = token;
+        }).catch((error) =>{
+            return res.status(500).send("DB request failed could not retrieve refresh token");
+        });
+
+        try{
+            jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET);
+        }catch(err){
+            return res.status(401).send("failed to verify refresh Token");
+        }
+
+        let newUserToken = jwt.sign(verifyTokenPayload,process.env.REFRESH_TOKEN_SECRET,
+        {
+            algorithm:"HS256",
+            expiresIn:process.env.JWT_SECRET_SIGN_KEY
+        });
+
+        res.cookie("jwt",newUserToken,{httpOnly:true});
+        res.status(201).send("token refreshed successfully");
+    }
+};
