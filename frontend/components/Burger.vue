@@ -15,14 +15,12 @@
     export default {
        computed: {
             isBurgerActive() {
-                console.log(this.$store.state.sidebar.isNavOpen);
                return this.$store.state.sidebar.isNavOpen
             }
         },
         methods : {
             toggle() {
                 this.$store.commit('sidebar/toggleNav', {})
-                console.log(this.isBurgerActive);
             }
         }
     }

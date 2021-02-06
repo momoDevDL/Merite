@@ -22,6 +22,16 @@ export default {
         }]
     },
 
+    router: {
+        middleware: 'auth',
+        base: '/'
+    },
+
+    env: {
+        maxAge: 60 * 5
+    },
+
+
     // Global CSS (https://go.nuxtjs.dev/config-css)
     css: [],
 
@@ -38,20 +48,60 @@ export default {
     modules: [
         // https://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
-        '@nuxtjs/proxy'
+        '@nuxtjs/proxy',
+        'cookie-universal-nuxt',
+        '@nuxtjs/auth-next',
+        '@nuxtjs/toast'
     ],
-    proxy: {
-        '/api': {
-            target: 'http://localhost:3001/api/',
-            pathRewrite: {
-                '^/api': '/'
-            }
-        }
-    },
+    // proxy: {
+    //     '/api': {
+    //         target: 'http://localhost:3001/api/',
+    //         pathRewrite: {
+    //             '^/api': '/'
+    //         }
+    //     }
+    // },
 
     // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-    axios: {},
+    axios: {
+        baseURL: 'http://localhost:3001/api/'
+    },
 
     // Build Configuration (https://go.nuxtjs.dev/config-build)
-    build: {}
+    build: {},
+
+    auth: {
+        strategies: {
+            local: {
+                endpoints: {
+                    login: {
+                        url: "/testLogin",
+                        method: 'post',
+                        propertyName: 'token'
+                    },
+                    logout: {
+                        url: "/testLogout",
+                        method: 'delete'
+                    },
+                    user: {
+                        url: "/testUser",
+                        method: 'get',
+                        propertyName: 'user'
+                    },
+                },
+                // tokenRequired : true,
+                // tokenType: 'bearer'
+            }
+        },
+        cookie: {
+            prefix: 'auth_'
+        },
+        redirect: {
+            login: '/login',
+            logout: '/login',
+            callback: false,
+            home: '/'
+        }
+    }
+
 }
