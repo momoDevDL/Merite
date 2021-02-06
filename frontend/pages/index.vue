@@ -1,32 +1,9 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        test
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
     <button @click="testAPI">Test</button>
     <input type="text" name="token" v-model="tokenInput" id="">
     <nuxt-link :to="{ name: 'token', params: { token: tokenInput }}">Valid Token (stp)</nuxt-link>
+    <nuxt-link to="/home">Home</nuxt-link>
   </div>
 </template>
 

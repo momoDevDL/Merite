@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="nav">
-      <h1 class="nav-title">Application</h1>
+    <!--<div class="nav">
+      <h1 class="nav-title">Mérite</h1>
       <div class="nav-items">
         <nuxt-link to="/">lien 1</nuxt-link>
-        <nuxt-link to="/about">lien 2</nuxt-link>
       </div>
-    </div>
+    </div> -->
     <Nuxt />
   </div>
 </template>
