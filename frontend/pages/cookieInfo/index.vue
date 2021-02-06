@@ -1,13 +1,12 @@
 <template>
   <div>
-      <h1>Token</h1>
-      <nuxt-link to="/">Vers acceuil</nuxt-link>
+      <h1>Cookie info</h1>
   </div>
 </template>
 
 <script>
 export default {
-
+    auth : "guest"
 }
 </script>
 
