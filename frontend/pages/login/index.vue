@@ -478,4 +478,9 @@
     text-decoration: none;
   }
 
+  .login-form-input {
+    margin: 20px 0px !important;
+    margin-right: 10px !important;
+  }
+
 </style>
