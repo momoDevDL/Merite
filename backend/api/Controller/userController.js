@@ -104,9 +104,8 @@ export function login(req,res){
                         return res.status(500).send("DB update query failed");
                     });
                     
-                    res.cookie("jwt",generateAccessTokenforUser(userfound),{httpOnly:true});
+                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), message : "Cookie sent with jwt access token"});
 
-                    return  res.status(200).send("Cookie sent with jwt access token");
                 }else{
                     return res.status(400).send({
                         error : " Invalid password ! " + cryptErr
