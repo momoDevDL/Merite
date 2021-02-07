@@ -4,7 +4,7 @@
     <img src="../img/ellipse_1.png" id="photo"/>
     <div class="container-menu">
       <div class="vertical-menu">
-        <div id="name">Cédric</div>
+        <div id="name">{{$auth.user.username}}</div>
         <div id="espace_personnel"><a href="#">Espace personnel</a></div>
         <div id="mes_cours"><a href="#">Mes cours</a></div>
         <div id="mes_notes"><a href="#">Mes notes</a></div>

@@ -6,9 +6,9 @@
     <div id="text_mail">Couriel</div>
     <div id="text_nb_student">N°étudiant</div>
     <div id="text_ine">INE</div>
-	<div id="name">Ana-Maria Cerbulean</div>
+	<div id="name">{{$auth.user.username}}</div>
     <div id="mail">
-      <a href="mailto:ana@gmail.com" target="_blank">ana@gmail.com</a>
+      <a href="mailto:ana@gmail.com" target="_blank">{{$auth.user.email}}</a>
     </div>
     <div id="nb_student">22009278<br /><br /><br /><br /></div>
     <div id="ine">1601016122Y<br /><br /></div>

@@ -106,8 +106,8 @@ export function login(req,res){
                         console.log(error);
                         return res.send("DB update query failed");
                     });
-                    //console.log("WE aRE In CryptResponse");
-                    return res.status(200).json({ token : generateAccessTokenforUser(userfound)});
+                    
+                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), user : userfound});
 
                 }else{
                     return res.status(400).send({
