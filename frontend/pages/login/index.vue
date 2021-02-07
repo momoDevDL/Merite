@@ -76,8 +76,8 @@
           width: 0
         },
         form: {
-          username: 'jeremie',
-          password: 'bonjour'
+          email: 'momo@test.com',
+          password: 'azerty'
         },
         errorIdentifiant : false
       }
@@ -129,6 +129,7 @@
           })
           this.$router.push('/')
         }).catch((err)=>{
+          console.log(err);
           this.errorIdentifiant = true
         })
       },

@@ -5,6 +5,7 @@ module.exports = {
        return jwt.sign({
             userId: user.id,
             username : user.username,
+            email: user.email,
             isAdmin : user.isAdmin
         },process.env.JWT_SECRET_SIGN_KEY,
         {
@@ -17,6 +18,7 @@ module.exports = {
         return jwt.sign({
             userId: user.id,
             username : user.username,
+            email: user.email,
             isAdmin : user.isAdmin
         },process.env.REFRESH_TOKEN_SECRET,
         {
@@ -29,7 +31,7 @@ module.exports = {
     // to call before the routeHandler in the api-routes.js f.e 
     // router.route(user/info).get(verify,userPersonalInfo)
     verifyTokenOfUser: (req,res,next) =>{
-        let UserAccesToken = req.cookies.jwt;
+        let UserAccesToken = req.body.jwt;
 
         if(!UserAccesToken){
             return res.status(403).send();

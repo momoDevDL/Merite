@@ -62,7 +62,8 @@ export function register(req,res){
 };
 
 export function login(req,res){
-    
+    console.log(req.body);
+
     var email = req.body.email;
     var password = req.body.password;
 
@@ -87,7 +88,7 @@ export function login(req,res){
             bcrypt.compare(password,userfound.password,(cryptErr,cryptResponse)=>{
 
                 if(cryptResponse){
-                    let refreshToken = generateRefreshTokenforUser(userfound);
+                 let refreshToken = generateRefreshTokenforUser(userfound);
 
                     models.User.update(
                     {
@@ -99,13 +100,14 @@ export function login(req,res){
                         }
                     }).then((updated) => {
                         if(updated){
-                            res.send(updated);
+                            console.log(updated);
                         }
                     }).catch((error)=>{
-                        return res.status(500).send("DB update query failed");
+                        console.log(error);
+                        return res.send("DB update query failed");
                     });
-                    
-                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), message : "Cookie sent with jwt access token"});
+                    //console.log("WE aRE In CryptResponse");
+                    return res.status(200).json({ token : generateAccessTokenforUser(userfound)});
 
                 }else{
                     return res.status(400).send({
@@ -160,7 +162,13 @@ export function refresh(req, res) {
             expiresIn:process.env.JWT_SECRET_SIGN_KEY
         });
 
+        console.log("We are in refresh Method");
         res.cookie("jwt",newUserToken,{httpOnly:true});
         res.status(201).send("token refreshed successfully");
     }
 };
+
+export function userInfo(req,res){
+    console.log(req.body);
+    res.json({user : {nom : "momo", prenom:"anonyme"}});
+}

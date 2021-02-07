@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register,login,refresh } = require('./Controller/userController');
+const { register,login,refresh,userInfo } = require('./Controller/userController');
 
 //Routes API
 router.route('/test')
@@ -26,7 +26,6 @@ router.route('/testLogin')
         } else {
             res.status(404).send("Utilisateur non trouvé")
         }
-
     })
 
 router.route('/testLogout')
@@ -56,5 +55,6 @@ router.route('/user/login')
 router.route('/user/refresh')
     .post(refresh)
 
-    
+router.route('/user/me')
+    .get(userInfo)
 export default router;

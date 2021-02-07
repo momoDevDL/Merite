@@ -28,7 +28,7 @@ export default {
     },
 
     env: {
-        maxAge: 60 * 5
+        maxAge: 60 * 60 * 60
     },
 
 
@@ -84,7 +84,7 @@ export default {
                         method: 'delete'
                     },
                     user: {
-                        url: "/testUser",
+                        url: "/user/me",
                         method: 'get',
                         propertyName: 'user'
                     },
@@ -92,9 +92,6 @@ export default {
                 // tokenRequired : true,
                 // tokenType: 'bearer'
             }
-        },
-        cookie: {
-            prefix: 'auth_'
         },
         redirect: {
             login: '/login',
