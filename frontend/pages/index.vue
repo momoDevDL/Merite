@@ -1,6 +1,7 @@
 <template>
   <div class="container">
 
+
     <div>
       <Logo />
       <h1 class="title">
@@ -20,9 +21,11 @@
       <h1 v-else>Déconnecté</h1>
       <button @click="disconnect">Log out</button>
     </div>
+
     <button @click="testAPI">Test</button>
     <input type="text" name="token" v-model="tokenInput" id="">
     <nuxt-link :to="{ name: 'token', params: { token: tokenInput }}">Valid Token (stp)</nuxt-link>
+    <nuxt-link to="/home">Home</nuxt-link>
   </div>
 </template>
 
