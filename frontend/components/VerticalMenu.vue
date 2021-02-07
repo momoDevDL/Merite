@@ -4,7 +4,7 @@
     <img src="../img/ellipse_1.png" id="photo"/>
     <div class="container-menu">
       <div class="vertical-menu">
-        <div id="name">{{$auth.user.username}}</div>
+        <div id="name">{{$auth.$storage.getUniversal('user').username}}</div>
         <div id="espace_personnel"><a href="#">Espace personnel</a></div>
         <div id="mes_cours"><a href="#">Mes cours</a></div>
         <div id="mes_notes"><a href="#">Mes notes</a></div>
@@ -14,11 +14,25 @@
         <div id="support"><a href="#">Support</a></div>
         <div id="aide"><a href="#">Aide</a></div>
         <div id="params"><a href="#">Paramètres</a></div>
-        <div id="sing_out"><a href="#">Déconnextion</a></div>
+        <div @click.prevent="logout" id="sing_out"><a href="#">Déconnexion</a></div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$auth.logout()
+      .then(() => {
+        this.$auth.$storage.removeUniversal('user')
+      })
+      this.$router.push('/login')
+    }
+  }
+}
+</script>
 
 <style scoped>
 #name {

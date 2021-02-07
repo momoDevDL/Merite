@@ -91,7 +91,7 @@
           this.$toast.show("Ce site web utilise des cookies pour enrichir votre experience.", {
             position: "bottom-center",
             action: [{
-              text: 'Cookies?',
+              text: 'Informations',
               onClick: (e, toastObject) => {
                 this.$router.push("/cookieInfo")
                 toastObject.goAway(0);
@@ -127,14 +127,17 @@
             position: "bottom-center",
             duration: 1000
           })
-          /*let token = response.data.token;
+          /* let token = response.data.token;
           this.$axios.$post("/user/info", {token : token})
           .then((response) => {
             this.$auth.setUser(response.user)
             this.$router.push('/')
-          })*/
+          }) */
           this.$auth.setUser(response.data.user)
-          this.$router.push('/home')
+          this.$auth.$storage.setUniversal('user',response.data.user, true)
+          // this.$cookies.set('username',response.data.user.username)
+          // this.$cookies.set('email',response.data.user.email)
+          this.$router.push('/')
         }).catch((err)=>{
           console.log(err);
           this.errorIdentifiant = true
