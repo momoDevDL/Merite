@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-2">
     <div id="rectangle_23"></div>
-    <img src="../img/ellipse_1.png" id="ellipse_1"/>
+    <img src="../img/ellipse_1.png" id="photo"/>
     <div class="container-menu">
       <div class="vertical-menu">
         <div id="name">Cédric</div>
@@ -197,7 +197,7 @@
   font-weight: 600;
 }
 
-#ellipse_1 {
+#photo {
   top: 44px;
   left: 53px;
   width: 111px;

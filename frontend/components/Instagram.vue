@@ -1,28 +1,27 @@
 <template>
-  <div id="card_insta_ek7">
-    <div id="rectangle_9_ek11"></div>
-    <div id="card_insta_ek8">
-      <div id="rectangle_9_ek12"></div>
+  <div id="instagram_container">
+    <div id="container"></div>
+    <div id="container_2">
+      <div id="container_3"></div>
     </div>
-    <div id="instagram">Instagram</div>
-    <div id="nunc_at_mattis_non_libero_aliquam_nunc_nisl_et_sed_">
+    <div id="instagram_text">Instagram</div>
+    <div id="text">
       Nunc at mattis non libero aliquam nunc nisl et sed.
     </div>
-    <div id="ut3___paul_sabatier">UT3 - Paul Sabatier</div>
-    <img src="skins/ellipse_4_ek1.png" id="ellipse_4_ek1" />
-    <div id="rectangle_18"></div>
+    <div id="name_university_text">UT3 - Paul Sabatier</div>
+    <div id="img_instagram"></div>
   </div>
 </template>
   
 <style scoped>
-    #card_insta_ek7 {
+#instagram_container{
   top: 718px;
   left: 276px;
   width: 338px;
   height: 246px;
 }
 
-#rectangle_9_ek11 {
+#container {
   width: 338px;
   height: 246px;
   -ms-border-radius: 24px;
@@ -33,16 +32,14 @@
   background: rgba(255, 255, 255, 1);
 }
 
-#card_insta_ek8 {
+#container_2 {
   top: 60px;
   left: 29px;
   width: 281.67px;
   height: 186px;
 }
 
-#rectangle_9_ek12 {
-  top: 0px;
-  left: 0px;
+#container_3 {
   width: 281.67px;
   height: 186px;
   -ms-border-radius: 24px;
@@ -53,7 +50,7 @@
   background: rgba(247.56, 248.31, 255, 1);
 }
 
-#instagram {
+#instagram_text {
   top: 23px;
   left: 29px;
   width: 205.26px;
@@ -65,7 +62,7 @@
   font-weight: 600;
 }
 
-#nunc_at_mattis_non_libero_aliquam_nunc_nisl_et_sed_ {
+#text {
   top: 111px;
   left: 45px;
   width: 228px;
@@ -76,7 +73,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-#ut3___paul_sabatier {
+#name_university_text {
   top: 77px;
   left: 83px;
   width: 235.06px;
@@ -87,14 +84,7 @@
   line-height: 14px;
 }
 
-#ellipse_4_ek1 {
-  top: 69px;
-  left: 45px;
-  width: 30.89px;
-  height: 32px;
-}
-
-#rectangle_18 {
+#img_instagram {
   top: 163px;
   left: 30px;
   width: 280.76px;

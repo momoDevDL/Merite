@@ -11,6 +11,7 @@
 				<Instagram></Instagram>
 				<Classes></Classes>
 				<VerticalMenu></VerticalMenu>
+				<img src="../img/ellipse_1.png" id="photo"/>
 				<a href="#"><img src="../img/vector.png" id="notifications"/></a>
 				<a href="#"><img src="../img/vector_ek3.png" id="vector"></a>
 				<div id="copyright_merite" >
@@ -90,6 +91,11 @@ div { position: absolute; }
 	height: 50px;
 }
 
-
+#photo {
+  top: 44px;
+  left: 53px;
+  width: 111px;
+  height: 104px;
+}
 
 </style>

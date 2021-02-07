@@ -1,30 +1,28 @@
 <template>
-    <div id="cours_favoris">
-            <div id="rectangle_9_ek10"></div>
-            <div id="vos_cours_favoris">Vos cours favoris</div>
-            <div id="rectangle_21_ek1"></div>
-            <div id="ellipse_4"></div>
-            <div id="ellipse_5"></div>
-            <div id="mcs">MCS</div>
-            <div id="cisi">CISI</div>
-            <div id="mco">MCO</div>
-            <div id="prof">Prof</div>
-            <div id="tous_les_cours">Tous les cours</div>
-            <div id="rectangle_9_ek13"></div>
-            <div id="rectangle_19_ek1"></div>
-            <div id="rectangle_10_ek3"></div>
-            <div id="rectangle_11"></div>
+    <div id="favorite_classes_container">
+            <div id="favorite_classes"></div>
+            <div id="favorite_classes_text">Vos cours favoris</div>
+            <div id="notification_1"></div>
+            <div id="notification_2"></div>
+            <div id="class_1_text">MCS</div>
+            <div id="class_2_text">CISI</div>
+            <div id="class_3_text">MCO</div>
+            <div id="class_4_text">Prof</div>
+            <div id="all_class_text">Tous les cours</div>
+            <div id="container_class_1"></div>
+            <div id="container_class_2"></div>
+            <div id="container_class_3"></div>
     </div>
 </template>
 
 <style scoped>
-#cours_favoris {
+#favorite_classes_container {
   top: 231px;
   left: 283px;
   width: 710.65px;
   height: 152px;
 }
-#rectangle_9_ek10 {
+#favorite_classes {
   width: 710.65px;
   height: 152px;
   -ms-border-radius: 24px;
@@ -35,7 +33,7 @@
   background: rgba(255, 255, 255, 1);
 }
 
-#vos_cours_favoris {
+#favorite_classes_text {
   top: 19px;
   left: 26px;
   width: 207.32px;
@@ -47,7 +45,7 @@
   font-weight: 600;
 }
 
-#ellipse_4 {
+#notification_1 {
   top: 73px;
   left: 395px;
   width: 10px;
@@ -60,7 +58,7 @@
   background: rgba(0, 71, 255, 1);
 }
 
-#ellipse_5 {
+#notification_2 {
   top: 73px;
   left: 190px;
   width: 10px;
@@ -73,7 +71,7 @@
   background: rgba(0, 71, 255, 1);
 }
 
-#mcs {
+#class_1_text {
   top: 84px;
   left: 91px;
   width: 59px;
@@ -87,7 +85,7 @@
   font-weight: 600;
 }
 
-#cisi {
+#class_2_text {
   top: 84px;
   left: 290px;
   width: 63px;
@@ -100,7 +98,7 @@
   font-weight: 600;
 }
 
-#mco {
+#class_3_text {
   top: 84px;
   left: 490px;
   width: 63px;
@@ -113,7 +111,7 @@
   font-weight: 600;
 }
 
-#prof {
+#class_4_text {
   top: 84px;
   left: 628px;
   width: 63px;
@@ -126,7 +124,7 @@
   font-weight: 600;
 }
 
-#tous_les_cours {
+#all_class_text {
   top: 19px;
   left: 400px;
   width: 225px;
@@ -140,7 +138,7 @@
   color: #A9A9A9;
 }
 
-#rectangle_9_ek13 {
+#container_class_1 {
   top: 70px;
   left: 20px;
   width: 182px;
@@ -153,7 +151,7 @@
   background: rgba(33, 95, 255, 0.06);
 }
 
-#rectangle_19_ek1 {
+#container_class_2 {
   top: 70px;
   left: 220px;
   width: 182px;
@@ -166,7 +164,7 @@
   background: rgba(33, 95, 255, 0.06);
 }
 
-#rectangle_10_ek3 {
+#container_class_3 {
   top: 70px;
   left: 420px;
   width: 182px;
