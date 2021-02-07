@@ -14,7 +14,7 @@
         <div id="support"><a href="#">Support</a></div>
         <div id="aide"><a href="#">Aide</a></div>
         <div id="params"><a href="#">Paramètres</a></div>
-        <div @click.prevent="logout" id="sing_out"><a href="#">Déconnexion</a></div>
+        <div @click.prevent="logout" id="sing_out"><a href="">Déconnexion</a></div>
       </div>
     </div>
   </div>
