@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const verify = require('./Controller/jwt.token').verifyTokenOfUser;
 
 router.get('/', function(req, res) {
     res.json({
@@ -9,6 +10,7 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
+const { register,login,refresh,userInfo } = require('./Controller/userController');
 
 //Routes API
 router.route('/test')
@@ -24,7 +26,6 @@ router.route('/testLogin')
         } else {
             res.status(404).send("Utilisateur non trouvé")
         }
-
     })
 
 router.route('/testLogout')
@@ -44,4 +45,17 @@ router.route('/testUser')
         })
     })
 
+
+router.route('/user/register')
+    .post(register)
+
+router.route('/user/login')
+    .post(login)
+
+router.route('/user/refresh')
+    .post(refresh)
+
+router.route('/user/me')
+    .get(userInfo)
+    
 export default router;

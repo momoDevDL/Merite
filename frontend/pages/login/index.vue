@@ -34,7 +34,7 @@
           <form ref="connect_form" @submit.prevent="connect" class="login-form">
             <h2>Content de vous <span class="accentuated-word">revoir</span></h2>
             <p v-if="errorIdentifiant" class="warning-message-login">L'indentifiant ou le mot de passe que vous avez rentré est incorrect. Rééssayez.</p>
-            <div class="input-container"><input type="text" v-model="form.username" class="login-form-input" placeholder="Nom d'utilisateur"><svg id="info-login" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="input-container"><input type="text" v-model="form.email" class="login-form-input" placeholder="Nom d'utilisateur"><svg id="info-login" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10 0C15.523 0 20 4.478 20 10C20 15.522 15.523 20 10 20C4.477 20 0 15.522 0 10C0 4.478 4.477 0 10 0ZM10 1.667C5.405 1.667 1.667 5.405 1.667 10C1.667 14.595 5.405 18.333 10 18.333C14.595 18.333 18.333 14.595 18.333 10C18.333 5.405 14.595 1.667 10 1.667ZM10 13.5C10.5523 13.5 11 13.9477 11 14.5C11 15.0523 10.5523 15.5 10 15.5C9.4477 15.5 9 15.0523 9 14.5C9 13.9477 9.4477 13.5 10 13.5ZM10 4.75C11.5188 4.75 12.75 5.98122 12.75 7.5C12.75 8.5108 12.4525 9.074 11.6989 9.8586L11.5303 10.0303C10.9084 10.6522 10.75 10.9163 10.75 11.5C10.75 11.9142 10.4142 12.25 10 12.25C9.5858 12.25 9.25 11.9142 9.25 11.5C9.25 10.4892 9.5475 9.926 10.3011 9.1414L10.4697 8.9697C11.0916 8.3478 11.25 8.0837 11.25 7.5C11.25 6.80964 10.6904 6.25 10 6.25C9.3528 6.25 8.8205 6.74187 8.7565 7.37219L8.75 7.5C8.75 7.91421 8.4142 8.25 8 8.25C7.58579 8.25 7.25 7.91421 7.25 7.5C7.25 5.98122 8.4812 4.75 10 4.75Z" fill="#212121" fill-opacity="0.09"/>
 </svg></div>
 
@@ -76,8 +76,8 @@
           width: 0
         },
         form: {
-          username: 'jeremie',
-          password: 'bonjour'
+          email: this.email,
+          password: this.password
         },
         errorIdentifiant : false
       }
@@ -91,7 +91,7 @@
           this.$toast.show("Ce site web utilise des cookies pour enrichir votre experience.", {
             position: "bottom-center",
             action: [{
-              text: 'Cookies?',
+              text: 'Informations',
               onClick: (e, toastObject) => {
                 this.$router.push("/cookieInfo")
                 toastObject.goAway(0);
@@ -121,14 +121,25 @@
       async connect() {
         this.$auth.loginWith('local', {
           data: this.form
-        }).then(() => {
+        }).then((response) => {
           this.$toast.success('Vous êtes connecté !', {
             theme: "toasted-primary",
             position: "bottom-center",
             duration: 1000
           })
+          /* let token = response.data.token;
+          this.$axios.$post("/user/info", {token : token})
+          .then((response) => {
+            this.$auth.setUser(response.user)
+            this.$router.push('/')
+          }) */
+          this.$auth.setUser(response.data.user)
+          this.$auth.$storage.setUniversal('user',response.data.user, true)
+          // this.$cookies.set('username',response.data.user.username)
+          // this.$cookies.set('email',response.data.user.email)
           this.$router.push('/')
         }).catch((err)=>{
+          console.log(err);
           this.errorIdentifiant = true
         })
       },
@@ -476,6 +487,11 @@
 
   .mdpstyle {
     text-decoration: none;
+  }
+
+  .login-form-input {
+    margin: 20px 0px !important;
+    margin-right: 10px !important;
   }
 
 </style>
