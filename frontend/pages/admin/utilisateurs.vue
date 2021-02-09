@@ -1,7 +1,7 @@
 <template>
-  <v-app>
+  <div>
       <h1>Utilisateurs</h1>
-  </v-app>
+  </div>
 </template>
 
 <script>
