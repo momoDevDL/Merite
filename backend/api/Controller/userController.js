@@ -8,7 +8,8 @@ export function register(req,res){
         var email = req.body.email;
         var username = req.body.username;
         var password = req.body.password;
-        var isAdmin = req.body.isAdmin;
+        var CreatorIsAdmin = req.body.UserIsAdmin;
+        var UserCreatedIsAdmin = req.body.isAdmin;
 
         if (email == null || username == null || password == null) {
             return res.status(400).send({
@@ -28,17 +29,17 @@ export function register(req,res){
                 });
             } else {
 
-                if (isAdmin) {
+                if (CreatorIsAdmin) {
                     bcrypt.hash(password, 5, function (err, bcryptedPassword) {
                         const newUser = models.User.create({
                             email : email,
                             username : username,
                             password : bcryptedPassword,
-                            isAdmin : 1
+                            isAdmin : UserCreatedIsAdmin
                         }).then( function(newUser) {
                             console.log(newUser.id);
                             return res.status(200).send({
-                                userId : newUser.id
+                                user_id : newUser.id
                             })
                         }).catch( function(){
                             return res.status(500).send({
@@ -62,6 +63,8 @@ export function register(req,res){
 };
 
 export function login(req,res){
+    console.log(req.body);
+
     var email = req.body.email;
     var password = req.body.password;
 
@@ -86,7 +89,7 @@ export function login(req,res){
             bcrypt.compare(password,userfound.password,(cryptErr,cryptResponse)=>{
 
                 if(cryptResponse){
-                    let refreshToken = generateRefreshTokenforUser(userfound);
+                 let refreshToken = generateRefreshTokenforUser(userfound);
 
                     models.User.update(
                     {
@@ -98,15 +101,15 @@ export function login(req,res){
                         }
                     }).then((updated) => {
                         if(updated){
-                            res.send(updated);
+                            console.log(updated);
                         }
                     }).catch((error)=>{
-                        return res.status(500).send("DB update query failed");
+                        console.log(error);
+                        return res.send("DB update query failed");
                     });
                     
-                    res.cookie("jwt",generateAccessTokenforUser(userfound),{httpOnly:true});
+                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), user : userfound});
 
-                    return  res.status(200).send("Cookie sent with jwt access token");
                 }else{
                     return res.status(400).send({
                         error : " Invalid password ! " + cryptErr
@@ -123,7 +126,7 @@ export function login(req,res){
 
 
 export function refresh(req, res) {
-    let UserAccesToken = req.cookies.jwt;
+    let UserAccesToken = req.body.token;
 
     if (!UserAccesToken) {
         return res.status(403).send("missed field : token not found in cookie");
@@ -160,7 +163,13 @@ export function refresh(req, res) {
             expiresIn:process.env.JWT_SECRET_SIGN_KEY
         });
 
-        res.cookie("jwt",newUserToken,{httpOnly:true});
-        res.status(201).send("token refreshed successfully");
+        
+        //res.cookie("jwt",newUserToken,{httpOnly:true});
+        res.status(201).send({token : newUserToken ,message :"token refreshed successfully"});
     }
 };
+
+export function userInfo(req,res){
+    console.log(req.body);
+    res.json({user : {nom : "momo", prenom:"anonyme"}});
+}
