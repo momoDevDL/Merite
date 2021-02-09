@@ -22,6 +22,7 @@
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.3",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1"
   }
