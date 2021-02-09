@@ -51,7 +51,7 @@
          <search-icone/>
         </div>
         <div class="dashboard-nav-icon mail-icone">
-          <mail-icone/>
+          <mail-icone :notification="notif"/>
         </div>
         <div class="hello-dashboard">
           <h1 class="dashboard-title">Gérez le <span class="dashboard-title-accent">site</span></h1>
@@ -71,7 +71,8 @@
     data() {
       return {
         current: 1,
-        sidebar: false
+        sidebar: false,
+        notif : true
       }
     },
     methods: {
