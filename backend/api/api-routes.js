@@ -10,12 +10,13 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register,login,refresh,userInfo } = require('./Controller/userController');
 
+const { register, login, refresh, userInfo } = require('./Controller/userController');
 //Routes API
 router.route('/test')
     .get(getTest)
     .post(postTest)
+
 
 router.route('/testLogin')
     .post((req, res) => {
@@ -57,5 +58,5 @@ router.route('/user/refresh')
 
 router.route('/user/me')
     .get(userInfo)
-    
+
 export default router;
