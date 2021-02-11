@@ -12,10 +12,10 @@ export default {
     props : ['active','number'],
     computed : {
         color() {
-            if (this.active == this.number) {
+            if (this.$route.path == '/admin/') {
                 return "#fff"
             } else {
-                return "#000"
+                return "#2818FC"
             }
         }
     }
