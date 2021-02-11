@@ -24,7 +24,12 @@
 
 <script>
 export default {
-  auth : false
+  auth : false,
+  head() {
+    return {
+      title : this.$auth.$storage.getUniversal('user').username
+    }
+  }
 }
 </script>
 
