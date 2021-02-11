@@ -238,7 +238,16 @@
               this.snackbarColor = 'error'
               this.snackbar = true
             }
-            
+            this.user = {
+              nom: '',
+              prenom: '',
+              numEtudiant: '',
+              birthday: '',
+              genre: '',
+              formation: '',
+              role: '',
+              email: ''
+            }
           }
         }, 1000)
       }
