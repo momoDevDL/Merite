@@ -10,6 +10,7 @@
         "dotenv": "^8.2.0",
         "esm": "^3.2.25",
         "express": "^4.17.1",
+        "express-fileupload": "^1.2.1",
         "fs": "0.0.1-security",
         "helpers": "0.0.6",
         "jsonwebtoken": "^8.5.1",
@@ -21,7 +22,6 @@
         "sequelize-auto": "^0.7.11",
         "sequelize-cli": "^6.2.0"
     },
-    "devDependencies": {},
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "nodemon -r esm index.js"
