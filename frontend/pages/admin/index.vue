@@ -1,13 +1,13 @@
 <template>
   <div>
-      <h1>Token</h1>
-      <nuxt-link to="/">Vers acceuil</nuxt-link>
+      <h1>Test</h1>
   </div>
 </template>
 
 <script>
 export default {
-
+    auth : false,
+    layout : 'dashboardAdmin'
 }
 </script>
 

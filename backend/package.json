@@ -4,12 +4,19 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
         "esm": "^3.2.25",
         "express": "^4.17.1",
         "mysql": "^2.18.1",
-        "nodemon": "^2.0.7"
+        "nodemon": "^2.0.7",
+        "fs": "0.0.1-security",
+        "jsonwebtoken": "^8.5.1",
+        "mysql2": "^2.2.5",
+        "path": "^0.12.7",
+        "sequelize": "^6.5.0"
     },
     "devDependencies": {},
     "scripts": {

@@ -1,10 +1,12 @@
 <template>
-  <h1>about</h1>
+  <div>
+      <h1>Cookie info</h1>
+  </div>
 </template>
 
 <script>
 export default {
-
+    auth : "guest"
 }
 </script>
 
