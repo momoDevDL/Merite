@@ -1,3 +1,6 @@
+const { v4: uuidv4 } = require('uuid');
+import Module from "../../models/Module";
+
 var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
@@ -47,7 +50,7 @@ export function createSection(req,res){
     }).then((courseFound) =>{
         if(courseFound){
 
-            const newSection =  models.section.create({
+            models.section.create({
                 name: sectionName,
                 courseID : courseId   
             }).then( (newSection)=> {
@@ -109,7 +112,7 @@ export function createDocument(req,res){
     
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     document = req.files.document;
-    uploadPath = __dirname + '../../uploads/' + document.name;
+    uploadPath = __dirname + '../../uploads/' +  uuidv4();
 
     // Use the mv() method to place the file somewhere on your server
     document.mv(uploadPath, function (err) {
@@ -134,4 +137,61 @@ export function createDocument(req,res){
             error: err + "create request error"
         });
     })
+};
+
+export function updateSection(req,res){
+    let sectionToUpdateId = req.params.sectionId ;
+    
+    models.section.findOne({
+        attributes : ['id'] ,
+        where : {
+            id  : sectionToUpdateId
+        }
+    }).then(
+        (sectionToUpdate)=>{
+            sectionToUpdate.name = req.body.name ;
+            sectionToUpdate.courseID = req.body.courseId ;
+            sectionToUpdate.save();
+            res.status(200).send("record updated successfully !");
+        }
+    ).catch(
+        (error) => {
+            res.status(500).send({error : "failed to update record ; DB request failed"});
+        }
+    )
+};
+
+
+export function updateDocument(req,res){
+    let documentToUpdateId = req.params.documentId;
+    let document;
+    let uploadPath;
+
+    models.document.findOne({
+        attributes : ['id'],
+        where :{
+            id : documentToUpdateId
+        }
+    }).then(
+        (documentToUpdate) => {
+            document = req.files.document;
+            uploadPath = __dirname + '../../uploads/' +  uuidv4();
+            document.mv(uploadPath, function (err) {
+                if (err)
+                    return res.status(500).send(err);
+            });
+            documentToUpdate.name = req.body.name ;
+            documentToUpdate.sectionID = req.body.sectionID ;
+            documentToUpdate.message =  req.body.message ;
+            documentToUpdate.filepath = uploadPath ;
+
+            documentToUpdate.save();
+            res.status(200).send({updatedDocument : documentToUpdate});
+            
+        }
+    ).catch(
+        (err) =>{
+            res.status(500).send({error : "failed to update record ; DB request failed"});
+        }
+    )
 }

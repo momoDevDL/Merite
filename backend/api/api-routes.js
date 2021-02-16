@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
 const { register,login,refresh,userInfo,createModule } = require('./Controller/userController');
-const { createSection, createDocument} = require('./Controller/CourseController');
+const { createSection, createDocument, updateDocument, updateSection} = require('./Controller/CourseController');
 //Routes API
 router.route('/test')
     .get(getTest)
@@ -66,5 +66,11 @@ router.route('/course/section/create')
 
 router.route('/course/document/create')
     .post(createDocument)
+
+router.route('/course/section/:sectionId')
+    .put(updateSection)  
+
+router.route('/course/document/:documentId')
+    .put(updateDocument)
 
 export default router;
