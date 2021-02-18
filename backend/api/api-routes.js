@@ -11,6 +11,7 @@ router.get('/', function(req, res) {
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
 const { register, login, refresh, userInfo } = require('./Controller/userController');
+const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 
 //Routes API
 router.route('/test')
@@ -45,7 +46,7 @@ router.route('/testUser')
         })
     })
 
-
+//USERS==================================================================
 router.route('/user/register')
     .post(register)
 
@@ -57,5 +58,21 @@ router.route('/user/refresh')
 
 router.route('/user/me')
     .get(userInfo)
+    //========================================================================
+
+//PERMISSIONS=============================================================
+router.route('/permission/add')
+    .post(addPermission);
+
+router.route('/permission/get')
+    .get(getPermission);
+
+router.route('/permission/edit')
+    .put(editPermission);
+
+router.route('/permission/delete')
+    .delete(deletePermission);
+//========================================================================
+
 
 export default router;

@@ -17,12 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     Permission.init({
         id: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         name: DataTypes.STRING
     }, {
         sequelize,
-        modelName: 'Permission',
+        modelName: 'Permission'
     });
     return Permission;
 };
