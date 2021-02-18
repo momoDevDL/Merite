@@ -24,7 +24,7 @@
 
     <button @click="testAPI">Test</button>
     <input type="text" name="token" v-model="tokenInput" id="">
-    <nuxt-link :to="{ name: 'token', params: { token: tokenInput }}">Valid Token (stp)</nuxt-link>
+    <nuxt-link :to="{ name: 'token', params: { token: tokenInput }}">Valid Token (stp)</nuxt-link> 
     <nuxt-link to="/home">Home</nuxt-link>
   </div>
 </template>

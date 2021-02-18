@@ -79,7 +79,7 @@
           email: 'momo@test.com',
           password: 'azerty'
         },
-        errorIdentifiant : false
+        errorIdentifiant : true
       }
     },
     created() {
@@ -135,7 +135,7 @@
       },
       winResize(e) {
         if (process.client) {
-
+          
           this.window.width = window.innerWidth
         }
       },
