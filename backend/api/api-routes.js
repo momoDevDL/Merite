@@ -12,6 +12,7 @@ router.get('/', function(req, res) {
 const { getTest, postTest } = require('./Controller/testController');
 const { register, login, refresh, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
+const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
 
 //Routes API
 router.route('/test')
@@ -58,7 +59,8 @@ router.route('/user/refresh')
 
 router.route('/user/me')
     .get(userInfo)
-    //========================================================================
+
+//========================================================================
 
 //PERMISSIONS=============================================================
 router.route('/permission/add')
@@ -72,6 +74,19 @@ router.route('/permission/edit')
 
 router.route('/permission/delete')
     .delete(deletePermission);
+//========================================================================
+
+//ROLES===================================================================
+router.route('/role/add')
+    .post(addRole);
+router.route('/role/get')
+    .get(getRole);
+
+router.route('/role/edit')
+    .put(editRole);
+
+router.route('/role/delete')
+    .delete(deleteRole);
 //========================================================================
 
 

@@ -52,8 +52,8 @@ let statements = [
         PRIMARY KEY(id),
         FOREIGN KEY (sectionID) REFERENCES section(id)
     )`,
-    //ROLE
-    `CREATE TABLE role (
+    //ROLES
+    `CREATE TABLE roles (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
@@ -70,15 +70,15 @@ let statements = [
     `CREATE TABLE user_has_role (
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES role(id),
+        FOREIGN KEY (roleID) REFERENCES roles(id),
         FOREIGN KEY (userID) REFERENCES user(login)
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE role_has_permission (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES role(id),
-        FOREIGN KEY (permissionID) REFERENCES permission(id)
+        FOREIGN KEY (roleID) REFERENCES roles(id),
+        FOREIGN KEY (permissionID) REFERENCES permissions(id)
     )`
 ]
 

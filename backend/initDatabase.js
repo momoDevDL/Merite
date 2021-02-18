@@ -46,7 +46,7 @@ async function createTables() {
         statements.statements.forEach(statement => {
             con.query(statement, function(err, result) {
                 if (err) {
-                    // console.log(err);
+                    console.log(err);
                     console.log("Table " + statement.split(' ')[2] +
                         " already exists, skipped.");
                 } else {

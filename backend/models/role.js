@@ -21,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         name: DataTypes.STRING,
-        courseID: DataTypes.INTEGER
+        courseID: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     }, {
         sequelize,
         modelName: 'Role',
