@@ -1,23 +1,26 @@
 {
-  "development": {
-    "username": "phpmyadmin",
-    "password": "root",
-    "database": "merite_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "phpmyadmin",
-    "password": "root",
-    "database": "merite_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "phpmyadmin",
-    "password": "root",
-    "database": "merite_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
+    "development": {
+        "username": "phpmyadmin",
+        "password": "root",
+        "database": "merite_development",
+        "host": "127.0.0.1",
+        "dialect": "mysql",
+        "define": {
+            "timestamps": false
+        }
+    },
+    "test": {
+        "username": "phpmyadmin",
+        "password": "root",
+        "database": "merite_test",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": "phpmyadmin",
+        "password": "root",
+        "database": "merite_production",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    }
 }
