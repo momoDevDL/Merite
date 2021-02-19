@@ -437,4 +437,16 @@ font-family: "Poppins", sans-serif;
   width: 299px;
   height: 1px;
 }
+
+  @media only screen and (min-width: 700px) and (max-width: 5000px){  
+    .instagram_container { width : 47.5%; height: 246px; left: 20%}
+    .container { width : 47.5%; height: 246px;}
+  
+  }
+
+  @media only screen and (max-width: 700px){ 
+    .instagram_container { width : 47.5%; height: 246px; left: 5%}
+    .container { width : 47.5%; height: 246px;}
+  
+  } 
 </style>
