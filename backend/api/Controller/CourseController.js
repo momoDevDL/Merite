@@ -111,13 +111,13 @@ export function createDocument(req,res){
     })*/
     
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    document = req.files.document;
-    uploadPath = __dirname + '../../uploads/' +  uuidv4();
+    document = req.files.file;
+    uploadPath = __dirname + '/../../uploads/' +  uuidv4();
 
     // Use the mv() method to place the file somewhere on your server
     document.mv(uploadPath, function (err) {
         if (err)
-            return res.status(500).send(err);
+            return res.status(500).send({err : err, text: "mv function problem"});
     });
 
     
@@ -152,11 +152,11 @@ export function updateSection(req,res){
             sectionToUpdate.name = req.body.name ;
             sectionToUpdate.courseID = req.body.courseId ;
             sectionToUpdate.save();
-            res.status(200).send("record updated successfully !");
+            return res.status(200).send({section : sectionToUpdate , message : "record updated successfully !"});
         }
     ).catch(
         (error) => {
-            res.status(500).send({error : "failed to update record ; DB request failed"});
+           return res.status(500).send({error : "failed to update record ; DB request failed"});
         }
     )
 };
@@ -174,8 +174,8 @@ export function updateDocument(req,res){
         }
     }).then(
         (documentToUpdate) => {
-            document = req.files.document;
-            uploadPath = __dirname + '../../uploads/' +  uuidv4();
+            document = req.files.file;
+            uploadPath = __dirname + '/../../uploads/' +  uuidv4();
             document.mv(uploadPath, function (err) {
                 if (err)
                     return res.status(500).send(err);
@@ -186,12 +186,12 @@ export function updateDocument(req,res){
             documentToUpdate.filepath = uploadPath ;
 
             documentToUpdate.save();
-            res.status(200).send({updatedDocument : documentToUpdate});
+           return res.status(200).send({updatedDocument : documentToUpdate});
             
         }
     ).catch(
         (err) =>{
-            res.status(500).send({error : "failed to update record ; DB request failed"});
+           return  res.status(500).send({error : "failed to update record ; DB request failed"});
         }
     )
 }
