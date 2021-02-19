@@ -22,9 +22,9 @@
           <li><div class="sing_out"><a href="#">Déconnextion</a></div></li>
         </ul>
       </div>
-      <div class="copyright_merite" >
+      <!--<div class="copyright_merite" >
 				Copyright <a href="http://Merite.com" target="_blank">Merite.com</a>
-			</div> 
+			</div> -->
       
       
   </div>

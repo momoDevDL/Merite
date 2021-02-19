@@ -32,7 +32,7 @@
   .personnal_info {
     background: white;
     width:25%;
-    height: 240px;
+    height: 24px;
     display: flex;
     flex-direction: column;
     margin-left: 4%;
@@ -62,7 +62,7 @@
     border: 0.1px solid ;
     margin-left: 9%;
     margin-right: 9%;
-    margin-top: 2%;
+    margin-top: 5px;
     color:#E8E8E8;
   }
 
@@ -77,7 +77,7 @@
     flex-direction: row;
     display: flex;
     width: 85%;
-    margin-top: 5%;
+    margin-top: 13px;
     margin-left: 9%;
   }
 
@@ -140,7 +140,7 @@
     .nb_student {margin-left: 9%;}
     .ine {margin-left: 27%;}
     .first_second_name_row, .mail_row , .nb_student_row, .ine_row {
-      margin-top:5%;
+      margin-top:7px;
     }
   }
 
