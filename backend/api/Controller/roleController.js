@@ -65,7 +65,7 @@ export function addRole(req, res) {
                 courseID: courseID
             }).then((newRole) => {
                 return res.status(200).send({
-                    id: newRole.id,
+                    id: newRole.name,
                     info: "new role created !"
                 });
                 //erreur, la clef étrangère du cours ne correspond à aucun cours
@@ -152,5 +152,4 @@ export function deleteRole(req, res) {
             error: err
         })
     })
-
 }

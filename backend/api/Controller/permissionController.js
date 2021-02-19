@@ -63,7 +63,7 @@ export function addPermission(req, res) {
                 name: name
             }).then((newPermission) => {
                 return res.status(200).send({
-                    name: newPermission.id,
+                    name: newPermission.name,
                     info: "new permission created !"
                 });
             });

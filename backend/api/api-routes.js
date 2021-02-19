@@ -14,6 +14,8 @@ const { register, login, refresh, userInfo } = require('./Controller/userControl
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
 const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
+const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
+const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
 
 //Routes API
 router.route('/test')
@@ -50,17 +52,16 @@ router.route('/testUser')
 
 //USERS==================================================================
 router.route('/user/register')
-    .post(register)
+    .post(register);
 
 router.route('/user/login')
-    .post(login)
+    .post(login);
 
 router.route('/user/refresh')
-    .post(refresh)
+    .post(refresh);
 
 router.route('/user/me')
-    .get(userInfo)
-
+    .get(userInfo);
 //========================================================================
 
 //PERMISSIONS=============================================================
@@ -69,6 +70,10 @@ router.route('/permission')
     .get(getPermission)
     .put(editPermission)
     .delete(deletePermission);
+
+router.route('/permissionOfRole')
+    .post(addPermissionToRole)
+    .delete(deletePermissionToRole);
 //========================================================================
 
 //ROLES===================================================================
@@ -77,10 +82,13 @@ router.route('/role')
     .get(getRole)
     .put(editRole)
     .delete(deleteRole);
+
+router.route('/roleOfUser')
+    .post(addRoleToUser)
+    .delete(deleteRoleToUser);
 //========================================================================
 
 //COURSES=================================================================
-
 router.route('/course')
     .post(addCourse)
     .get(getCourse)

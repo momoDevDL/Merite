@@ -67,14 +67,14 @@ let statements = [
         PRIMARY KEY(id)
     )`,
     //USER_HAS_ROLE
-    `CREATE TABLE user_has_role (
+    `CREATE TABLE user_has_roles (
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
         FOREIGN KEY (userID) REFERENCES user(login)
     )`,
     //ROLE_HAS_PERMISSION
-    `CREATE TABLE role_has_permission (
+    `CREATE TABLE role_has_permissions (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
