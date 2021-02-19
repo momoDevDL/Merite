@@ -22,10 +22,21 @@
         </div>
         <v-text-field @keydown="verifyForm" :rules="ruleNom" counter="30" v-model="user.prenom" outlined label="Prénom"
           placeholder="Philippe" />
-        <v-text-field @keydown="verifyForm" :rules="ruleEmail" type='email' v-model="user.email" outlined label="Email"
-          placeholder="xxx@xxx.com" />
+        <v-text-field @keydown="verifyForm" ref="emailField" :rules="ruleEmail" type='email' v-model="user.email"
+          outlined label="Email" placeholder="xxx@xxx.com" />
 
-        <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
+        <p class="title-form">Date de naissance</p>
+        <v-divider class="divider-form"></v-divider>
+        <div class="birthdayfield">
+          <v-text-field ref="dayField" style="width:70px;" :rules="ruleDay" v-model="user.birthday.day"
+            class="birthday-item" @keydown="verifyForm" outlined label="Jour" placeholder="JJ" />
+          <v-text-field ref="monthField" style="width:70px;" :rules="ruleMonth" v-model="user.birthday.month"
+            class="birthday-item" @keydown="verifyForm" outlined label="Mois" placeholder="MM" />
+          <v-text-field ref="yearField" style="width:100px;" :rules="ruleYear" v-model="user.birthday.years"
+            class="birthday-item" @keydown="verifyForm" outlined label="Annees" placeholder="AAAA" />
+        </div>
+
+        <!-- <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
           min-width="auto">
           <template v-slot:activator="{ on, attrs }">
             <v-text-field required v-model="user.birthday" label="Date de naissance" readonly v-bind="attrs" v-on="on"
@@ -33,7 +44,7 @@
             </v-text-field>
           </template>
           <v-date-picker @change="verifyForm" v-model="user.birthday" @input="menu2 = false"></v-date-picker>
-        </v-menu>
+        </v-menu> -->
 
         <div v-if="user.role == 'Etudiant'" class="student-form">
           <p class="title-form">Informations étudiant</p>
@@ -96,32 +107,28 @@
                 v-if="user.role == 'Etudiant' && user.genre == 'Mme'">e</span></span><span v-else>Professeur</span></p>
           <p>E-mail : <span class="card-user-filled" v-if="user.email">{{user.email}}</span><span v-else
               class="prefill">coralie.durand@etud.fr</span></p>
-          <p>Née le <span class="card-user-filled" v-if="user.birthday"> {{user.birthday}} </span><span class="prefill"
-              v-else>1970-01-01</span></p>
-          <div v-if="user.role == 'Etudiant'" class="bloc-etudiant">
-            <p>Numéro étudiant : <span class="card-user-filled" v-if="user.numEtudiant">{{user.numEtudiant}}</span><span
-                v-else class="prefill">20212596Y</span></p>
-            <p>Formation : <span class="card-user-filled" v-if="user.formation">{{user.formation}}</span><span v-else
-                class="prefill">IHM</span></p>
-          </div>
+          <p>Née le
+            <span class="card-user-filled" v-if="user.birthday.day">{{user.birthday.day}}</span> <span class="prefill"
+              v-else>01</span> /
+            <span class="card-user-filled" v-if="user.birthday.month">{{user.birthday.month}}</span> <span
+              class="prefill" v-else>01</span> /
+            <span class="card-user-filled" v-if="user.birthday.years">{{user.birthday.years}}</span> <span
+              class="prefill" v-else>1970</span>
+            <div v-if="user.role == 'Etudiant'" class="bloc-etudiant">
+              <p>Numéro étudiant : <span class="card-user-filled"
+                  v-if="user.numEtudiant">{{user.numEtudiant}}</span><span v-else class="prefill">20212596Y</span></p>
+              <p>Formation : <span class="card-user-filled" v-if="user.formation">{{user.formation}}</span><span v-else
+                  class="prefill">IHM</span></p>
+            </div>
         </div>
       </div>
     </div>
 
-     <v-snackbar
-      v-model="snackbar"
-      :timeout="snackbarTimeout"
-      :color="snackbarColor"
-    >
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" :color="snackbarColor">
       {{ textSnackbar }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="white"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
           Fermer
         </v-btn>
       </template>
@@ -131,9 +138,8 @@
 </template>
 
 <script>
-
   export default {
-    // auth: false,
+    auth: false,
     layout: 'dashboardAdmin',
     data() {
       return {
@@ -161,16 +167,20 @@
           nom: '',
           prenom: '',
           numEtudiant: '',
-          birthday: '',
+          birthday: {
+            day: '',
+            month: '',
+            years: ''
+          },
           genre: '',
           formation: '',
           role: '',
           email: ''
         },
         snackbar: false,
-        textSnackbar : '',
-        snackbarColor : '',
-        snackbarTimeout : 2000,
+        textSnackbar: '',
+        snackbarColor: '',
+        snackbarTimeout: 2000,
         genres: [
           'Mr',
           'Mme',
@@ -183,8 +193,12 @@
         showCard: false,
         ruleNom: [v => v.length <= 30 || 'Nombre de caractères max : 30'],
         ruleEmail: [v => this.validateEmail(v) || "L'adresse e-mail doit être valide"],
+        ruleDay: [v => v > 0 && v <= 31 || ""],
+        ruleMonth: [v => v > 0 && v <= 12 || ""],
+        ruleYear: [v => v > 1900 && v <= new Date().getFullYear() || ""],
         formValidate: false,
-        checkIfCorrect: false
+        checkIfCorrect: false,
+        isDateValid: true
       }
     },
     computed: {
@@ -193,9 +207,6 @@
       },
     },
     methods: {
-      submit() {
-        this.$v.$touch()
-      },
       verifyForm() {
 
         setTimeout(() => {
@@ -203,9 +214,11 @@
           ok.push(this.user.nom != '' && this.user.nom.length <= 30)
           ok.push(this.user.prenom != '' && this.user.prenom.length <= 30)
           ok.push(this.validateEmail(this.user.email))
-          ok.push(this.user.birthday != '')
           ok.push(this.user.genre != '')
           ok.push(this.user.role != '')
+          ok.push(this.user.birthday.day != '' && !isNaN(Number(this.user.birthday.day)))
+          ok.push(this.user.birthday.month != '' && !isNaN(Number(this.user.birthday.month)))
+          ok.push(this.user.birthday.years != '' && !isNaN(Number(this.user.birthday.years)))
 
           if (this.user.role == 'Etudiant') {
             ok.push(this.user.formation != '')
@@ -220,36 +233,67 @@
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       },
+      isDayValid(day) {
+        if (this.month == 2) {
+
+        }
+      },
       checkUser() {
         this.loadingResponse = true
-        setTimeout(() => {
-          if (this.formValidate) {
-            console.log(this.user);
-            if (true) {
-              this.loadingResponse = false
-              this.snackbarTimeout = 2000
-              this.textSnackbar = 'Utilisateur ajouté au système !'
-              this.snackbarColor = 'success'
-              this.snackbar = true
-            } else {
+        if (this.formValidate) {
+          // console.log(this.user);
+          let username = `${this.user.prenom[0]}${this.user.nom}`.toLowerCase()
+          let email = this.user.email
+          let date = new Date(`${this.user.birthday.years}-${this.user.birthday.month}-${this.user.birthday.day}`)
+          if (date == 'Invalid Date') {
+            this.loadingResponse = false
+            this.snackbarTimeout = 2000
+            this.textSnackbar = "La date n'est pas valide."
+            this.snackbarColor = 'error'
+            this.snackbar = true
+          } else {
+            this.$axios.$post('/user/register', {
+              username: username,
+              email: email,
+              password: 'default',
+              UserIsAdmin: 1,
+              isAdmin: 1
+            }).then((res) => {
+              setTimeout(() => {
+                this.loadingResponse = false
+                this.snackbarTimeout = 2000
+                this.textSnackbar = 'Utilisateur ajouté au système !'
+                this.snackbarColor = 'success'
+                this.snackbar = true
+
+                this.$refs.dayField.reset()
+                this.$refs.monthField.reset()
+                this.$refs.yearField.reset()
+                this.$refs.emailField.reset()
+
+                this.user = {
+                  nom: '',
+                  prenom: '',
+                  numEtudiant: '',
+                  birthday: '',
+                  genre: '',
+                  formation: '',
+                  role: '',
+                  email: ''
+                }
+              }, 1000)
+            }).catch((err) => {
               this.loadingResponse = false
               this.snackbarTimeout = 5000
               this.textSnackbar = 'Un problème est survenu, veuillez contacter le service informatique.'
               this.snackbarColor = 'error'
               this.snackbar = true
-            }
-            this.user = {
-              nom: '',
-              prenom: '',
-              numEtudiant: '',
-              birthday: '',
-              genre: '',
-              formation: '',
-              role: '',
-              email: ''
-            }
+            })
+
           }
-        }, 1000)
+
+
+        }
       }
 
     }
@@ -258,6 +302,11 @@
 </script>
 
 <style lang="scss">
+  .v-text-field.v-input.birthday-item {
+    margin-right: 10px !important;
+    display: inline-block !important;
+  }
+
   .admin-pages,
   #app {
     background: none !important;
