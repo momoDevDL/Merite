@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
 const { register,login,refresh,userInfo,createModule, createCourse } = require('./Controller/userController');
-const { createSection, createDocument, updateDocument, updateSection} = require('./Controller/CourseController');
+const { createSection, createDocument, updateDocument, updateSection} = require('./Controller/courseController');
 //Routes API
 router.route('/test')
     .get(getTest)
