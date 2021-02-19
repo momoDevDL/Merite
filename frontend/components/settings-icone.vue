@@ -15,7 +15,7 @@ export default {
             if (this.active == this.number) {
                 return "#fff"
             } else {
-                return "#000"
+                return "#2818FC"
             }
         }
     }
