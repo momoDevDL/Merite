@@ -64,45 +64,27 @@ router.route('/user/me')
 //========================================================================
 
 //PERMISSIONS=============================================================
-router.route('/permission/add')
-    .post(addPermission);
-
-router.route('/permission/get')
-    .get(getPermission);
-
-router.route('/permission/edit')
-    .put(editPermission);
-
-router.route('/permission/delete')
+router.route('/permission')
+    .post(addPermission)
+    .get(getPermission)
+    .put(editPermission)
     .delete(deletePermission);
 //========================================================================
 
 //ROLES===================================================================
-router.route('/role/add')
-    .post(addRole);
-
-router.route('/role/get')
-    .get(getRole);
-
-router.route('/role/edit')
-    .put(editRole);
-
-router.route('/role/delete')
+router.route('/role')
+    .post(addRole)
+    .get(getRole)
+    .put(editRole)
     .delete(deleteRole);
 //========================================================================
 
 //COURSES=================================================================
 
-router.route('/course/add')
-    .post(addCourse);
-
-router.route('/course/get')
-    .get(getCourse);
-
-router.route('/course/edit')
-    .put(editCourse);
-
-router.route('/course/delete')
+router.route('/course')
+    .post(addCourse)
+    .get(getCourse)
+    .put(editCourse)
     .delete(deleteCourse);
 //========================================================================
 
