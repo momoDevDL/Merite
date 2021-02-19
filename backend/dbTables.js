@@ -1,13 +1,16 @@
 let statements = [
     //USER
     `CREATE TABLE user (
-        login VARCHAR(255) NOT NULL,
+        username VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
-        PRIMARY KEY(login)
+        isAdmin TINYINT NOT NULL DEFAULT 0,
+        PRIMARY KEY(email)
         )`,
     //MODULE
-    `CREATE TABLE module (
+    `CREATE TABLE Module (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         PRIMARY KEY(id)
@@ -18,21 +21,21 @@ let statements = [
         name VARCHAR(255) NOT NULL,
         moduleID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (moduleID) REFERENCES module(ID)
+        FOREIGN KEY (moduleID) REFERENCES Module(id)
     )`,
     //COURSE_HAS_USER
     `CREATE TABLE course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
-        FOREIGN KEY (userID) REFERENCES user(login),
-        FOREIGN KEY (courseID) REFERENCES courses(ID)
+        FOREIGN KEY (userID) REFERENCES user(email),
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //MODULE_RESPONSABLE
     `CREATE TABLE module_responsable (
         userID VARCHAR(255) NOT NULL,
         moduleID INT NOT NULL,
-        FOREIGN KEY (userID) REFERENCES user(login),
-        FOREIGN KEY (moduleID) REFERENCES module(id)
+        FOREIGN KEY (userID) REFERENCES user(email),
+        FOREIGN KEY (moduleID) REFERENCES Module(id)
     )`,
     //Section
     `CREATE TABLE section (

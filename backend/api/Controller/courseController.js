@@ -1,3 +1,4 @@
+
 const models = require('../../models');
 
 export function getCourse(req, res) {

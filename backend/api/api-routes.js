@@ -16,6 +16,8 @@ const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleCon
 const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
+const { createSection, updateSection} = require('./Controller/sectionController');
+const { createDocument, updateDocument} = require('./Controller/documentController');
 
 //Routes API
 router.route('/test')
@@ -96,4 +98,23 @@ router.route('/course')
     .delete(deleteCourse);
 //========================================================================
 
+// SECTIONS ==============================================================
+/*router.route('/user/admin/module/create')
+    .post(createModule)   */ 
+
+router.route('/course/section/create')
+    .post(createSection)  
+
+router.route('/course/section/:sectionId')
+    .put(updateSection)  
+
+//===========================================================================
+
+//Documents==================================================================
+router.route('/course/document/create')
+    .post(createDocument)
+
+router.route('/course/document/:documentId')
+    .put(updateDocument)
+//===========================================================================
 export default router;

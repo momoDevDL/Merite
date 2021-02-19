@@ -3,7 +3,6 @@ var jwt  = require('jsonwebtoken');
 module.exports = {
     generateAccessTokenforUser: (user)=>{
        return jwt.sign({
-            userId: user.id,
             username : user.username,
             email: user.email,
             isAdmin : user.isAdmin
@@ -16,7 +15,6 @@ module.exports = {
 
     generateRefreshTokenforUser: (user) =>{
         return jwt.sign({
-            userId: user.id,
             username : user.username,
             email: user.email,
             isAdmin : user.isAdmin

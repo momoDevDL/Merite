@@ -1,63 +1,74 @@
-import { generateAccessTokenforUser, generateRefreshTokenforUser } from './jwt.token';
+import {
+    generateAccessTokenforUser,
+    generateRefreshTokenforUser
+} from './jwt.token';
 
 var bcrypt = require('bcrypt');
-var models = require('../../models');
+var initModels = require("../../models/init-models");
+var db = require("../../models/index");
+var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
 
 export function register(req, res) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
-    var CreatorIsAdmin = req.body.UserIsAdmin;
-    var UserCreatedIsAdmin = req.body.isAdmin;
+    var creatorIsAdmin = req.body.userIsAdmin;
+    var userCreatedIsAdmin = req.body.newUserIsAdmin;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
 
-    if (email == null || username == null || password == null) {
+    if (email == null || username == null || creatorIsAdmin == null || password == null) {
         return res.status(400).send({
             error: "missing field"
         });
     }
 
-    models.User.findOne({
+    models.user.findOne({
         attribute: ['email'],
         where: {
             email: email
         }
-    }).then(function(userfound) {
+    }).then(function (userfound) {
         if (userfound !== null) {
             return res.status(500).send({
                 error: "request error user already exist"
             });
         } else {
 
-            if (CreatorIsAdmin) {
-                bcrypt.hash(password, 5, function(err, bcryptedPassword) {
-                    const newUser = models.User.create({
-                        email: email,
+            if (creatorIsAdmin) {
+                bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+                    const newUser = models.user.create({
                         username: username,
+                        email: email,
+                        first_name: firstName,
+                        last_name: lastName,
                         password: bcryptedPassword,
-                        isAdmin: UserCreatedIsAdmin
-                    }).then(function(newUser) {
-                        console.log(newUser.id);
+                        isAdmin: userCreatedIsAdmin
+                    }).then((newUser) => {
+                        console.log(newUser.email);
                         return res.status(200).send({
-                            user_id: newUser.id
+                            user_email: newUser.email
                         })
-                    }).catch(function() {
+                    }).catch(function () {
                         return res.status(500).send({
-                            error: err
+                            error: err + "create request error"
                         });
                     })
+                }).catch(function () {
+                    return res.status(500).send({
+                        error: err
+                    });
                 })
             } else {
                 return res.status(400).send({
                     error: "request error you don't have the right to add new user"
                 });
             }
-
-
         }
-    }).catch(function(err) {
+    }).catch(function (err) {
         return res.status(500).send({
-            error: err
+            error: err + "findOne request Error"
         });
     })
 };
@@ -74,10 +85,10 @@ export function login(req, res) {
         });
     }
 
-    models.User.findOne({
-        attribute: ['email'],
-        where: {
-            email: email,
+    models.user.findOne({
+        attribute : ['email'],
+        where : {
+            email : email,
         }
     }).then((userfound) => {
 
@@ -91,11 +102,13 @@ export function login(req, res) {
                 if (cryptResponse) {
                     let refreshToken = generateRefreshTokenforUser(userfound);
 
-                    models.User.update({
+                    models.user.update(
+                    {
                         refreshToken: refreshToken
-                    }, {
-                        where: {
-                            id: userfound.id
+                    },{
+                        where :
+                        {
+                            email : userfound.email
                         }
                     }).then((updated) => {
                         if (updated) {
@@ -105,6 +118,13 @@ export function login(req, res) {
                         console.log(error);
                         return res.send("DB update query failed");
                     });
+                    
+                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), user : {
+                        email: userfound.email,
+                        username : userfound.username,
+                        first_name : userfound.first_name,
+                        last_name : userfound.last_name
+                    }});
 
                     return res.status(200).json({ token: generateAccessTokenforUser(userfound), user: userfound });
 
@@ -129,7 +149,7 @@ export function refresh(req, res) {
     if (!UserAccesToken) {
         return res.status(403).send("missed field : token not found in cookie");
     } else {
-        let verifyTokenPayload;
+        let verifiedTokenPayload;
         try {
             verifiedTokenPayload = jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY);
         } catch (error) {
@@ -138,10 +158,10 @@ export function refresh(req, res) {
 
         let refreshToken;
 
-        models.User.findOne({
+        models.user.findOne({
             attribute: ['refreshToken'],
-            where: {
-                id: req.body.id
+            where:{
+                email : req.body.email
             }
         }).then((token) => {
             refreshToken = token;
@@ -155,9 +175,10 @@ export function refresh(req, res) {
             return res.status(401).send("failed to verify refresh Token");
         }
 
-        let newUserToken = jwt.sign(verifyTokenPayload, process.env.REFRESH_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.JWT_SECRET_SIGN_KEY
+        let newUserToken = jwt.sign(verifiedTokenPayload,process.env.REFRESH_TOKEN_SECRET,
+        {
+            algorithm:"HS256",
+            expiresIn:process.env.JWT_SECRET_SIGN_KEY
         });
 
 
@@ -168,5 +189,6 @@ export function refresh(req, res) {
 
 export function userInfo(req, res) {
     console.log(req.body);
-    res.json({ user: { nom: "momo", prenom: "anonyme" } });
-}
+    res.json({user : {nom : "momo", prenom:"anonyme"}});
+};
+
