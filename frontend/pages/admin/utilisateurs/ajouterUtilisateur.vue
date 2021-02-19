@@ -2,8 +2,6 @@
   <v-app class="admin-pages">
     <div class="header-dashboard-page">
       <p class="dashboard-page-title">Veuillez remplir les champs</p>
-      <!-- <nuxt-link class="dashboard-page-title-link" to="/admin/utilisateurs">Retour <span class="arrow">></span> -->
-      </nuxt-link>
     </div>
 
     <v-divider class="divider"></v-divider>
@@ -35,17 +33,7 @@
           <v-text-field ref="yearField" style="width:100px;" :rules="ruleYear" v-model="user.birthday.years"
             class="birthday-item" @keydown="verifyForm" outlined label="Annees" placeholder="AAAA" />
         </div>
-
-        <!-- <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-          min-width="auto">
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field required v-model="user.birthday" label="Date de naissance" readonly v-bind="attrs" v-on="on"
-              outlined>
-            </v-text-field>
-          </template>
-          <v-date-picker @change="verifyForm" v-model="user.birthday" @input="menu2 = false"></v-date-picker>
-        </v-menu> -->
-
+        
         <div v-if="user.role == 'Etudiant'" class="student-form">
           <p class="title-form">Informations étudiant</p>
           <v-divider class="divider-form"></v-divider>
@@ -291,7 +279,6 @@
             })
 
           }
-
 
         }
       }
