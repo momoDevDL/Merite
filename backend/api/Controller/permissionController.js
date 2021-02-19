@@ -4,8 +4,6 @@ const models = require('../../models');
 export function getPermission(req, res) {
     let name = req.query.name;
 
-    console.log(req.query);
-
     //attributs incomplets
     if (name == null) {
         return res.status(400).send({
@@ -132,7 +130,7 @@ export function editPermission(req, res) {
             name: oldName
         }
     }).then((permission) => {
-        //la permission existe, on la supprime
+        //la permission existe, on la modifie
         if (permission) {
             permission.name = newName;
             permission.save();

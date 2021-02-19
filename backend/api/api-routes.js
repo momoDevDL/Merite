@@ -13,6 +13,7 @@ const { getTest, postTest } = require('./Controller/testController');
 const { register, login, refresh, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
+const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
 
 //Routes API
 router.route('/test')
@@ -79,6 +80,7 @@ router.route('/permission/delete')
 //ROLES===================================================================
 router.route('/role/add')
     .post(addRole);
+
 router.route('/role/get')
     .get(getRole);
 
@@ -89,5 +91,19 @@ router.route('/role/delete')
     .delete(deleteRole);
 //========================================================================
 
+//COURSES=================================================================
+
+router.route('/course/add')
+    .post(addCourse);
+
+router.route('/course/get')
+    .get(getCourse);
+
+router.route('/course/edit')
+    .put(editCourse);
+
+router.route('/course/delete')
+    .delete(deleteCourse);
+//========================================================================
 
 export default router;

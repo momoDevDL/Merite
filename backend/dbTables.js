@@ -13,7 +13,7 @@ let statements = [
         PRIMARY KEY(id)
     )`,
     //COURSE
-    `CREATE TABLE course (
+    `CREATE TABLE courses (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         moduleID INT NOT NULL,
@@ -25,7 +25,7 @@ let statements = [
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
         FOREIGN KEY (userID) REFERENCES user(login),
-        FOREIGN KEY (courseID) REFERENCES course(ID)
+        FOREIGN KEY (courseID) REFERENCES courses(ID)
     )`,
     //MODULE_RESPONSABLE
     `CREATE TABLE module_responsable (
@@ -40,7 +40,7 @@ let statements = [
         name VARCHAR(255),
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES course(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //Document
     `CREATE TABLE document (
@@ -58,7 +58,7 @@ let statements = [
         name VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES course(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //PERMISSION
     `CREATE TABLE permissions (
