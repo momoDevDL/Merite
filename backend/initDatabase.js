@@ -1,6 +1,6 @@
 //ce script as pour but de créer localement la base de donnée afin de pouvoir faire des tests
 
-const mysql = require("mysql");
+// const mysql = require("mysql");
 const mysql = require("mysql2");
 const statements = require('./dbTables');
 
@@ -65,8 +65,8 @@ async function createTables() {
 //connection à la base de donnée
 const con = mysql.createConnection({
     host: "localhost",
-    user: "phpmyadmin",
-    password: "root",
+    user: "admin",
+    password: "admin",
 });
 
 //se connecte à la BDD, renvoie une erreur si impossible

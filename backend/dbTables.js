@@ -74,7 +74,7 @@ let statements = [
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (userID) REFERENCES user(login)
+        FOREIGN KEY (userID) REFERENCES user(email)
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE role_has_permissions (
