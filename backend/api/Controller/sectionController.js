@@ -1,10 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
-import Module from "../../models/Module";
 
-var initModels = require("../../models/init-models");
+
+/*var initModels = require("../../models/init-models");
 var db = require("../../models/index");
-var models = initModels(db.sequelize);
+var models = initModels(db.sequelize);*/
 
+const models = require('../../models');
 export function createSection(req,res){
 
     var sectionName = req.body.name ;
@@ -42,7 +43,7 @@ export function createSection(req,res){
     
     })*/
 
-    models.course.findOne({
+    models.Course.findOne({
         attributes : ['id'],
         where : {
             id : courseId

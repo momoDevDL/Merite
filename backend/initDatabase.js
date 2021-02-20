@@ -1,6 +1,5 @@
 //ce script as pour but de créer localement la base de donnée afin de pouvoir faire des tests
 
-const mysql = require("mysql");
 const mysql = require("mysql2");
 const statements = require('./dbTables');
 

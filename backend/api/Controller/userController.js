@@ -1,3 +1,4 @@
+import user from '../../models/user';
 import {
     generateAccessTokenforUser,
     generateRefreshTokenforUser
@@ -18,7 +19,9 @@ export function register(req, res) {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
 
-    if (email == null || username == null || creatorIsAdmin == null || password == null) {
+    console.log(req.body)
+
+    if (email == null || username == null || creatorIsAdmin == null || userCreatedIsAdmin == null || password == null || firstName == null || lastName == null) {
         return res.status(400).send({
             error: "missing field"
         });
@@ -38,28 +41,34 @@ export function register(req, res) {
 
             if (creatorIsAdmin) {
                 bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-                    const newUser = models.user.create({
-                        username: username,
-                        email: email,
-                        first_name: firstName,
-                        last_name: lastName,
-                        password: bcryptedPassword,
-                        isAdmin: userCreatedIsAdmin
-                    }).then((newUser) => {
-                        console.log(newUser.email);
-                        return res.status(200).send({
-                            user_email: newUser.email
-                        })
-                    }).catch(function () {
+                    if (err) {
                         return res.status(500).send({
-                            error: err + "create request error"
-                        });
-                    })
-                }).catch(function () {
-                    return res.status(500).send({
-                        error: err
-                    });
+                            error: err
+                        })
+                    }else{
+                        const newUser = models.user.create({
+                            username: username,
+                            email: email,
+                            first_name: firstName,
+                            last_name: lastName,
+                            password: bcryptedPassword,
+                            isAdmin: userCreatedIsAdmin
+                        }).then((newUser) => {
+                            console.log(newUser.email);
+                            return res.status(200).send({
+                                user_email: newUser.email,
+                                user_id: user.id
+                            })
+                        }).catch((err)=> {
+                            return res.status(500).send({
+                                error: err + "create request error"
+                            });
+                        })
+    
+                    }
+                   
                 })
+                   
             } else {
                 return res.status(400).send({
                     error: "request error you don't have the right to add new user"
