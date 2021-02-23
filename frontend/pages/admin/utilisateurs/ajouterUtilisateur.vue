@@ -279,6 +279,8 @@
                   role: '',
                   email: ''
                 }
+
+                this.verifyForm()
               }, 1000)
             }).catch((err) => {
               console.log(err)
