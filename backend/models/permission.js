@@ -1,36 +1,29 @@
-const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return permission.init(sequelize, DataTypes);
-}
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-class permission extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'permission',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-    ]
-  });
-  return permission;
-  }
-}
+module.exports = (sequelize, DataTypes) => {
+    class Permission extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // define association here
+        }
+    };
+    Permission.init({
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: DataTypes.STRING
+    }, {
+        sequelize,
+        modelName: 'Permission'
+    });
+    return Permission;
+};

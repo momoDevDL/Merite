@@ -20,6 +20,7 @@
 		components : {
 			Classes
 		},
+		auth:false,
 		layout : "homeLayout"
 }
 </script>

@@ -9,12 +9,12 @@
       </div>
 
       <div class="sidebar-menu ">
-        <nuxt-link :class="{active : current == 1}" @click.native="changeSelectedLink" num="1" to="/admin/"
+        <nuxt-link :class="{active : this.$route.path == '/admin/'}" @click.native="changeSelectedLink" num="1" to="/admin/"
           class="sidebar-item">
           <home-icone number="1" :active="current" />
           <p num="1" class="sidebar-item-link">Acceuil</p>
         </nuxt-link>
-        <nuxt-link :class="{active : current == 2}" @click.native="changeSelectedLink" num="2" to="/admin/utilisateurs"
+        <nuxt-link :class="{active : this.$route.path.includes('/admin/utilisateurs')}" @click.native="changeSelectedLink" num="2" to="/admin/utilisateurs"
           class="sidebar-item">
           <user-icone number="2" :active="current" />
           <p num="2" class="sidebar-item-link">Utilisateurs</p>
@@ -51,10 +51,13 @@
          <search-icone/>
         </div>
         <div class="dashboard-nav-icon mail-icone">
-          <mail-icone/>
+          <mail-icone :notification="notif"/>
         </div>
         <div class="hello-dashboard">
-          <h1 class="dashboard-title">Gérez le <span class="dashboard-title-accent">site</span></h1>
+          <h1 v-if="$route.path == '/admin/'" class="dashboard-title">Gérez le <span class="dashboard-title-accent">site</span></h1>
+          <h1 v-if="$route.path == '/admin/utilisateurs'" class="dashboard-title">Gérez vos <span class="dashboard-title-accent">utilisateurs</span></h1>
+          <h1 v-if="$route.path == '/admin/utilisateurs/ajouterUtilisateur'"  class="dashboard-title">Ajouter un <span class="dashboard-title-accent">utilisateur</span></h1>
+          <h1 v-if="$route.path == '/admin/utilisateurs/modifierUtilisateur'"  class="dashboard-title">Modifier un <span class="dashboard-title-accent">utilisateur</span></h1>
         </div>
       </div>
       <div class="navbar-dashboard-right">
@@ -71,12 +74,19 @@
     data() {
       return {
         current: 1,
-        sidebar: false
+        sidebar: false,
+        notif : true
+      }
+    },
+    head() {
+      return {
+        title : 'Admin'
       }
     },
     methods: {
       changeSelectedLink(e) {
         this.current = parseInt(e.target.getAttribute("num"))
+        console.log(this.$route.path == '/admin/utilisateurs');
       }
     }
   }
@@ -91,6 +101,11 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Poppins';
+  }
+
+  .dashboard {
+    background: #F2F5FA;
+    min-height: 100vh;
   }
 
   .dashboard-title {
@@ -141,6 +156,7 @@
     }
 
     .dashboard-nav-icon {
+      background: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -352,13 +368,12 @@
     }
   }
 
-  @media screen and (max-width : 420px) {
+  @media screen and (max-width : 500px) {
     .navbar-dashboard {
       margin: 0;
     }
 
     .navbar-dashboard .hamb-dashboard {
-
       margin-right: 10px;
 
     }
@@ -376,7 +391,9 @@
       margin-top: 20px;
     }
 
-
+    .nuxt {
+      padding: 20px;
+    }
 
   }
 

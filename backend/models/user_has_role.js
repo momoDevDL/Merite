@@ -1,48 +1,32 @@
-const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return user_has_role.init(sequelize, DataTypes);
-}
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-class user_has_role extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
-    roleID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'role',
-        key: 'id'
-      }
-    },
-    userID: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      references: {
-        model: 'user',
-        key: 'email'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'user_has_role',
-    timestamps: false,
-    indexes: [
-      {
-        name: "roleID",
-        using: "BTREE",
-        fields: [
-          { name: "roleID" },
-        ]
-      },
-      {
-        name: "userID",
-        using: "BTREE",
-        fields: [
-          { name: "userID" },
-        ]
-      },
-    ]
-  });
-  return user_has_role;
-  }
-}
+module.exports = (sequelize, DataTypes) => {
+    class User_has_Role extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // define association here
+        }
+    };
+    User_has_Role.init({
+        roleID: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        userID: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'User_has_Role',
+    });
+    User_has_Role.removeAttribute('id');
+    return User_has_Role;
+};

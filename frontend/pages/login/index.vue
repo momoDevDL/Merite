@@ -79,7 +79,7 @@
           email: this.email,
           password: this.password
         },
-        errorIdentifiant : false
+        errorIdentifiant : true
       }
     },
     created() {
@@ -145,7 +145,7 @@
       },
       winResize(e) {
         if (process.client) {
-
+          
           this.window.width = window.innerWidth
         }
       },

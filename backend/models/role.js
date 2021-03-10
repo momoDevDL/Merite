@@ -1,51 +1,33 @@
-const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return role.init(sequelize, DataTypes);
-}
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-class role extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    courseID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'course',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'role',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "courseID",
-        using: "BTREE",
-        fields: [
-          { name: "courseID" },
-        ]
-      },
-    ]
-  });
-  return role;
-  }
-}
+module.exports = (sequelize, DataTypes) => {
+    class Role extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // define association here
+        }
+    };
+    Role.init({
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: DataTypes.STRING,
+        courseID: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'Role',
+    });
+    return Role;
+};

@@ -16,7 +16,7 @@ let statements = [
         PRIMARY KEY(id)
     )`,
     //COURSE
-    `CREATE TABLE course (
+    `CREATE TABLE courses (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         moduleID INT NOT NULL,
@@ -28,7 +28,7 @@ let statements = [
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
         FOREIGN KEY (userID) REFERENCES user(email),
-        FOREIGN KEY (courseID) REFERENCES course(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //MODULE_RESPONSABLE
     `CREATE TABLE module_responsable (
@@ -43,7 +43,7 @@ let statements = [
         name VARCHAR(255),
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES course(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //Document
     `CREATE TABLE document (
@@ -55,33 +55,33 @@ let statements = [
         PRIMARY KEY(id),
         FOREIGN KEY (sectionID) REFERENCES section(id)
     )`,
-    //ROLE
-    `CREATE TABLE role (
+    //ROLES
+    `CREATE TABLE roles (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES course(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,
     //PERMISSION
-    `CREATE TABLE permission (
+    `CREATE TABLE permissions (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         PRIMARY KEY(id)
     )`,
     //USER_HAS_ROLE
-    `CREATE TABLE user_has_role (
+    `CREATE TABLE user_has_roles (
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES role(id),
+        FOREIGN KEY (roleID) REFERENCES roles(id),
         FOREIGN KEY (userID) REFERENCES user(email)
     )`,
     //ROLE_HAS_PERMISSION
-    `CREATE TABLE role_has_permission (
+    `CREATE TABLE role_has_permissions (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES role(id),
-        FOREIGN KEY (permissionID) REFERENCES permission(id)
+        FOREIGN KEY (roleID) REFERENCES roles(id),
+        FOREIGN KEY (permissionID) REFERENCES permissions(id)
     )`
 ]
 

@@ -44,7 +44,7 @@ export function createSection(req,res){
     
     })*/
 
-    models.course.findOne({
+    models.Course.findOne({
         attributes : ['id'],
         where : {
             id : courseId

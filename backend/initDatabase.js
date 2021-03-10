@@ -29,7 +29,6 @@ async function createDB() {
     return new Promise(async resolve => {
         con.query("CREATE DATABASE merite_development", (err, result) => {
             if (err) {
-                console.log(err);
                 console.log("Database already created, skipped.")
             } else {
                 console.log("Database created !")
@@ -66,7 +65,7 @@ async function createTables() {
 const con = mysql.createConnection({
     host: "localhost",
     user: "phpmyadmin",
-    password: "root"
+    password: "root",
 });
 
 //se connecte à la BDD, renvoie une erreur si impossible

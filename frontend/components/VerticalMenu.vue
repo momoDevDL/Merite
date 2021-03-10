@@ -1,22 +1,30 @@
 <template>
-  <div class="grid grid-cols-2">
-    <div id="rectangle_23"></div>
-    <img src="../img/ellipse_1.png" id="photo"/>
-    <div class="container-menu">
-      <div class="vertical-menu">
-        <div id="name">{{$auth.$storage.getUniversal('user').username}}</div>
-        <div id="espace_personnel"><a href="#">Espace personnel</a></div>
-        <div id="mes_cours"><a href="#">Mes cours</a></div>
-        <div id="mes_notes"><a href="#">Mes notes</a></div>
-        <div id="mon_drive"><a href="#">Mon drive</a></div>
-        <div id="mes_e_mails"><a href="#">Mes e-mails</a></div>
-        <div id="services"><a href="#"> Services </a></div>
-        <div id="support"><a href="#">Support</a></div>
-        <div id="aide"><a href="#">Aide</a></div>
-        <div id="params"><a href="#">Paramètres</a></div>
-        <div @click.prevent="logout" id="sing_out"><a href="">Déconnexion</a></div>
-      </div>
+  <div class="vertical_menu_container">
+    <div class="photo_name_container">
+      <img src="../img/ellipse_1.png" class="photo"/>
+      <div class="name"><!--{{$auth.$storage.getUniversal('user').username}}--></div>
     </div>
+      <div class="menu_top_container">
+        <ul>
+          <li><div class="personnal_space"><a href="#">Espace personnel</a></div></li>
+          <li><div class="my_classes"><a href="#">Mes cours</a></div></li>
+          <li><div class="my_grades"><a href="#">Mes notes</a></div></li>
+          <li><div class="my_drive"><a href="#">Mon drive</a></div></li>
+          <li><div class="my_mails"><a href="#">Mes e-mails</a></div></li>
+          <li><div class="services"><a href="#"> Services </a></div></li>
+          <li><div class="support"><a href="#">Support</a></div></li>
+        </ul>
+      </div>
+      <div class="menu_buttom_container">
+        <ul>
+          <li><div class="help"><a href="#">Aide</a></div></li>
+          <li><div class="params"><a href="#">Paramètres</a></div></li>
+          <li><div class="sing_out" @click.prevent="logout" ><a href="#">Déconnextion</a></div></li>
+        </ul>
+      </div>
+      <!--<div class="copyright_merite" >
+				Copyright <a href="http://Merite.com" target="_blank">Merite.com</a>
+			</div> -->
   </div>
 </template>
 
@@ -35,187 +43,109 @@ export default {
 </script>
 
 <style scoped>
-#name {
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  margin-left: 35%;
-}
-
-#vertical-menu a {
-  color: #215fff;
-  display: block;
-  padding: 12px;
-  border-radius: 24% 0% 0% 24%;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  margin-left: 10%;
-}
-
-#vertical-menu a:hover {
-  background-color: #f0f8ff;
-}
-
-#vertical-menu a.active {
-  background-color: #f0f8ff;
-  color: #215fff;
-}
-
-#rectangle_23 {
-  top: -3px;
-  left: 0px;
-  width: 217px;
-  height: 1027px;
-  background: rgba(255, 255, 255, 1);
-}
-
-#name {
-	top: 162px;
-	left: 46px;
-	width: 128px;
-	height: 37px;
-	overflow: hidden;
-	font-size: 18px;
-	text-align: center;
-	line-height: 18px;
+  .name {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
-}
+    justify-content: space-between;
+  }
 
-#espace_personnel {
-  top: 240px;
-  left:32px;
-  width: 200px;
-  height: 37px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  text-align: left;
-  line-height: 18px;
-  color: #215fff;
-}
+  .vertical_menu_container {
+    width: 217px;
+    position: relative;
+    background:white;
+  }
 
-#support {
-	top: 518px;
-	left: 32px;
-	width: 181px;
-	height: 37px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
+  .name {
+	  font-size: 18px;
+	  text-align: center;
+	  line-height: 18px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    margin-top: 5%;
+  }
+
+  .photo_name_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:20%;
+    position: relative;
+  }
+
+  .menu_top_container {
+    margin-top: 20%;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative ;
+  }
+
+  .menu_buttom_container {
+    margin-top:30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative ;
+  }
+
+  .copyright_merite {
+    align-items: center;
+    margin-left:30px;
+		font-size: 12px;
+		font-weight: bold;
+		font-family: "Poppins", sans-serif;
+    color: gray;
+	} 
+
+  ul {
+    list-style: none;   
+  }
+
+  a {
+    text-decoration: none;
+  }
+  ul li:hover a{
+    padding-left: 10px;
+    background-color: #f0f8ff;
+  }
+
+  ul li a {
+    color: #215fff;
+    display: block;
+    padding: 12px;
+    border-radius: 57px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    transition: .4s;
+  }
+  .personnal_space {
+    width: 200px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+    line-height: 18px;
+    color: #215fff;
+  }
+
+  .support , .services, .my_mails, .my_drive, .my_grades, .my_classes, .help, .params, .sing_out{
+	  width: 181px;
+	  font-size: 18px;
+	  text-align: left;
+	  line-height: 18px;
     color:#215FFF;
     font-family: "Poppins", sans-serif;
     font-weight: 600;
-}
+  }
 
-#services {
-	top: 472px;
-	left: 32px;
-	width: 181px;
-	height: 37px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-}
+  .photo {
+    width: 111px;
+    height: 104px;
+  }
 
-#mes_e_mails {
-	top: 426px;
-	left: 32px;
-	width: 181px;
-	height: 37px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-}
-
-#mon_drive {
-	top: 379px;
-	left: 32px;
-	width: 181px;
-	height: 37px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-}
-
-#mes_notes {
-	top: 333px;
-	left: 32px;
-	width: 181px;
-	height: 37px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-}
-
-#mes_cours {
-	top: 287px;
-	left: 32px;
-	width: 181px;
-	font-size: 18px;
-	text-align: left;
-	line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-}
-
-
-#aide {
-  top: 718px;
-  left: 32px;
-  width: 181px;
-  height: 37px;
-  font-size: 18px;
-  text-align: left;
-  line-height: 18px;
-  color: #215fff;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-}
-
-#params {
-  top: 760px;
-  left: 32px;
-  width: 181px;
-  height: 37px;
-  font-size: 18px;
-  text-align: left;
-  line-height: 18px;
-  color: #215fff;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-}
-
-#sing_out {
-  top: 800px;
-  left: 32px;
-  width: 181px;
-  height: 37px;
-  font-size: 18px;
-  text-align: left;
-  line-height: 18px;
-  color: #215fff;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-}
-
-#photo {
-  top: 44px;
-  left: 53px;
-  width: 111px;
-  height: 104px;
-}
 </style>
     
