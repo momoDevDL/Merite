@@ -64,8 +64,8 @@ async function createTables() {
 //connection à la base de donnée
 const con = mysql.createConnection({
     host: "localhost",
-    user: "phpmyadmin",
-    password: "root",
+    user: "admin",
+    password: "admin",
 });
 
 //se connecte à la BDD, renvoie une erreur si impossible

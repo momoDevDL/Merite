@@ -10,7 +10,7 @@ export function getRole(req, res) {
         });
     }
 
-    models.Role.findOne({
+    models.role.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -46,7 +46,7 @@ export function addRole(req, res) {
         });
     }
 
-    models.Role.findOne({
+    models.role.findOne({
         attribute: ['name', 'courseID'],
         where: {
             name: name,
@@ -60,7 +60,7 @@ export function addRole(req, res) {
             });
             //cas standard, création d'une role
         } else {
-            const newRole = models.Role.create({
+            const newRole = models.role.create({
                 name: name,
                 courseID: courseID
             }).then((newRole) => {
@@ -91,7 +91,7 @@ export function editRole(req, res) {
         });
     }
 
-    models.Role.findOne({
+    models.role.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -127,7 +127,7 @@ export function deleteRole(req, res) {
         });
     }
 
-    models.Role.findOne({
+    models.role.findOne({
         attribute: ['id'],
         where: {
             id: id

@@ -21,7 +21,7 @@ export function register(req, res) {
 
     console.log(req.body)
 
-    if (email == null || username == null || creatorIsAdmin == null || userCreatedIsAdmin == null || password == null || firstName == null || lastName == null) {
+    if (email == null || username == null || creatorIsAdmin == null || userCreatedIsAdmin  == null || password == null || firstName == null || lastName == null) {
         return res.status(400).send({
             error: "missing field"
         });
@@ -32,7 +32,7 @@ export function register(req, res) {
         where: {
             email: email
         }
-    }).then(function (userfound) {
+    }).then(function(userfound) {
         if (userfound !== null) {
             return res.status(500).send({
                 error: "request error user already exist"
@@ -40,12 +40,12 @@ export function register(req, res) {
         } else {
 
             if (creatorIsAdmin) {
-                bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+                bcrypt.hash(password, 5, function(err, bcryptedPassword) {
                     if (err) {
                         return res.status(500).send({
                             error: err
                         })
-                    }else{
+                    } else {
                         const newUser = models.user.create({
                             username: username,
                             email: email,
@@ -59,23 +59,23 @@ export function register(req, res) {
                                 user_email: newUser.email,
                                 user_id: user.id
                             })
-                        }).catch((err)=> {
+                        }).catch((err) => {
                             return res.status(500).send({
                                 error: err + "create request error"
                             });
                         })
-    
+
                     }
-                   
+
                 })
-                   
+
             } else {
                 return res.status(400).send({
                     error: "request error you don't have the right to add new user"
                 });
             }
         }
-    }).catch(function (err) {
+    }).catch(function(err) {
         return res.status(500).send({
             error: err + "findOne request Error"
         });
@@ -95,9 +95,9 @@ export function login(req, res) {
     }
 
     models.user.findOne({
-        attribute : ['email'],
-        where : {
-            email : email,
+        attribute: ['email'],
+        where: {
+            email: email,
         }
     }).then((userfound) => {
 
@@ -111,13 +111,11 @@ export function login(req, res) {
                 if (cryptResponse) {
                     let refreshToken = generateRefreshTokenforUser(userfound);
 
-                    models.user.update(
-                    {
+                    models.user.update({
                         refreshToken: refreshToken
-                    },{
-                        where :
-                        {
-                            email : userfound.email
+                    }, {
+                        where: {
+                            email: userfound.email
                         }
                     }).then((updated) => {
                         if (updated) {
@@ -127,13 +125,16 @@ export function login(req, res) {
                         console.log(error);
                         return res.send("DB update query failed");
                     });
-                    
-                    return res.status(200).json({ token : generateAccessTokenforUser(userfound), user : {
-                        email: userfound.email,
-                        username : userfound.username,
-                        first_name : userfound.first_name,
-                        last_name : userfound.last_name
-                    }});
+
+                    return res.status(200).json({
+                        token: generateAccessTokenforUser(userfound),
+                        user: {
+                            email: userfound.email,
+                            username: userfound.username,
+                            first_name: userfound.first_name,
+                            last_name: userfound.last_name
+                        }
+                    });
 
                     return res.status(200).json({ token: generateAccessTokenforUser(userfound), user: userfound });
 
@@ -169,8 +170,8 @@ export function refresh(req, res) {
 
         models.user.findOne({
             attribute: ['refreshToken'],
-            where:{
-                email : req.body.email
+            where: {
+                email: req.body.email
             }
         }).then((token) => {
             refreshToken = token;
@@ -184,10 +185,9 @@ export function refresh(req, res) {
             return res.status(401).send("failed to verify refresh Token");
         }
 
-        let newUserToken = jwt.sign(verifiedTokenPayload,process.env.REFRESH_TOKEN_SECRET,
-        {
-            algorithm:"HS256",
-            expiresIn:process.env.JWT_SECRET_SIGN_KEY
+        let newUserToken = jwt.sign(verifiedTokenPayload, process.env.REFRESH_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.JWT_SECRET_SIGN_KEY
         });
 
 
@@ -198,6 +198,5 @@ export function refresh(req, res) {
 
 export function userInfo(req, res) {
     console.log(req.body);
-    res.json({user : {nom : "momo", prenom:"anonyme"}});
+    res.json({ user: { nom: "momo", prenom: "anonyme" } });
 };
-
