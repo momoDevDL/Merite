@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const verify = require('./Controller/jwt.token').verifyTokenOfUser;
+const {verifyToken,refreshToken} = require('./Controller/jwt.token');
+
 
 router.get('/', function(req, res) {
     res.json({
@@ -10,8 +11,14 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register,login,refresh,userInfo } = require('./Controller/userController');
-
+const { register, login, refresh, userInfo } = require('./Controller/userController');
+const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
+const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
+const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
+const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
+const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
+const { createSection, updateSection} = require('./Controller/sectionController');
+const {  createDocument, updateDocument, getDocuments, getDocumentWithId, downloadDocument} = require('./Controller/documentController');
 //Routes API
 router.route('/test')
     .get(getTest)
@@ -45,17 +52,75 @@ router.route('/testUser')
         })
     })
 
-
+//USERS ==================================================================
 router.route('/user/register')
-    .post(register)
+    .post(register);
 
 router.route('/user/login')
-    .post(login)
+    .post(login);
 
 router.route('/user/refresh')
-    .post(refresh)
+    .post(verifyToken,refreshToken)
 
 router.route('/user/me')
     .get(userInfo)
-    
+/*=================================================================*/
+
+
+/*===SECTION========================================================*/
+router.route('/section/create')
+    .post(verifyToken,createSection)  
+    .post(refresh);
+
+router.route('/user/me')
+    .get(userInfo);
+//========================================================================
+
+//PERMISSIONS=============================================================
+router.route('/permission')
+    .post(addPermission)
+    .get(getPermission)
+    .put(editPermission)
+    .delete(deletePermission);
+
+router.route('/permissionOfRole')
+    .post(addPermissionToRole)
+    .delete(deletePermissionToRole);
+//========================================================================
+
+//ROLES===================================================================
+router.route('/role')
+    .post(addRole)
+    .get(getRole)
+    .put(editRole)
+    .delete(deleteRole);
+
+router.route('/roleOfUser')
+    .post(addRoleToUser)
+    .delete(deleteRoleToUser);
+//========================================================================
+
+//COURSES=================================================================
+router.route('/course')
+    .post(addCourse)
+    .get(getCourse)
+    .put(editCourse)
+    .delete(deleteCourse);
+//========================================================================
+
+
+
+/*===DOCUMENT========================================================*/
+router.route('/document')
+    .post(verifyToken,createDocument)
+    .get(verifyToken,getDocuments)
+  
+router.route('/document/:documentId')
+    .put(verifyToken,updateDocument)
+    .get(verifyToken,getDocumentWithId)
+
+router.route('/document/download/:documentId')
+    .get(verifyToken,downloadDocument)
+/*=================================================================*/
+
 export default router;

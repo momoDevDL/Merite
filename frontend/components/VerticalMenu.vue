@@ -2,7 +2,7 @@
   <div class="vertical_menu_container">
     <div class="photo_name_container">
       <img src="../img/ellipse_1.png" class="photo"/>
-      <div class="name">Cédric</div>
+      <div class="name"><!--{{$auth.$storage.getUniversal('user').username}}--></div>
     </div>
       <div class="menu_top_container">
         <ul>
@@ -19,16 +19,28 @@
         <ul>
           <li><div class="help"><a href="#">Aide</a></div></li>
           <li><div class="params"><a href="#">Paramètres</a></div></li>
-          <li><div class="sing_out"><a href="#">Déconnextion</a></div></li>
+          <li><div class="sing_out" @click.prevent="logout" ><a href="#">Déconnextion</a></div></li>
         </ul>
       </div>
       <!--<div class="copyright_merite" >
 				Copyright <a href="http://Merite.com" target="_blank">Merite.com</a>
 			</div> -->
-      
-      
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$auth.logout()
+      .then(() => {
+        this.$auth.$storage.removeUniversal('user')
+      })
+      this.$router.push('/login')
+    }
+  }
+}
+</script>
 
 <style scoped>
   .name {
@@ -89,6 +101,13 @@
     color: gray;
 	} 
 
+  ul {
+    list-style: none;   
+  }
+
+  a {
+    text-decoration: none;
+  }
   ul li:hover a{
     padding-left: 10px;
     background-color: #f0f8ff;
@@ -98,7 +117,7 @@
     color: #215fff;
     display: block;
     padding: 12px;
-    -webkit-border-radius: 57px;
+    border-radius: 57px;
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     transition: .4s;

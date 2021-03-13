@@ -1,7 +1,7 @@
 export default {
     // Global page headers (https://go.nuxtjs.dev/config-head)
     head: {
-        title: 'frontend',
+        title: 'Mérite',
         meta: [{
                 charset: 'utf-8'
             },
@@ -42,7 +42,7 @@ export default {
     components: true,
 
     // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-    buildModules: ['@nuxtjs/tailwindcss'],
+
 
     // Modules (https://go.nuxtjs.dev/config-modules)
     modules: [
@@ -64,11 +64,13 @@ export default {
 
     // Axios module configuration (https://go.nuxtjs.dev/config-axios)
     axios: {
-        baseURL: 'http://localhost:3002/api/'
+        baseURL: 'http://localhost:3001/api/'
     },
 
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {},
+
+    buildModules: ['@nuxtjs/vuetify'],
 
     auth: {
         strategies: {

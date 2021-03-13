@@ -57,6 +57,7 @@ export default {
     flex-direction: column;
     width: calc(100vw - 217px);
     margin-left: 217px;
+    padding: 0 50px;
   }
 
   .nav_bar {
@@ -115,7 +116,7 @@ export default {
   }
 
   @media only screen and (max-width: 700px){ 
-    	.right_container {margin-left: 0px; width: 100vw;}
+    	.right_container {margin-left: 0px; width: 100vw;padding: 0 10px;}
       .vertical_menu {left:-217px; &.open{ left:0px};}
       .menu {display: inline-block;}
   } 
