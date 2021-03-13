@@ -5,10 +5,9 @@ const statements = require('./dbTables');
 
 //lance le script de création de la base de donnée
 async function launchScript() {
-    console.log("Creating the database");
+    await deleteIfExists();
     await createDB();
     await switchToDatabase("merite_development");
-    console.log("Creating tables");
     await createTables();
     console.log("Database is now up and running !")
     con.end();
@@ -24,14 +23,27 @@ async function switchToDatabase(databaseName) {
     });
 }
 
+async function deleteIfExists() {
+    return new Promise(async resolve => {
+        con.query("DROP DATABASE IF EXISTS merite_development", (err, result) => {
+            if (err) {
+                console.log("Error deleting the database.");
+            } else {
+                console.log("Database merite_development already exist, dropping old schema.");
+            }
+            resolve();
+        });
+    });
+}
+
 //crée la base de donnée "merite" si elle n'existe pas déjà
 async function createDB() {
     return new Promise(async resolve => {
         con.query("CREATE DATABASE merite_development", (err, result) => {
             if (err) {
-                console.log("Database already created, skipped.")
+                console.log("Error creating the database.");
             } else {
-                console.log("Database created !")
+                console.log("New database merite_development created !");
             }
             resolve();
         });
@@ -61,11 +73,19 @@ async function createTables() {
     });
 }
 
+if (process.argv[2] === undefined) {
+    console.log("missing arg : no username given");
+    process.exit();
+} else if (process.argv[3] === undefined) {
+    console.log("missing arg : no password given");
+    process.exit();
+}
+
 //connection à la base de donnée
 const con = mysql.createConnection({
     host: "localhost",
-    user: "admin",
-    password: "admin",
+    user: process.argv[2],
+    password: process.argv[3],
 });
 
 //se connecte à la BDD, renvoie une erreur si impossible
