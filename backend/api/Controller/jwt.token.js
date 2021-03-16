@@ -71,7 +71,7 @@ module.exports = {
                 });
             
     
-            /*let refreshToken;
+            let refreshToken;
     
             models.user.findOne({
                 attribute: ['refreshToken'],
@@ -96,7 +96,7 @@ module.exports = {
                 expiresIn:process.env.JWT_SECRET_SIGN_KEY
             });
     
-            */
+            
             
             //res.cookie("jwt",newUserToken,{httpOnly:true});
             res.status(201).send({token : newUserToken ,message :"token refreshed successfully"});

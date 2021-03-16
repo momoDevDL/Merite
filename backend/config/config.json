@@ -1,7 +1,7 @@
 {
     "development": {
-        "username": "admin",
-        "password": "admin",
+        "username": "phpmyadmin",
+        "password": "root",
         "database": "merite_development",
         "host": "127.0.0.1",
         "dialect": "mysql",
@@ -10,8 +10,8 @@
         }
     },
     "test": {
-        "username": "admin",
-        "password": "admin",
+        "username": "phpmyadmin",
+        "password": "root",
         "database": "merite_test",
         "host": "127.0.0.1",
         "dialect": "mysql",
@@ -20,8 +20,8 @@
         }
     },
     "production": {
-        "username": "admin",
-        "password": "admin",
+        "username": "phpmyadmin",
+        "password": "root",
         "database": "merite_production",
         "host": "127.0.0.1",
         "dialect": "mysql",

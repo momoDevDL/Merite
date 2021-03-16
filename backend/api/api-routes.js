@@ -68,12 +68,11 @@ router.route('/user/me')
 
 
 /*===SECTION========================================================*/
-router.route('/section/create')
+router.route('/section')
     .post(verifyToken,createSection)  
-    .post(refresh);
-
-router.route('/user/me')
-    .get(userInfo);
+    
+router.route('/section/:sectionId')
+    .put(updateSection)
 //========================================================================
 
 //PERMISSIONS=============================================================
