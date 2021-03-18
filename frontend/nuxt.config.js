@@ -1,7 +1,7 @@
 export default {
     // Global page headers (https://go.nuxtjs.dev/config-head)
     head: {
-        title: 'frontend',
+        title: 'Mérite',
         meta: [{
                 charset: 'utf-8'
             },
@@ -69,6 +69,8 @@ export default {
 
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {},
+
+    buildModules: ['@nuxtjs/vuetify'],
 
     auth: {
         strategies: {
