@@ -1,4 +1,3 @@
-import user from '../../models/user';
 import {
     generateAccessTokenforUser,
     generateRefreshTokenforUser
@@ -11,8 +10,8 @@ var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
 
 export function register(req, res) {
-    let  email = req.body.email;
-    let  username = req.body.username;
+    let email = req.body.email;
+    let username = req.body.username;
     let password = req.body.password;
     let idGlobalRole = req.body.idGlobalRole;
     let numEtud = req.body.numEtud;
@@ -31,8 +30,8 @@ export function register(req, res) {
     console.log(req.body)
 
     if (email == null || password == null || idGlobalRole == null ||
-        username == null || creatorIsAdmin == null || userCreatedIsAdmin  == null ||
-        password == null || firstName == null || lastName == null ||
+        username == null || creatorIsAdmin == null || userCreatedIsAdmin == null ||
+        password == null || firstName == null || lastName == null ||
         birthdate == null || phoneNumber == null || address == null ||
         town == null || pinCode == null) {
         return res.status(400).send({
@@ -41,67 +40,83 @@ export function register(req, res) {
     }
 
     models.user.findOne({
-        attribute: ['email','username'],
+        attribute: ['email', 'username'],
         where: {
             email: email,
-            username : username
+            username: username
         }
-    }).then(function(userfound) {
+    }).then(function (userfound) {
         if (userfound !== null) {
             return res.status(500).send({
                 error: "request error user already exist"
             });
         } else {
 
-            if (creatorIsAdmin) {
-                bcrypt.hash(password, 5, function(err, bcryptedPassword) {
-                    if (err) {
-                        return res.status(500).send({
-                            error: err
-                        })
-                    } else {
-                      
-
-                        //insert a new user in the dataBase
-                        const newUser = models.user.create({
-                            username: username,
-                            email: email,
-                            first_name: firstName,
-                            last_name: lastName,
-                            password: bcryptedPassword,
-                            isAdmin: userCreatedIsAdmin,
-                            numEtud : numEtud,
-                            address : address,
-                            pinCode : pinCode,
-                            town : town ,
-                            ine : ine ,
-                            phoneNumber : phoneNumber,
-                            idGlobalRole : idGlobalRole,
-                            birthdate : birthdate,
-                            formation : formation
-                        }).then((newUser) => {
-                            console.log(newUser.email);
-                            return res.status(200).send({
-                                user_email: newUser.email,
-                                user_id: user.id
-                            })
-                        }).catch((err) => {
-                            return res.status(500).send({
-                                error: err + "create request error"
-                            });
-                        })
-
+            //Vérifier si le rôle est admin / super admin / secretaire 
+            models.global_role.findOne({
+                    attribute: ['id', 'name'],
+                    where: {
+                        id: idGlobalRole
                     }
-
                 })
+                .then((globalRole) => {
+                    if (globalRole.name != "Admin" ||
+                        globalRole.name != "Super-admin" ||
+                        globalRole.name != "Secrétaire") {
+                        return res.status(400).send({
+                            error: "request error you don't have the right to add new user"
+                        });
+                    } else {
+                        bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+                            if (err) {
+                                return res.status(500).send({
+                                    error: err
+                                })
+                            } else {
+                                //insert a new user in the dataBase
+                                const newUser = models.user.create({
+                                    username: username,
+                                    email: email,
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    password: bcryptedPassword,
+                                    isAdmin: userCreatedIsAdmin,
+                                    numEtud: numEtud,
+                                    address: address,
+                                    pinCode: pinCode,
+                                    town: town,
+                                    ine: ine,
+                                    phoneNumber: phoneNumber,
+                                    idGlobalRole: idGlobalRole,
+                                    birthdate: birthdate,
+                                    formation: formation
+                                }).then((newUser) => {
+                                    console.log(newUser.email);
+                                    return res.status(200).send({
+                                        user_email: newUser.email,
+                                        user_id: user.id
+                                    })
+                                }).catch((err) => {
+                                    return res.status(500).send({
+                                        error: err + "create request error"
+                                    });
+                                })
 
-            } else {
-                return res.status(400).send({
-                    error: "request error you don't have the right to add new user"
+                            }
+
+                        })
+                    }
+                })
+                .catch((err)=>{
+                    return res.status(500).send({
+                        error: err + "create request error"
+                    });
                 });
-            }
+
+
+
         }
-    }).catch(function(err) {
+    }).catch(function (err) {
         return res.status(500).send({
             error: err + "findOne request Error"
         });
