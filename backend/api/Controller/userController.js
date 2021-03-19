@@ -11,26 +11,40 @@ var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
 
 export function register(req, res) {
-    var email = req.body.email;
-    var username = req.body.username;
-    var password = req.body.password;
-    var creatorIsAdmin = req.body.userIsAdmin;
-    var userCreatedIsAdmin = req.body.newUserIsAdmin;
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
+    let  email = req.body.email;
+    let  username = req.body.username;
+    let password = req.body.password;
+    let idGlobalRole = req.body.idGlobalRole;
+    let numEtud = req.body.numEtud;
+    let birthdate = req.body.birthdate;
+    let formation = req.body.formation;
+    let town = req.body.town;
+    let phoneNumber = req.body.phoneNumber;
+    let ine = req.body.ine;
+    let pinCode = req.body.pinCode;
+    let address = req.body.address;
+    let creatorIsAdmin = req.body.userIsAdmin;
+    let userCreatedIsAdmin = req.body.newUserIsAdmin;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
 
     console.log(req.body)
 
-    if (email == null || username == null || creatorIsAdmin == null || userCreatedIsAdmin  == null || password == null || firstName == null || lastName == null) {
+    if (email == null || password == null || idGlobalRole == null ||
+        username == null || creatorIsAdmin == null || userCreatedIsAdmin  == null ||
+        password == null || firstName == null || lastName == null ||
+        birthdate == null || phoneNumber == null || address == null ||
+        town == null || pinCode == null) {
         return res.status(400).send({
             error: "missing field"
         });
     }
 
     models.user.findOne({
-        attribute: ['email'],
+        attribute: ['email','username'],
         where: {
-            email: email
+            email: email,
+            username : username
         }
     }).then(function(userfound) {
         if (userfound !== null) {
@@ -46,13 +60,25 @@ export function register(req, res) {
                             error: err
                         })
                     } else {
+                      
+
+                        //insert a new user in the dataBase
                         const newUser = models.user.create({
                             username: username,
                             email: email,
                             first_name: firstName,
                             last_name: lastName,
                             password: bcryptedPassword,
-                            isAdmin: userCreatedIsAdmin
+                            isAdmin: userCreatedIsAdmin,
+                            numEtud : numEtud,
+                            address : address,
+                            pinCode : pinCode,
+                            town : town ,
+                            ine : ine ,
+                            phoneNumber : phoneNumber,
+                            idGlobalRole : idGlobalRole,
+                            birthdate : birthdate,
+                            formation : formation
                         }).then((newUser) => {
                             console.log(newUser.email);
                             return res.status(200).send({

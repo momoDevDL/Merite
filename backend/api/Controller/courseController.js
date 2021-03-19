@@ -78,12 +78,14 @@ export function getCourse(req, res) {
     })
 }
 
+
 export function addCourse(req, res) {
     let name = req.body.name;
     let moduleID = req.body.moduleID;
+    let username = req.body.username;
 
     //attributs incomplets
-    if (name == null || moduleID == null) {
+    if (name == null || moduleID == null || userId == null) {
         return res.status(400).send({
             error: "missing field"
         });
@@ -96,25 +98,70 @@ export function addCourse(req, res) {
             moduleID: moduleID
         }
     }).then((course) => {
+
         //erreur, le course existe déjà
         if (course) {
             return res.status(500).send({
                 error: "request error course already exists"
             });
-            //cas standard, création d'une course
+
+        //cas générique, création d'un course
+
         } else {
-            const newCourse = models.course.create({
-                name: name,
-                moduleID: moduleID
-            }).then((newCourse) => {
-                return res.status(200).send({
-                    id: newCourse.id,
-                    info: "new course created !"
-                });
-                //erreur, la clef étrangère du module ne correspond à aucun module
-            }).catch((err) => {
-                return res.status(409).send({ error: "there is no course in the database with this moduleID." })
-            });
+
+            //Trouver l'id de role global de createur  
+            const courseCreator = models.user.findOne({
+                attribute: ['username', 'idGlobalRole'],
+                where : {
+                    username : username
+                }
+            })
+            .then((userfound)=>{
+                // vérifier si le role a la permission de creer un cours 
+                const permission = models.role_has_permission.findOne({
+                    attribute : ['roleID','permissionID'],
+                    where :{
+                        roleID : userfound.idGlobalRole
+                    }
+                })
+                .then((roleWithPermissionFound)=>{
+                    //verifier si la permission de role permet la création
+                    models.permission.findOne({
+                        attribute : ['id','name'],
+                        where : {
+                            id : roleWithPermissionFound.permissionID
+                        }
+                    }).then((permissionFound)=>{
+
+                        // la psermission permet la creation d'un cours 
+                        if(permissionFound.name == "createCourse")
+                        {
+
+                            //create a new course 
+                            const newCourse = models.course.create({
+                                name: name,
+                                moduleID: moduleID
+                            }).then((newCourse) => {
+                                return res.status(200).send({
+                                    id: newCourse.id,
+                                    info: "new course created !"
+                                });
+                                //erreur, la clef étrangère du module ne correspond à aucun module
+                            }).catch((err) => {
+                                return res.status(409).send({ error: "there is no course in the database with this moduleID." })
+                            });
+                        }else
+                        {
+                            return res.status(400).send({error : "vous n'avez pas le droit de modifier ce cours"});
+                        }
+                    })
+
+                }).catch((err)=>{
+                    return res.status(500).send({error : err, message : "erreur interne d'accès au données"});
+                })
+            }).catch((err)=>{
+                return res.status(500).send({error : err, message : "erreur interne d'accès au données"});
+            })   
         }
         //erreur interne, problème surement lié au setup du serveur SQL
     }).catch((err) => {

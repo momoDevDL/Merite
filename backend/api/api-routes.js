@@ -62,8 +62,8 @@ router.route('/user/login')
 router.route('/user/refresh')
     .post(verifyToken,refreshToken)
 
-router.route('/user/me')
-    .get(userInfo)
+/*router.route('/user/me')
+    .get(userInfo)*/
 /*=================================================================*/
 
 
@@ -105,6 +105,8 @@ router.route('/course')
     .get(getCourse)
     .put(editCourse)
     .delete(deleteCourse);
+router.route('/course/:idEnseignant')
+    .post(addCourse);
 //========================================================================
 
 
