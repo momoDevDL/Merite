@@ -2,8 +2,8 @@
   <v-app class="admin-pages">
     <div class="header-dashboard-page">
       <p class="dashboard-page-title">Veuillez remplir les champs</p>
-      <!-- <nuxt-link class="dashboard-page-title-link" to="/admin/utilisateurs">Retour <span class="arrow">></span> -->
-      </nuxt-link>
+      <!-- <nuxt-link class="dashboard-page-title-link" to="/admin/utilisateurs">Retour <span class="arrow">></span> 
+      </nuxt-link>-->
     </div>
 
     <v-divider class="divider"></v-divider>

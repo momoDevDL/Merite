@@ -1,9 +1,5 @@
 <template>
 	<div class="content-container">
-		<!--<Timetable></Timetable>
-		<PersonnalNotes></PersonnalNotes>
-		<Classes></Classes>
-		<Instagram></Instagram> -->
 		<div class="notifications">
 			<a href="#"><img src="../img/vector_ek3.png" class="vector"></a>
 		</div>
