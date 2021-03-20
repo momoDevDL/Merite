@@ -97,7 +97,9 @@ export function login(req, res) {
 
         if (userfound === null) {
 
-            return res.status(400).send({ error: "User not found please verify your email" });
+            return res.status(400).send({
+                error: "User not found please verify your email"
+            });
 
         } else {
             bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
@@ -130,7 +132,10 @@ export function login(req, res) {
                         }
                     });
 
-                    return res.status(200).json({ token: generateAccessTokenforUser(userfound), user: userfound });
+                    return res.status(200).json({
+                        token: generateAccessTokenforUser(userfound),
+                        user: userfound
+                    });
 
                 } else {
                     return res.status(400).send({
@@ -186,11 +191,19 @@ export function refresh(req, res) {
 
 
         //res.cookie("jwt",newUserToken,{httpOnly:true});
-        res.status(201).send({ token: newUserToken, message: "token refreshed successfully" });
+        res.status(201).send({
+            token: newUserToken,
+            message: "token refreshed successfully"
+        });
     }
 };
 
 export function userInfo(req, res) {
     console.log(req.body);
-    res.json({ user: { nom: "momo", prenom: "anonyme" } });
+    res.json({
+        user: {
+            nom: "momo",
+            prenom: "anonyme"
+        }
+    });
 };
