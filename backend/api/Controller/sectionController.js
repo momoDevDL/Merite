@@ -9,70 +9,104 @@ var models = initModels(db.sequelize);
 
 export function createSection(req, res) {
 
-    var sectionName = req.body.name;
-    var courseId = req.body.courseId;
-    //var userRoleId = req.body.userRoleId;
+    let sectionName = req.body.name;
+    let courseId = req.body.courseId;
+    let username = req.payload.username;
+    let userRoleId = req.payload.userRoleId;
 
 
-    if (sectionName == null || courseId == null) {
+    if (sectionName == null || courseId == null || username == null) {
         return res.status(400).send({ error: "missing field ! can't carry on with your request" });
     }
 
-    // preparer l'intégration de la vérification des permissions
-
-    /*  models.role_has_permission.findAll({
-          attributes:['permissionID't") ],
-          where:{
-              roleID : userRoleId
-          }
-      }).then((listOfPermissions)=>{
-          
-              models.permission.findOne({
-                  where : {
-                      id : pid,
-                      name : "creation"
-                  }
-              }).then((permission)=>{
-                  let i = 0 ;
-                  while(listOfPermissions && listOfPermissions[i].name != "creation"){
-                         i++;
-                  }
-                  if(i == length(listOfPermissions))
-                  return res.send({error:" user does not have the right to create section"})
-                  
-              })
-      
-      })*/
-
-    models.course.findOne({
-        attributes: ['id'],
-        where: {
-            id: courseId
+    //véifier si le créateur de la section est membre de ce cours
+    models.course_has_user.findOne({
+        attributes : ['courseID'],
+        where : {
+            courseID : courseId,
+            userID : username
         }
-    }).then((courseFound) => {
-        if (courseFound) {
+    }).then((courseFound)=>{
+        
+        if( courseFound == null){
+            return res.status(403).send({ errorMessage : "vous n'êtes pas assignés à ce cours. Impossible de terminer l'action"});
+        }else{
+            models.role.findAll({
+                attributes : ['idRole','name','idCourse'],
+                where :{
+                    idCourse : courseFound.courseID
+                }
+            }).then((rolesFound)=>{
+                
+                rolesFound.forEach(role => {
+                    models.role_has_permission.findAll({
+                        attributes: ['idRole','idPermission'],
+                        where : {
+                            idRole : role
+                        }
+                    }).then(permissionsFound => {
+                        permissionsFound.forEach(permission => {
+                            models.permission.findOne({
+                                attributes : ['idPersmission'],
+                                where:{
+                                    idPermission : permission.idPermission,
+                                    name : "createSection"
+                                }
+                            }).then( () =>{
+                                models.course.findOne({
+                                    attributes: ['id'],
+                                    where: {
+                                        id: courseId
+                                    }
+                                }).then((courseFound) => {
 
-            models.section.create({
-                name: sectionName,
-                courseID: courseId
-            }).then((newSection) => {
-                console.log(newSection.name + "created");
-                return res.status(200).send({
-                    section: newSection
-                })
-            }).catch((err) => {
-                return res.status(500).send({
-                    error: err + "create request error"
+                                    if (courseFound) {
+                            
+                                        models.section.create({
+                                            name: sectionName,
+                                            courseID: courseId
+                                        }).then((newSection) => {
+                                            console.log(newSection.name + "created");
+                                            return res.status(200).send({
+                                                section: newSection
+                                            })
+                                        }).catch((err) => {
+                                            return res.status(500).send({
+                                                error: err + "create request error"
+                                            });
+                                        })
+                            
+                                    } else {
+                                        return res.status(400).send({ error: "the Id course doesn't match any existing course! please try again " });
+                                    }
+
+                                }).catch((err) => {
+                                    return res.status(500).send({ error: "DB request failure cannot find matching course ID" })
+                                });
+
+                            }).catch(error =>{
+                                return res.status(500).send({
+                                    error : error,
+                                    message : "erreur du communication interne de serveur"
+                                });
+                            })
+                        });
+                    }).catch( error =>{
+                        return res.status(500).send({
+                            error : error,
+                            message : "erreur du communication interne de serveur"
+                        });
+                    })
                 });
             })
-
-        } else {
-            return res.send({ error: "the Id course doesn't match any existing course! please try again " });
         }
-    }).catch((err) => {
-        return res.send({ error: "DB request failure cannot find matching course ID" })
     })
-
+    .catch((error)=>{
+        return res.status(500).send({
+            error : error,
+            message : "erreur du communication interne de serveur"
+        });
+    })
 };
 
 
