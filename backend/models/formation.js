@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'formation',
+        modelName: 'Formations',
     });
     return formation;
 };

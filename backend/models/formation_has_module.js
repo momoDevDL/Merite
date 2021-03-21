@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'Formation_has_module',
+        modelName: 'Formation_has_modules',
     });
     return Formation_has_module;
 };

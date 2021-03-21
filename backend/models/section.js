@@ -26,7 +26,7 @@ class section extends Sequelize.Model {
     }
   }, {
     sequelize,
-    tableName: 'section',
+    tableName: 'Section',
     timestamps: false,
     indexes: [
       {

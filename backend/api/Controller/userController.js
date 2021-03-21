@@ -22,18 +22,15 @@ export function register(req, res) {
     let ine = req.body.ine;
     let pinCode = req.body.pinCode;
     let address = req.body.address;
-    let creatorIsAdmin = req.body.userIsAdmin;
-    let userCreatedIsAdmin = req.body.newUserIsAdmin;
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
 
     console.log(req.body)
 
     if (email == null || password == null || idGlobalRole == null ||
-        username == null || creatorIsAdmin == null || userCreatedIsAdmin == null ||
-        password == null || firstName == null || lastName == null ||
-        birthdate == null || phoneNumber == null || address == null ||
-        town == null || pinCode == null) {
+        username == null  ||password == null || firstName == null ||
+        lastName == null ||birthdate == null || phoneNumber == null ||
+        address == null || town == null || pinCode == null) {
         return res.status(400).send({
             error: "missing field"
         });
@@ -118,7 +115,7 @@ export function register(req, res) {
         }
     }).catch(function (err) {
         return res.status(500).send({
-            error: err + "findOne request Error"
+            error: err + " / findOne User request Error"
         });
     })
 };

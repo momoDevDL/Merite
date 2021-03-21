@@ -85,7 +85,7 @@ export function addCourse(req, res) {
     let username = req.body.username;
 
     //attributs incomplets
-    if (name == null || moduleID == null || userId == null) {
+    if (name == null || moduleID == null || username == null) {
         return res.status(400).send({
             error: "missing field"
         });

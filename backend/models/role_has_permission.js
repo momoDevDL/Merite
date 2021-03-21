@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'role_has_permission',
+        modelName: 'Role_has_permissions',
     });
     role_has_permission.removeAttribute('id');
     return role_has_permission;

@@ -24,7 +24,7 @@ class course_has_user extends Sequelize.Model {
     }
   }, {
     sequelize,
-    tableName: 'course_has_user',
+    tableName: 'Course_has_user',
     timestamps: false,
     indexes: [
       {

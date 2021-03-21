@@ -34,7 +34,7 @@ class document extends Sequelize.Model {
     }
   }, {
     sequelize,
-    tableName: 'document',
+    tableName: 'Document',
     timestamps: false,
     indexes: [
       {

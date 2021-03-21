@@ -9,7 +9,7 @@ var _role_has_permission = require("./role_has_permission");
 var _section = require("./section");
 var _user = require("./user");
 var _user_has_role = require("./user_has_role");
-let _global_role = require("./global_role");
+var _global_role = require("./global_role");
 
 function initModels(sequelize) {
     var Module = _Module(sequelize, DataTypes);

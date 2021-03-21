@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'user_has_formation',
+        modelName: 'User_Has_Formations',
     });
     return user_has_formation;
 };

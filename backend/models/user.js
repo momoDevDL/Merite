@@ -58,7 +58,7 @@ class user extends Sequelize.Model {
 
         }, {
             sequelize,
-            tableName: 'user',
+            tableName: 'User',
             timestamps: false,
             indexes: [{
                 name: "PRIMARY",
