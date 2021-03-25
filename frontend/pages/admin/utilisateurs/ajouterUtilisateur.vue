@@ -111,6 +111,13 @@
             placeholder="Rue de la république"
           />
         </div>
+        <v-text-field
+          @keydown="verifyForm"
+          v-model="user.complement"
+          outlined
+          label="Complément d'adresse"
+          placeholder="Lieu-dit, appartement, batiment...."
+        />
         <div class="genreName">
           <v-text-field
             @keydown="verifyForm"
@@ -155,7 +162,7 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel fixe',
-              example: 'Exemple tel fixe :',
+              example: 'Exemple tel :',
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -170,7 +177,7 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel mobile',
-              example: 'Exemple tel mobile :',
+              example: 'Exemple tel :',
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -482,6 +489,7 @@ export default {
         rue : "",
         numRue : "",
         codePostal: "",
+        complement : ""
       },
       snackbar: false,
       textSnackbar: "",
@@ -617,7 +625,7 @@ export default {
               {
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: this.$auth.strategy.token.get(),
+                   Authorization: this.$auth.strategy.token.get(),
                 },
               }
             )
@@ -635,6 +643,10 @@ export default {
                 this.$refs.emailField.reset();
 
                 this.phone = "";
+                this.mobile = "";
+
+                this.phoneFixeResults = { isValid: false },
+                this.phoneMobileResults = { isValid: false },
 
                 this.user = {
                   nom: "",
