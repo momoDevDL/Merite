@@ -46,7 +46,8 @@ export function createDocument(req, res) {
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     document = req.files.file;
     let id = uuidv4();
-    uploadPath = __basedir + `/assets/uploads/${id}`;
+    let ext = document.name.split('.')[1];
+    uploadPath = __basedir + `/assets/uploads/${id}.${ext}`;
 
     // Use the mv() method to place the file somewhere on your server
     document.mv(uploadPath, function(err) {
@@ -58,11 +59,11 @@ export function createDocument(req, res) {
     models.document.create({
         name: document.name,
         message: message,
-        filepath: `/uploads/${id}`,
+        filepath: `/uploads/${id}.${ext}`,
         sectionID: sectionID
     }).then((newDocument) => {
 
-        console.log(newDocument.name + "created");
+        console.log(newDocument.name + " created");
         return res.status(200).send({
             newDocument: newDocument
         })
@@ -86,7 +87,9 @@ export function updateDocument(req, res) {
     }).then(
         (documentToUpdate) => {
             document = req.files.file;
-            uploadPath = __dirname + '/assets/uploads/' + uuidv4();
+            let id = uuidv4();
+            let ext = document.name.split('.')[1];
+            uploadPath = __basedir + `/assets/uploads/${id}.${ext}`;
             document.mv(uploadPath, function(err) {
                 if (err)
                     return res.status(500).send(err);
@@ -94,7 +97,7 @@ export function updateDocument(req, res) {
             documentToUpdate.name = req.body.name;
             documentToUpdate.sectionID = req.body.sectionID;
             documentToUpdate.message = req.body.message;
-            documentToUpdate.filepath = `/uploads/${documentToUpdate.id}`;
+            documentToUpdate.filepath = `/uploads/${id}.${ext}`;
 
             documentToUpdate.save();
             return res.status(200).send({ updatedDocument: documentToUpdate });
@@ -134,6 +137,10 @@ export function downloadDocument(req, res) {
     let documentId = req.params.documentId;
     let fileRoute = "";
 
+    if (documentId == null){
+        return res.status(400).send({errorMessage : "Paramètres attendus : id du document à télécarger"});
+    }
+
     models.document.findOne({
             where: {
                 id: documentId
@@ -143,11 +150,11 @@ export function downloadDocument(req, res) {
 
             fileRoute = document.filepath;
             console.log(fileRoute);
-            res.download(path.join(__basedir + "/assets/uploads", fileRoute.split("/")[2]));
+            res.status(200).download(path.join(__basedir + "/assets/uploads", fileRoute.split("/")[2]));
 
         })
         .catch((error) => {
-            return res.send({ err: error, message: "failed to retrieve the document" })
+            return res.status(500).send({ err: error, message: "failed to retrieve the document" })
         })
 
 }

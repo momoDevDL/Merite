@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+import { match } from "assert";
 import Module from "../../models/Module";
 const path = require('path');
 
@@ -6,75 +7,144 @@ var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
 
-
 export function createSection(req, res) {
 
-    var sectionName = req.body.name;
-    var courseId = req.body.courseId;
-    //var userRoleId = req.body.userRoleId;
+    let sectionName = req.body.name;
+    let courseId = req.body.courseId;
+    let username = req.payload.username;
+    //let userRoleId = req.payload.userRoleId;
 
 
-    if (sectionName == null || courseId == null) {
-        return res.status(400).send({ error: "missing field ! can't carry on with your request" });
+    if (sectionName == null || courseId == null || username == null) {
+        return res.status(400).send({
+            error: "missing field ! can't carry on with your request"
+        });
     }
 
-    // preparer l'intégration de la vérification des permissions
+    //véifier si le créateur de la section est membre de ce cours
+    models.Course_has_user.findOne({
+            attributes: ['courseID'],
+            where: {
+                courseID: courseId,
+                userID: username
+            }
+        }).then((courseFound) => {
 
-    /*  models.role_has_permission.findAll({
-          attributes:['permissionID't") ],
-          where:{
-              roleID : userRoleId
-          }
-      }).then((listOfPermissions)=>{
-          
-              models.permission.findOne({
-                  where : {
-                      id : pid,
-                      name : "creation"
-                  }
-              }).then((permission)=>{
-                  let i = 0 ;
-                  while(listOfPermissions && listOfPermissions[i].name != "creation"){
-                         i++;
-                  }
-                  if(i == length(listOfPermissions))
-                  return res.send({error:" user does not have the right to create section"})
-                  
-              })
-      
-      })*/
-
-    models.course.findOne({
-        attributes: ['id'],
-        where: {
-            id: courseId
-        }
-    }).then((courseFound) => {
-        if (courseFound) {
-
-            models.section.create({
-                name: sectionName,
-                courseID: courseId
-            }).then((newSection) => {
-                console.log(newSection.name + "created");
-                return res.status(200).send({
-                    section: newSection
-                })
-            }).catch((err) => {
-                return res.status(500).send({
-                    error: err + "create request error"
+            if (courseFound == null) {
+                return res.status(403).send({
+                    errorMessage: "vous n'êtes pas assignés à ce cours. Impossible de terminer l'action"
                 });
-            })
+            } else {
+                //recuperer tout les roles de ce cours 
+                models.Roles.findAll({
+                    attributes: ['id', 'name', 'courseID'],
+                    where: {
+                        courseID: courseFound.courseID
+                    }
+                }).then((rolesFound) => {
+                    //console.log(rolesFound);
 
-        } else {
-            return res.send({ error: "the Id course doesn't match any existing course! please try again " });
-        }
-    }).catch((err) => {
-        return res.send({ error: "DB request failure cannot find matching course ID" })
-    })
+                    //recuperer pour chaque roles ses permissions
+                    rolesFound.forEach(role => {
+                        //verifier si ce role appartient à l'utilisateur
+                        models.User_has_roles.findOne({
+                            attributes: ['roleID', 'userID'],
+                            where: {
+                                roleID: role.id,
+                                userID: username
+                            }
+                        }).then(matchFound => {
 
+                            if (matchFound != null) {
+                                models.Role_has_permissions.findAll({
+                                    attributes: ['roleID', 'permissionID'],
+                                    where: {
+                                        roleID: role.id
+                                    }
+                                }).then(permissionsFound => {
+                                    //console.log(permissionsFound);
+                                    //vérifier l'existence d'une per
+                                    permissionsFound.forEach(permission => {
+                                        models.Permissions.findOne({
+                                            attributes: ['id'],
+                                            where: {
+                                                id: permission.permissionID,
+                                                name: "createSection"
+                                            }
+                                        }).then((SectionCreationPossible) => {
+                                            if(SectionCreationPossible != null){
+                                            models.Courses.findOne({
+                                                attributes: ['id'],
+                                                where: {
+                                                    id: courseId
+                                                }
+                                            }).then((courseFound) => {
+
+                                                if (courseFound) {
+
+                                                    models.Section.create({
+                                                        name: sectionName,
+                                                        courseID: courseId
+                                                    }).then((newSection) => {
+                                                        console.log(newSection.name + "created");
+                                                        return res.status(200).send({
+                                                            section: newSection
+                                                        })
+                                                    }).catch((err) => {
+                                                        return res.status(500).send({
+                                                            error: err + "create request error"
+                                                        });
+                                                    })
+
+                                                } else {
+                                                    return res.status(400).send({
+                                                        error: "the Id course doesn't match any existing course! please try again "
+                                                    });
+                                                }
+
+                                            }).catch((err) => {
+                                                return res.status(500).send({
+                                                    error: "DB request failure cannot find matching course ID"
+                                                })
+                                            });
+                                        }else{
+                                            return res.status(500).send({
+                                                error: "you don't have the right to create Section in this course"
+                                            })
+                                        }
+                                        }).catch(error => {
+                                            return res.status(500).send({
+                                                error: error,
+                                                message: "erreur du communication interne de serveur"
+                                            });
+                                        })
+                                    });
+                                }).catch(error => {
+                                    return res.status(500).send({
+                                        error: error,
+                                        message: "erreur du communication interne de serveur"
+                                    });
+                                })
+                            }
+                        }).catch((err)=>{
+                            return res.status(500).send({
+                                error: err,
+                                message: "erreur du communication interne de serveur"
+                            });
+                        });
+
+                    });
+                   // return res.status(400).send({errorMessage: "Vous n'avez pas un role qui vous permet de créer une section"})
+                })
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({
+                error: error,
+                message: "erreur du communication interne de serveur"
+            });
+        })
 };
-
 
 
 export function updateSection(req, res) {

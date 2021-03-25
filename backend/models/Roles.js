@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Module', {
+  return sequelize.define('Roles', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -11,17 +11,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    parentIdModule: {
+    courseID: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'Module',
+        model: 'Courses',
         key: 'id'
       }
     }
   }, {
     sequelize,
-    tableName: 'Module',
+    tableName: 'Roles',
     timestamps: false,
     indexes: [
       {
@@ -33,10 +33,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "parentIdModule",
+        name: "courseID",
         using: "BTREE",
         fields: [
-          { name: "parentIdModule" },
+          { name: "courseID" },
         ]
       },
     ]

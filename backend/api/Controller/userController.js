@@ -1,4 +1,3 @@
-import user from '../../models/user';
 import {
     generateAccessTokenforUser,
     generateRefreshTokenforUser
@@ -9,90 +8,133 @@ var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
+const permittedUsersToRegister = ["super-admin","admin"];
 
 export function register(req, res) {
-    var email = req.body.email;
-    var username = req.body.username;
-    var password = req.body.password;
-    var creatorIsAdmin = req.body.userIsAdmin;
-    var userCreatedIsAdmin = req.body.newUserIsAdmin;
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
+    let email = req.body.email;
+    let username = req.body.username;
+    let password = req.body.password;
+    let idGlobalRoleCreator = req.payload.idGlobalRole;
+    let idGlobalRoleCreated = req.body.idGlobalRole;
+    let numEtud = req.body.numEtud;
+    let birthdate = req.body.birthdate;
+    let formation = req.body.formation;
+    let town = req.body.town;
+    let phoneNumber = req.body.phoneNumber;
+    let ine = req.body.ine;
+    let pinCode = req.body.pinCode;
+    let address = req.body.address;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
 
     console.log(req.body)
 
-    if (email == null || username == null || creatorIsAdmin == null || userCreatedIsAdmin  == null || password == null || firstName == null || lastName == null) {
-        console.log("BODDDYYYYYYYY")
-        console.log(req.body)
+    if (email == null || password == null || idGlobalRoleCreator == null ||
+        username == null  ||password == null || birthdate == null || phoneNumber == null ||
+        address == null || town == null || pinCode == null) {
+        return res.status(400).send({
+            error: "missing field"
+        });
+    }
 
-        if (email == null || username == null || creatorIsAdmin == null || password == null || userCreatedIsAdmin == null) {
-            return res.status(400).send({
-                error: "missing field"
-            });
+    models.User.findOne({
+        attribute: ['email', 'username'],
+        where: {
+            email: email,
+            username: username
         }
-
-        models.user.findOne({
-            attribute: ['email'],
-            where: {
-                email: email
-            }
-        }).then(function(userfound) {
-            if (userfound !== null) {
-                return res.status(500).send({
-                    error: "request error user already exist"
-                });
-            } else {
-
-                if (creatorIsAdmin) {
-                    bcrypt.hash(password, 5).then(function(bcryptedPassword) {
-                        const newUser = models.user.create({
-                            username: username,
-                            email: email,
-                            first_name: firstName,
-                            last_name: lastName,
-                            password: bcryptedPassword,
-                            isAdmin: userCreatedIsAdmin
-                        }).then((newUser) => {
-                            console.log(newUser.email);
-                            return res.status(200).send({
-                                user_email: newUser.email
-                            })
-                        }).catch((err) => {
-                            res.status(500).send({
-                                error: err + "create request error"
-                            })
-                        })
-                    }).catch((err) => {
-                        res.status(500).send({
-                            error: err
-                        });
-                    })
-
-                } else {
-                    return res.status(400).send({
-                        error: "request error you don't have the right to add new user"
-                    });
-                }
-            }
-        }).catch(function(err) {
+    }).then(function (userfound) {
+        if (userfound !== null) {
             return res.status(500).send({
-                error: err + "findOne request Error"
+                error: "request error user already exist"
             });
-        })
-    };
+        } else {
+            //console.log("idGlobalRole =>" + idGlobalRoleCreator);
+            //Vérifier si le rôle est admin / super admin / secretaire 
+            models.Global_Roles.findOne({
+                    attribute: ['id', 'name'],
+                    where: {
+                        id: idGlobalRoleCreator
+                    }
+                })
+                .then((globalRole) => {
+                    console.log(globalRole);
+                    if(globalRole == null){
+                        return res.status(400).send({
+                            error: "global role not found"
+                        });
+                    }
+                    
+                    if (!permittedUsersToRegister.includes(globalRole.name)){
+                        return res.status(400).send({
+                            error: "request error you don't have the right to add new user"
+                        });
+                    } else {
+                        bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+                            if (err) {
+                                return res.status(500).send({
+                                    error: err
+                                })
+                            } else {
+                                //insert a new user in the dataBase
+                                const newUser = models.User.create({
+                                    username: username,
+                                    email: email,
+                                    password: bcryptedPassword,
+                                    idGlobalRole : idGlobalRoleCreated,
+                                    numEtud: numEtud,
+                                    address: address,
+                                    pinCode: pinCode,
+                                    town: town,
+                                    ine: ine,
+                                    phoneNumber: phoneNumber,
+                                    birthdate: birthdate,
+                                    formation: formation
+                                }).then((newUser) => {
+                                    console.log(newUser.email);
+                                    return res.status(200).send({
+                                        user_email: newUser.email,
+                                        user_id: newUser.username,
+                                        user_globalRole: newUser.idGlobalRole
+                                    })
+                                }).catch((err) => {
+                                    return res.status(500).send({
+                                        error: err + " / create request error"
+                                    });
+                                })
 
-    export function login(req, res) {
-        console.log(req.body);
+                            }
 
-        var email = req.body.email;
-        var password = req.body.password;
+                        })
+                    }
+                })
+                .catch((err)=>{
+                    return res.status(500).send({
+                        error: err + "create request error"
+                    });
+                });
 
-        if (email == null || password == null) {
-            return res.status(400).send({
-                error: "missing field "
-            });
+
+
         }
+    }).catch(function (err) {
+        return res.status(500).send({
+            error: err + " / findOne User request Error"
+        });
+    })
+};
 
+export function login(req, res) {
+    console.log(req.body);
+
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if (email == null || password == null) {
+        return res.status(400).send({
+            error: "missing field "
+        });
+    }
         models.user.findOne({
             attribute: ['email'],
             where: {
@@ -136,12 +178,7 @@ export function register(req, res) {
                                 last_name: userfound.last_name
                             }
                         });
-
-                        return res.status(200).json({
-                            token: generateAccessTokenforUser(userfound),
-                            user: userfound
-                        });
-
+                        
                     } else {
                         return res.status(400).send({
                             error: " Invalid password ! " + cryptErr
@@ -202,4 +239,3 @@ export function register(req, res) {
             });
         }
     };
-}

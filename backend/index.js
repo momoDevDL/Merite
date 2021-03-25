@@ -16,8 +16,11 @@ const port = process.env.PORT;
 app.use('/uploads', express.static(path.join(__dirname, '/assets/uploads')));
 app.use(cors())
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(fileUpload({
+    safeFileNames:true,
+    preserveExtension:true
+}));
 
 
 app.use('/api', apiRoutes);
