@@ -1,19 +1,55 @@
 let statements = [
+    //Global_Role
+    `CREATE TABLE Global_Roles (
+        id INT NOT NULL AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        PRIMARY KEY(id)
+    )`,
     //USER
     `CREATE TABLE User (
         username VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        first_name VARCHAR(255) NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        isAdmin TINYINT NOT NULL DEFAULT 0,
-        PRIMARY KEY(email)
+        idGlobalRole INT NOT NULL,
+        numEtud VARCHAR(255),
+        email VARCHAR(255) NOT NULL,
+        birthdate DATE NOT NULL,
+        formation VARCHAR(255),
+        INE VARCHAR(255),
+        phoneNumber VARCHAR(255) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        town VARCHAR(255) NOT NULL,
+        pinCode VARCHAR(255) NOT NULL,
+        PRIMARY KEY(username),
+        FOREIGN KEY(idGlobalRole) REFERENCES Global_Roles(id)
         )`,
+    //FORMATION
+    `CREATE TABLE Formations (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        idResponsable VARCHAR(255),
+        FOREIGN KEY(idResponsable) REFERENCES user(username)
+    )`,
+    //USER_HAS_FORMATION
+    `CREATE TABLE User_Has_Formations (
+        idUser VARCHAR(255) NOT NULL,
+        idFormation INT NOT NULL,
+        FOREIGN KEY(idUser) REFERENCES User(username),
+        FOREIGN KEY(idFormation) REFERENCES Formations(id)
+    )`,
     //MODULE
     `CREATE TABLE Module (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
-        PRIMARY KEY(id)
+        parentIdModule INT,
+        PRIMARY KEY(id),
+        FOREIGN KEY (parentIdModule) REFERENCES Module(id)
+    )`,
+    //FORMATION_HAS_MODULES
+    `CREATE TABLE Formation_has_modules (
+        idFormation INT NOT NULL,
+        idModule INT NOT NULL,
+        FOREIGN KEY (idFormation) REFERENCES Formations(id),
+        FOREIGN KEY (idModule) REFERENCES Module(id)
     )`,
     //COURSE
     `CREATE TABLE Courses (
@@ -27,15 +63,8 @@ let statements = [
     `CREATE TABLE Course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
-        FOREIGN KEY (userID) REFERENCES user(email),
+        FOREIGN KEY (userID) REFERENCES user(username),
         FOREIGN KEY (courseID) REFERENCES courses(id)
-    )`,
-    //MODULE_RESPONSABLE
-    `CREATE TABLE Module_responsable (
-        userID VARCHAR(255) NOT NULL,
-        moduleID INT NOT NULL,
-        FOREIGN KEY (userID) REFERENCES user(email),
-        FOREIGN KEY (moduleID) REFERENCES Module(id)
     )`,
     //Section
     `CREATE TABLE Section (
@@ -74,7 +103,7 @@ let statements = [
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (userID) REFERENCES user(email)
+        FOREIGN KEY (userID) REFERENCES user(username)
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE Role_has_permissions (
