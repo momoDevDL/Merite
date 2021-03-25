@@ -1,5 +1,47 @@
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 const models = require('../../models');
+
+
+export function createModule(req, res) {
+    var moduleName = req.body.name;
+
+    if (moduleName == null) {
+        return res.status(400).send({
+            error: "missing module Name"
+        });
+    } else {
+
+        models.Module.findOne({
+                attributes: ['name'],
+                where: {
+                    name: moduleName
+                }
+            })
+            .then((moduleFound) => {
+                if (moduleFound) {
+                    return res.send({ error: "failed to create new module; a module with the same name already exists" })
+                } else {
+
+                    const newModule = models.Module.create({
+                            name: moduleName
+                        })
+                        .then((recentModule) => {
+                            console.log(recentModule);
+                            return res.send(recentModule);
+                        })
+                        .catch((err) => {
+                            return res.send({ error: err + "/ failed module creation request" });
+                        });
+                }
+
+            })
+            .catch((err) => {
+                return res.send({ error: "failde db request to find matching module" });
+            })
+    }
+}
 
 export function getCourse(req, res) {
     let id = req.query.id;
@@ -11,7 +53,7 @@ export function getCourse(req, res) {
         });
     }
 
-    models.Course.findOne({
+    models.course.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -47,7 +89,7 @@ export function addCourse(req, res) {
         });
     }
 
-    models.Course.findOne({
+    models.course.findOne({
         attribute: ['name', 'moduleID'],
         where: {
             name: name,
@@ -61,7 +103,7 @@ export function addCourse(req, res) {
             });
             //cas standard, création d'une course
         } else {
-            const newCourse = models.Course.create({
+            const newCourse = models.course.create({
                 name: name,
                 moduleID: moduleID
             }).then((newCourse) => {
@@ -92,7 +134,7 @@ export function editCourse(req, res) {
         });
     }
 
-    models.Course.findOne({
+    models.course.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -129,29 +171,31 @@ export function deleteCourse(req, res) {
         });
     }
 
-    models.Course.findOne({
-        attribute: ['id'],
-        where: {
-            id: id
-        }
-    }).then((course) => {
-        //la course existe, on la supprime
-        if (course) {
-            course.destroy();
-            return res.status(200).send({
-                info: "course sucessufully deleted !"
-            });
-
-            //si la course n'existe pas
-        } else {
-            return res.status(500).send({
-                error: "cannot delete : the course doesn't exist"
-            });
-        }
-        //erreur interne, problème surement lié au setup du serveur SQL
-    }).catch((err) => {
-        return res.status(400).send({
-            error: err
+    models.course.findOne({
+            attribute: ['id'],
+            where: {
+                id: id
+            }
         })
-    })
+        .then((course) => {
+            //la course existe, on la supprime
+            if (course) {
+                course.destroy();
+                return res.status(200).send({
+                    info: "course sucessufully deleted !"
+                });
+
+                //si la course n'existe pas
+            } else {
+                return res.status(500).send({
+                    error: "cannot delete : the course doesn't exist"
+                });
+            }
+            //erreur interne, problème surement lié au setup du serveur SQL
+        })
+        .catch((err) => {
+            return res.status(400).send({
+                error: err
+            })
+        });
 }

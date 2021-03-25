@@ -2,7 +2,7 @@
   <div class="vertical_menu_container">
     <div class="photo_name_container">
       <img src="../img/ellipse_1.png" class="photo"/>
-      <div class="name"><!--{{$auth.$storage.getUniversal('user').username}}--></div>
+      <div class="name"><!--{{$auth.$storage.getUniversal('user').username}}-->Cédric</div>
     </div>
       <div class="menu_top_container">
         <ul>
@@ -122,6 +122,7 @@ export default {
     font-weight: 600;
     transition: .4s;
   }
+  
   .personnal_space {
     width: 200px;
     font-family: "Poppins", sans-serif;

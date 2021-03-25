@@ -11,7 +11,7 @@ export function getPermission(req, res) {
         });
     }
 
-    models.Permission.findOne({
+    models.permission.findOne({
         attribute: ['name'],
         where: {
             name: name
@@ -46,7 +46,7 @@ export function addPermission(req, res) {
         });
     }
 
-    models.Permission.findOne({
+    models.permission.findOne({
         attribute: ['name'],
         where: {
             name: name
@@ -59,7 +59,7 @@ export function addPermission(req, res) {
             });
             //cas standard, création d'une permission
         } else {
-            const newPermission = models.Permission.create({
+            const newPermission = models.permission.create({
                 name: name
             }).then((newPermission) => {
                 return res.status(200).send({
@@ -86,7 +86,7 @@ export function deletePermission(req, res) {
         });
     }
 
-    models.Permission.findOne({
+    models.permission.findOne({
         attribute: ['name'],
         where: {
             name: name
@@ -124,7 +124,7 @@ export function editPermission(req, res) {
         });
     }
 
-    models.Permission.findOne({
+    models.permission.findOne({
         attribute: ['name'],
         where: {
             name: oldName

@@ -1,16 +1,15 @@
 <template>
 	<div class="content-container">
-		<!--<Timetable></Timetable>
-		<PersonnalNotes></PersonnalNotes>
-		<Classes></Classes>
-		<Instagram></Instagram> -->
-		<div class="notifications">
+		<div class="dark_theme">
 			<a href="#"><img src="../img/vector_ek3.png" class="vector"></a>
 		</div>
 		<div class="personnal_info_instagram">
 			<PersonnalInfo></PersonnalInfo>
 			<Instagram></Instagram> 
 		</div>
+		<!--<button>Cours
+			<nuxt-link to="/classes"></nuxt-link>
+		</button> -->
 	</div>
 </template>
 
@@ -27,7 +26,7 @@
 
 <style lang ="scss">
 
-	.notifications {
+	.dark_theme {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;

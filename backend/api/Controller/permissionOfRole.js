@@ -11,7 +11,7 @@ export function addPermissionToRole(req, res) {
         });
     }
 
-    models.Role_has_Permission.findOne({
+    models.role_has_permission.findOne({
         attribute: ['roleID', 'permissionID'],
         where: {
             roleID: roleID,
@@ -25,7 +25,7 @@ export function addPermissionToRole(req, res) {
             });
             //cas standard, tout se passe comme prévu
         } else {
-            const newPermissionHasRole = models.Role_has_Permission.create({
+            const newPermissionHasRole = models.role_has_permission.create({
                 roleID: roleID,
                 permissionID: permissionID
             }).then((newRoleHasPermission) => {
@@ -51,7 +51,7 @@ export function deletePermissionToRole(req, res) {
     let roleID = req.body.roleID;
     let permissionID = req.body.permissionID;
 
-    models.Role_has_Permission.findOne({
+    models.role_has_permission.findOne({
         attribute: ['roleID', 'permissionID'],
         where: {
             roleID: roleID,
