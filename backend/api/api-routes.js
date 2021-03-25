@@ -54,7 +54,7 @@ router.route('/testUser')
 
 //USERS ==================================================================
 router.route('/user/register')
-    .post(register);
+    .post(verifyToken,register);
 
 router.route('/user/login')
     .post(login);

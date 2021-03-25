@@ -53,7 +53,7 @@ export function getCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -78,95 +78,48 @@ export function getCourse(req, res) {
     })
 }
 
-
 export function addCourse(req, res) {
     let name = req.body.name;
     let moduleID = req.body.moduleID;
-    let username = req.body.username;
 
     //attributs incomplets
-    if (name == null || moduleID == null || username == null) {
+    if (name == null || moduleID == null) {
         return res.status(400).send({
             error: "missing field"
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['name', 'moduleID'],
         where: {
             name: name,
             moduleID: moduleID
         }
     }).then((course) => {
-
         //erreur, le course existe déjà
         if (course) {
             return res.status(500).send({
                 error: "request error course already exists"
             });
-
-        //cas générique, création d'un course
-
+            //cas standard, création d'une course
         } else {
-
-            //Trouver l'id de role global de createur  
-            const courseCreator = models.user.findOne({
-                attribute: ['username', 'idGlobalRole'],
-                where : {
-                    username : username
-                }
-            })
-            .then((userfound)=>{
-                // vérifier si le role a la permission de creer un cours 
-                const permission = models.role_has_permission.findOne({
-                    attribute : ['roleID','permissionID'],
-                    where :{
-                        roleID : userfound.idGlobalRole
-                    }
-                })
-                .then((roleWithPermissionFound)=>{
-                    //verifier si la permission de role permet la création
-                    models.permission.findOne({
-                        attribute : ['id','name'],
-                        where : {
-                            id : roleWithPermissionFound.permissionID
-                        }
-                    }).then((permissionFound)=>{
-
-                        // la psermission permet la creation d'un cours 
-                        if(permissionFound.name == "createCourse")
-                        {
-
-                            //create a new course 
-                            const newCourse = models.course.create({
-                                name: name,
-                                moduleID: moduleID
-                            }).then((newCourse) => {
-                                return res.status(200).send({
-                                    id: newCourse.id,
-                                    info: "new course created !"
-                                });
-                                //erreur, la clef étrangère du module ne correspond à aucun module
-                            }).catch((err) => {
-                                return res.status(409).send({ error: "there is no course in the database with this moduleID." })
-                            });
-                        }else
-                        {
-                            return res.status(400).send({error : "vous n'avez pas le droit de modifier ce cours"});
-                        }
-                    })
-
-                }).catch((err)=>{
-                    return res.status(500).send({error : err, message : "erreur interne d'accès au données"});
-                })
-            }).catch((err)=>{
-                return res.status(500).send({error : err, message : "erreur interne d'accès au données"});
-            })   
+            const newCourse = models.Courses.create({
+                name: name,
+                moduleID: moduleID
+            }).then((newCourse) => {
+                return res.status(200).send({
+                    id: newCourse.id,
+                    info: "new course created !"
+                });
+                //erreur, la clef étrangère du module ne correspond à aucun module
+            }).catch((err) => {
+                return res.status(409).send({ error: "there is no course in the database with this moduleID." })
+            });
         }
         //erreur interne, problème surement lié au setup du serveur SQL
     }).catch((err) => {
         return res.status(400).send({
-            error: err
+            error: err + "/ cannot create course please verify your module Id"
         })
     })
 }
@@ -181,7 +134,7 @@ export function editCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -218,7 +171,7 @@ export function deleteCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
             attribute: ['id'],
             where: {
                 id: id

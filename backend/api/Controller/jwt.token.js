@@ -5,7 +5,7 @@ module.exports = {
        return jwt.sign({
             username : user.username,
             email: user.email,
-            isAdmin : user.isAdmin
+            idGlobalRole : user.idGlobalRole
         },process.env.JWT_SECRET_SIGN_KEY,
         {
             algorithm:"HS256",

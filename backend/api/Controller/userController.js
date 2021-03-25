@@ -8,12 +8,14 @@ var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
+const permittedUsersToRegister = ["super-admin","admin"];
 
 export function register(req, res) {
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
-    let idGlobalRole = req.body.idGlobalRole;
+    let idGlobalRoleCreator = req.payload.idGlobalRole;
+    let idGlobalRoleCreated = req.body.idGlobalRole;
     let numEtud = req.body.numEtud;
     let birthdate = req.body.birthdate;
     let formation = req.body.formation;
@@ -27,16 +29,15 @@ export function register(req, res) {
 
     console.log(req.body)
 
-    if (email == null || password == null || idGlobalRole == null ||
-        username == null  ||password == null || firstName == null ||
-        lastName == null ||birthdate == null || phoneNumber == null ||
+    if (email == null || password == null || idGlobalRoleCreator == null ||
+        username == null  ||password == null || birthdate == null || phoneNumber == null ||
         address == null || town == null || pinCode == null) {
         return res.status(400).send({
             error: "missing field"
         });
     }
 
-    models.user.findOne({
+    models.User.findOne({
         attribute: ['email', 'username'],
         where: {
             email: email,
@@ -48,18 +49,23 @@ export function register(req, res) {
                 error: "request error user already exist"
             });
         } else {
-
+            //console.log("idGlobalRole =>" + idGlobalRoleCreator);
             //Vérifier si le rôle est admin / super admin / secretaire 
-            models.global_role.findOne({
+            models.Global_Roles.findOne({
                     attribute: ['id', 'name'],
                     where: {
-                        id: idGlobalRole
+                        id: idGlobalRoleCreator
                     }
                 })
                 .then((globalRole) => {
-                    if (globalRole.name != "Admin" ||
-                        globalRole.name != "Super-admin" ||
-                        globalRole.name != "Secrétaire") {
+                    console.log(globalRole);
+                    if(globalRole == null){
+                        return res.status(400).send({
+                            error: "global role not found"
+                        });
+                    }
+                    
+                    if (!permittedUsersToRegister.includes(globalRole.name)){
                         return res.status(400).send({
                             error: "request error you don't have the right to add new user"
                         });
@@ -71,31 +77,29 @@ export function register(req, res) {
                                 })
                             } else {
                                 //insert a new user in the dataBase
-                                const newUser = models.user.create({
+                                const newUser = models.User.create({
                                     username: username,
                                     email: email,
-                                    first_name: firstName,
-                                    last_name: lastName,
                                     password: bcryptedPassword,
-                                    isAdmin: userCreatedIsAdmin,
+                                    idGlobalRole : idGlobalRoleCreated,
                                     numEtud: numEtud,
                                     address: address,
                                     pinCode: pinCode,
                                     town: town,
                                     ine: ine,
                                     phoneNumber: phoneNumber,
-                                    idGlobalRole: idGlobalRole,
                                     birthdate: birthdate,
                                     formation: formation
                                 }).then((newUser) => {
                                     console.log(newUser.email);
                                     return res.status(200).send({
                                         user_email: newUser.email,
-                                        user_id: user.id
+                                        user_id: newUser.username,
+                                        user_globalRole: newUser.idGlobalRole
                                     })
                                 }).catch((err) => {
                                     return res.status(500).send({
-                                        error: err + "create request error"
+                                        error: err + " / create request error"
                                     });
                                 })
 
@@ -132,7 +136,7 @@ export function login(req, res) {
         });
     }
 
-    models.user.findOne({
+    models.User.findOne({
         attribute: ['email'],
         where: {
             email: email,
@@ -149,7 +153,7 @@ export function login(req, res) {
                 if (cryptResponse) {
                     let refreshToken = generateRefreshTokenforUser(userfound);
 
-                    models.user.update({
+                    models.User.update({
                         refreshToken: refreshToken
                     }, {
                         where: {

@@ -1,24 +1,19 @@
 const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return course_has_user.init(sequelize, DataTypes);
-}
-
-class course_has_user extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('Course_has_user', {
     userID: {
       type: DataTypes.STRING(255),
       allowNull: false,
       references: {
-        model: 'user',
-        key: 'email'
+        model: 'User',
+        key: 'username'
       }
     },
     courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'course',
+        model: 'Courses',
         key: 'id'
       }
     }
@@ -43,6 +38,4 @@ class course_has_user extends Sequelize.Model {
       },
     ]
   });
-  return course_has_user;
-  }
-}
+};

@@ -1,11 +1,6 @@
 const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return document.init(sequelize, DataTypes);
-}
-
-class document extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('Section', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -16,25 +11,17 @@ class document extends Sequelize.Model {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    message: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    filepath: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    sectionID: {
+    courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'section',
+        model: 'Courses',
         key: 'id'
       }
     }
   }, {
     sequelize,
-    tableName: 'Document',
+    tableName: 'Section',
     timestamps: false,
     indexes: [
       {
@@ -46,14 +33,12 @@ class document extends Sequelize.Model {
         ]
       },
       {
-        name: "sectionID",
+        name: "courseID",
         using: "BTREE",
         fields: [
-          { name: "sectionID" },
+          { name: "courseID" },
         ]
       },
     ]
   });
-  return document;
-  }
-}
+};
