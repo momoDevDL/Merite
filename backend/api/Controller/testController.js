@@ -1,5 +1,6 @@
 export function getTest(req, res) {
     res.header("Content-Type", "application/json")
+    console.log(req.headers.authorization);
     res.send({ data: "Get works !" })
 };
 

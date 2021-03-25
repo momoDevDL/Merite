@@ -16,14 +16,20 @@
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
+    "maz-ui": "^2.3.5",
     "nuxt": "^2.14.6",
     "sass": "^1.32.5",
+    "v-mask": "^2.2.4",
     "v-tooltip": "^3.0.0-alpha.21",
+    "vue-phone-number-input": "^1.1.10",
+    "vue-tel-input": "^5.1.0",
+    "vue-tel-input-vuetify": "^1.2.16",
     "vuelidate": "^0.7.6",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3",
+    "babel-plugin-component": "^1.1.1",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1"
   }

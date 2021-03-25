@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {verifyToken,refreshToken} = require('./Controller/jwt.token');
+const { verifyToken, refreshToken } = require('./Controller/jwt.token');
 
 
 router.get('/', function(req, res) {
@@ -17,8 +17,9 @@ const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleCon
 const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
-const { createSection, updateSection} = require('./Controller/sectionController');
-const {  createDocument, updateDocument, getDocuments, getDocumentWithId, downloadDocument} = require('./Controller/documentController');
+const { createSection, updateSection } = require('./Controller/sectionController');
+const { createDocument, updateDocument } = require('./Controller/documentController');
+
 //Routes API
 router.route('/test')
     .get(getTest)
@@ -60,16 +61,16 @@ router.route('/user/login')
     .post(login);
 
 router.route('/user/refresh')
-    .post(verifyToken,refreshToken)
+    .post(verifyToken, refreshToken)
 
 router.route('/user/me')
     .get(userInfo)
-/*=================================================================*/
+    /*=================================================================*/
 
 
 /*===SECTION========================================================*/
 router.route('/section/create')
-    .post(verifyToken,createSection)  
+    .post(verifyToken, createSection)
     .post(refresh);
 
 router.route('/user/me')
@@ -108,19 +109,42 @@ router.route('/course')
     .delete(deleteCourse);
 //========================================================================
 
+<<
+<< << < HEAD
 
+    ===
+    === =
+    // SECTIONS ==============================================================
+    /*router.route('/user/admin/module/create')
+        .post(createModule)   */
+
+    router.route('/course/section/create')
+    .post(createSection)
+
+router.route('/course/section/:sectionId')
+    .put(updateSection) >>>
+    >>> > corentin - dev
 
 /*===DOCUMENT========================================================*/
 router.route('/document')
-    .post(verifyToken,createDocument)
-    .get(verifyToken,getDocuments)
-  
+    .post(verifyToken, createDocument)
+    .get(verifyToken, getDocuments)
+
 router.route('/document/:documentId')
-    .put(verifyToken,updateDocument)
-    .get(verifyToken,getDocumentWithId)
+    .put(verifyToken, updateDocument)
+    .get(verifyToken, getDocumentWithId)
 
 router.route('/document/download/:documentId')
-    .get(verifyToken,downloadDocument)
-/*=================================================================*/
+    .get(verifyToken, downloadDocument)
+    /*=================================================================*/
 
-export default router;
+<<
+<< << < HEAD
+export default router; ===
+=== =
+router.route('/course/document/:documentId')
+    .put(updateDocument)
+    //===========================================================================
+
+export default router; >>>
+>>> > corentin - dev
