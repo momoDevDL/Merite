@@ -114,6 +114,10 @@ router.route('/course')
 /*router.route('/user/admin/module/create')
     .post(createModule)   */
 
+// SECTIONS ==============================================================
+/*router.route('/user/admin/module/create')
+    .post(createModule)   */
+
 router.route('/course/section/create')
     .post(createSection)
 
@@ -135,7 +139,6 @@ router.route('/document/download/:documentId')
     /*=================================================================*/
 
 
-export default router;
 router.route('/course/document/:documentId')
     .put(updateDocument)
     //===========================================================================
