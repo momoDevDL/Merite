@@ -1,5 +1,13 @@
-const { v4: uuidv4 } = require('uuid');
-import { match } from "assert";
+const {
+    v4: uuidv4
+} = require('uuid');
+import {
+    doesNotMatch,
+    match
+} from "assert";
+import {
+    resolve
+} from "path";
 import Module from "../../models/Module";
 const path = require('path');
 
@@ -72,50 +80,53 @@ export function createSection(req, res) {
                                                 name: "createSection"
                                             }
                                         }).then((SectionCreationPossible) => {
-                                            if(SectionCreationPossible != null){
-                                            models.Courses.findOne({
-                                                attributes: ['id'],
-                                                where: {
-                                                    id: courseId
-                                                }
-                                            }).then((courseFound) => {
+                                            if (SectionCreationPossible != null) {
+                                                models.Courses.findOne({
+                                                    attributes: ['id'],
+                                                    where: {
+                                                        id: courseId
+                                                    }
+                                                }).then((courseFound) => {
+                                                     return new Promise( (resolve) =>{
 
-                                                if (courseFound) {
+                                                        if (courseFound) {
 
-                                                    models.Section.create({
-                                                        name: sectionName,
-                                                        courseID: courseId
-                                                    }).then((newSection) => {
-                                                        console.log(newSection.name + "created");
-                                                        return res.status(200).send({
-                                                            section: newSection
-                                                        })
-                                                    }).catch((err) => {
-                                                        return res.status(500).send({
-                                                            error: err + "create request error"
-                                                        });
+                                                            models.Section.create({
+                                                                name: sectionName,
+                                                                courseID: courseId
+                                                            }).then((newSection) => {
+                                                                console.log(newSection.name + "created");
+                                                                return res.status(200).send({
+                                                                    section: newSection
+                                                                });
+                                                            }).catch((err) => {
+                                                                return res.status(500).send({
+                                                                    error: err + "create request error"
+                                                                });
+                                                            })
+    
+                                                        } else {
+                                                            return res.status(400).send({
+                                                                error: "the Id course doesn't match any existing course! please try again "
+                                                            });
+                                                        }
+    
+                                                     });
+                                                   
+                                                }).catch((err) => {
+                                                    return res.status(500).send({
+                                                        error: "DB request failure cannot find matching course ID"
                                                     })
-
-                                                } else {
-                                                    return res.status(400).send({
-                                                        error: "the Id course doesn't match any existing course! please try again "
-                                                    });
-                                                }
-
-                                            }).catch((err) => {
-                                                return res.status(500).send({
-                                                    error: "DB request failure cannot find matching course ID"
-                                                })
-                                            });
-                                        }else{
-                                            return res.status(500).send({
-                                                error: "you don't have the right to create Section in this course"
-                                            })
-                                        }
+                                                });
+                                            } else {
+                                                //doNothing
+                                                resolve();
+                                                console.log("WHAAAAAAAT");
+                                            }
                                         }).catch(error => {
                                             return res.status(500).send({
                                                 error: error,
-                                                message: "erreur du communication interne de serveur"
+                                                message: "internal server error : DB request"
                                             });
                                         })
                                     });
@@ -126,7 +137,7 @@ export function createSection(req, res) {
                                     });
                                 })
                             }
-                        }).catch((err)=>{
+                        }).catch((err) => {
                             return res.status(500).send({
                                 error: err,
                                 message: "erreur du communication interne de serveur"
@@ -134,7 +145,7 @@ export function createSection(req, res) {
                         });
 
                     });
-                   // return res.status(400).send({errorMessage: "Vous n'avez pas un role qui vous permet de créer une section"})
+                    // return res.status(400).send({errorMessage: "Vous n'avez pas un role qui vous permet de créer une section"})
                 })
             }
         })
@@ -160,11 +171,31 @@ export function updateSection(req, res) {
             sectionToUpdate.name = req.body.name;
             sectionToUpdate.courseID = req.body.courseId;
             sectionToUpdate.save();
-            return res.status(200).send({ section: sectionToUpdate, message: "record updated successfully !" });
+            return res.status(200).send({
+                section: sectionToUpdate,
+                message: "record updated successfully !"
+            });
         }
     ).catch(
         (error) => {
-            return res.status(500).send({ error: "failed to update record ; DB request failed" });
+            return res.status(500).send({
+                error: "failed to update record ; DB request failed"
+            });
         }
     )
 };
+
+export function getSections(req,res){
+    let courseId = req.params.courseId;
+    
+    models.Section.findAll({
+        attributes:['name','id'],
+        where:{
+            courseID: courseId
+        }
+    }).then(sections =>{
+        return res.status(200).send({sections:sections});
+    }).catch(err=>{
+        return res.status(500).send({error:err,Message:"Internal server Error; data base request failed"})
+    });
+}

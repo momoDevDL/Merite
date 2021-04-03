@@ -239,6 +239,18 @@ export function refresh(req, res) {
 };
 
 export function userInfo(req, res) {
-    console.log(req.body);
-    res.json({ user: { nom: "momo", prenom: "anonyme" } });
+    let username = req.params.username;
+    
+    models.User.findOne({
+        where:{
+            username : username
+        }
+    }).then(user=>{
+        return res.status(200).send(user);
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "Internal server Error; Failed data base request"
+        })
+    })
 };
