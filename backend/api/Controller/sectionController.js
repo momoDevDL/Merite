@@ -169,7 +169,7 @@ export function updateSection(req, res) {
     }).then(
         (sectionToUpdate) => {
             sectionToUpdate.name = req.body.name;
-            sectionToUpdate.courseID = req.body.courseId;
+            sectionToUpdate.courseID = req.body.courseID;
             sectionToUpdate.save();
             return res.status(200).send({
                 section: sectionToUpdate,

@@ -14,7 +14,7 @@ const { getTest, postTest } = require('./Controller/testController');
 const { register, login, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
-const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
+const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
 const { createSection, updateSection, getSections} = require('./Controller/sectionController');
@@ -63,10 +63,10 @@ router.route('/user/refresh')
     .post(verifyToken,refreshToken)
 
 router.route('/user/:username')
-    .get(userInfo)
+    .get(verifyToken,userInfo)
 
 router.route('/user')
-    .get(allUsers)
+    .get(verifyToken,allUsers)
 /*=================================================================*/
 
 
@@ -108,12 +108,15 @@ router.route('/roleOfUser')
 
 //COURSES=================================================================
 router.route('/course')
-    .post(addCourse)
+    .post(verifyToken,addCourse)
     .get(getCourse)
     .put(editCourse)
     .delete(deleteCourse);
 router.route('/course/:idEnseignant')
     .post(addCourse);
+
+router.route('/course/:courseID')
+    .put(verifyToken,asignStudentsToCourse)
 //========================================================================
 
 

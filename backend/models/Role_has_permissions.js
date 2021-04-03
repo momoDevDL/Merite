@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     roleID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey:true,
       references: {
         model: 'Roles',
         key: 'id'

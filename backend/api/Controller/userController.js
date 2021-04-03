@@ -254,3 +254,19 @@ export function userInfo(req, res) {
         })
     })
 };
+
+export function allUsers(req, res){
+    
+    models.User.findAll({
+        
+    }).then(users=>{
+        return res.status(200).send({
+          users  
+        })
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "Internal server Error; Failed data base request"
+        })
+    })
+}
