@@ -19,6 +19,11 @@
           <user-icone number="2" :active="current" />
           <p num="2" class="sidebar-item-link">Utilisateurs</p>
         </nuxt-link>
+        <nuxt-link :class="{active : this.$route.path.includes('/admin/roles')}" @click.native="changeSelectedLink" num="6" to="/admin/roles"
+          class="sidebar-item">
+          <user-icone number="6" :active="current" />
+          <p num="6" class="sidebar-item-link">Gestion des rôles</p>
+        </nuxt-link>
         <nuxt-link :class="{active : current == 3}" @click.native="changeSelectedLink" num="3" to="/admin/"
           class="sidebar-item">
           <chart-icone number="3" :active="current" />

@@ -1,7 +1,7 @@
 <template>
     <div class = "content-container">   
         <div class="dark_theme">
-		    <a href="#"><img src="../img/vector_ek3.png" class="vector"></a>	
+		    <a href="#"><img src="../../img/vector_ek3.png" class="vector"></a>	
         </div>
         <div class="main_container">
             <div class="favorite_class_container">

@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register, login, refresh, userInfo } = require('./Controller/userController');
+const { register, login, allUsers, userInfo , refresh} = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
 const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
@@ -64,6 +64,12 @@ router.route('/user/refresh')
 
 router.route('/user/me')
     .get(userInfo)
+
+router.route('/user/:username')
+    .get(verifyToken,userInfo)
+
+router.route('/user')
+    .get(verifyToken,allUsers)
 /*=================================================================*/
 
 
