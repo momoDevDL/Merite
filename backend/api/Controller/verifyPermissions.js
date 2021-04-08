@@ -63,10 +63,13 @@ export async function getRolesAllowed(roles, editID, permissionName) {
 
 export async function userAllowedTo(courseID, payload, permissionName) {
     return new Promise(async(resolve, reject) => {
-        if (payload.idGlobalRole) {
+        console.log(payload.idGlobalRole);
+        if (payload.idGlobalRole == 1) {
             resolve({ error: null, status: 200, isAllowed: true });
         } else {
+            console.log("not an Admin");
             const permissionID = await getPermissionID(permissionName).catch((error) => resolve({ error: error, status: 400, isAllowed: false }));
+            console.log(permissionID);
             const roles = await rolesInCourse(courseID).catch((error) => resolve({ error: error, status: 400, isAllowed: false }));
             const rolesAllowed = await getRolesAllowed(roles, permissionID, permissionName).catch((error) => resolve({ error: error, status: 400, isAllowed: false }));
 

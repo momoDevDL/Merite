@@ -206,9 +206,9 @@ export async function asignStudentsToCourse(req,res){
     let UsersList = req.body.usersList;
     
     const  allowedToAsign = await userAllowedTo(courseID,req.payload,"asignToCourse");
-
-    console.log(allowedToAsign);
+    
     if (allowedToAsign.isAllowed){
+
         UsersList.forEach(user => {
 
             models.Course_has_user.create({
@@ -225,9 +225,11 @@ export async function asignStudentsToCourse(req,res){
 
             });
         });
+
         return res.status(200).send({
-            message: "done"
-        })
+            message: "All users have been asigned"
+        });
+
     }else{
         return res.status(allowedToAsign.status).send(allowedToAsign.error);
     }

@@ -45,6 +45,7 @@ export async function addRole(req, res) {
     let name = req.body.name;
     let idGlobalRole = req.payload.idGlobalRole;
     let courseID = req.body.courseID;
+    
     //attributs incomplets
     if (name == null || courseID == null || idGlobalRole == null) {
         return res.status(400).send({
