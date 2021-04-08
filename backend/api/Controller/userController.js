@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import {
     generateAccessTokenforUser,
     generateRefreshTokenforUser
@@ -8,7 +9,7 @@ var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
 var Tokens = require('./jwt.token');
-const permittedUsersToRegister = ["super-admin","admin"];
+const permittedUsersToRegister = ["super-admin", "admin"];
 
 export function register(req, res) {
     let email = req.body.email;
@@ -30,7 +31,7 @@ export function register(req, res) {
     console.log(req.body)
 
     if (email == null || password == null || idGlobalRoleCreator == null ||
-        username == null  ||password == null || birthdate == null || phoneNumber == null ||
+        username == null || password == null || birthdate == null || phoneNumber == null ||
         address == null || town == null || pinCode == null) {
         return res.status(400).send({
             error: "missing field"
@@ -59,13 +60,13 @@ export function register(req, res) {
                 })
                 .then((globalRole) => {
                     console.log(globalRole);
-                    if(globalRole == null){
+                    if (globalRole == null) {
                         return res.status(400).send({
                             error: "global role not found"
                         });
                     }
-                    
-                    if (!permittedUsersToRegister.includes(globalRole.name)){
+
+                    if (!permittedUsersToRegister.includes(globalRole.name)) {
                         return res.status(400).send({
                             error: "request error you don't have the right to add new user"
                         });
@@ -81,7 +82,7 @@ export function register(req, res) {
                                     username: username,
                                     email: email,
                                     password: bcryptedPassword,
-                                    idGlobalRole : idGlobalRoleCreated,
+                                    idGlobalRole: idGlobalRoleCreated,
                                     numEtud: numEtud,
                                     address: address,
                                     pinCode: pinCode,
@@ -108,7 +109,7 @@ export function register(req, res) {
                         })
                     }
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     return res.status(500).send({
                         error: err + "create request error"
                     });
@@ -124,7 +125,7 @@ export function register(req, res) {
     })
 };
 
-export function login(req, res) {
+export function userLogin(req, res) {
     console.log(req.body);
 
     var email = req.body.email;
@@ -145,7 +146,9 @@ export function login(req, res) {
 
         if (userfound === null) {
 
-            return res.status(400).send({ error: "User not found please verify your email" });
+            return res.status(400).send({
+                error: "User not found please verify your email"
+            });
 
         } else {
             bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
@@ -168,17 +171,15 @@ export function login(req, res) {
                         return res.send("DB update query failed");
                     });
 
-                    return res.status(200).json({
+                    return res.status(200).send({
                         token: generateAccessTokenforUser(userfound),
                         user: {
                             email: userfound.email,
                             username: userfound.username,
-                            first_name: userfound.first_name,
-                            last_name: userfound.last_name
+                            idGlobalRole: userfound.idGlobalRole
                         }
                     });
 
-                    return res.status(200).json({ token: generateAccessTokenforUser(userfound), user: userfound });
 
                 } else {
                     return res.status(400).send({
@@ -194,6 +195,107 @@ export function login(req, res) {
     })
 };
 
+async function  isAdmin(idGlobalRole) {
+    return new Promise((resolve,reject)=>{
+        models.Global_Roles.findOne({
+            where: {
+                id: idGlobalRole
+            }
+        }).then(globalRole => {
+            console.log(globalRole);
+            if (globalRole.name == "admin" || globalRole.name == "super-admin") {
+                resolve(true);
+            } else {
+                reject({status:400,Message:"You don't have admin rights to access this domain",isAdmin:false});
+            }
+        }).catch(err => {
+            reject({status:500,Message:"internal server error; DB request failed",isAdmin:false});
+        });
+    });
+    
+}
+
+export function adminLogin(req, res) {
+    console.log(req.body);
+
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if (email == null || password == null) {
+        return res.status(400).send({
+            error: "missing field "
+        });
+    }
+
+    models.User.findOne({
+        where: {
+            email: email,
+        }
+    }).then((userfound) => {
+        
+
+        if (userfound == null) {
+            return res.status(400).send({
+                error: "User not found please verify your email"
+            });
+        }
+
+        models.Global_Roles.findOne({
+            where: {
+                id: userfound.idGlobalRole
+            }
+        }).then(globalRole => {
+            if (globalRole.name == "admin" || globalRole.name == "super-admin") {
+                bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
+
+                    if (cryptResponse) {
+    
+                        let refreshToken = generateRefreshTokenforUser(userfound);
+    
+                        models.User.update({
+                            refreshToken: refreshToken
+                        }, {
+                            where: {
+                                email: userfound.email
+                            }
+                        }).then((updated) => {
+                            if (updated) {
+                                console.log(updated);
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                            return res.send("DB update query failed");
+                        });
+    
+                        return res.status(200).send({
+                            token: generateAccessTokenforUser(userfound),
+                            user: {
+                                email: userfound.email,
+                                username: userfound.username,
+                                idGlobalRole: userfound.idGlobalRole
+                            }
+                        });
+    
+    
+                    } else {
+                        return res.status(400).send({
+                            error: " Invalid password ! " + cryptErr
+                        })
+                    }
+                });
+            } else {
+                return res.status(400).send({Message:"You don't have admin rights to access this domain",isAdmin:false});
+            }
+        }).catch(err => {
+            return res.status(500).send({Message:"internal server error; DB request failed",isAdmin:false});
+        });
+
+    }).catch((err) => {
+        return res.status(500).send({
+            error: "Db request error Unable to verify user" + err
+        });
+    })
+};
 
 export function refresh(req, res) {
     let UserAccesToken = req.body.token;
@@ -234,39 +336,42 @@ export function refresh(req, res) {
 
 
         //res.cookie("jwt",newUserToken,{httpOnly:true});
-        res.status(201).send({ token: newUserToken, message: "token refreshed successfully" });
+        res.status(201).send({
+            token: newUserToken,
+            message: "token refreshed successfully"
+        });
     }
 };
 
 export function userInfo(req, res) {
     let username = req.params.username;
-    
+
     models.User.findOne({
-        where:{
-            username : username
+        where: {
+            username: username
         }
-    }).then(user=>{
+    }).then(user => {
         return res.status(200).send(user);
-    }).catch(err=>{
+    }).catch(err => {
         return res.status(500).send({
-            error : err,
-            Message : "Internal server Error; Failed data base request"
+            error: err,
+            Message: "Internal server Error; Failed data base request"
         })
     })
 };
 
-export function allUsers(req, res){
-    
+export function allUsers(req, res) {
+
     models.User.findAll({
-        
-    }).then(users=>{
+
+    }).then(users => {
         return res.status(200).send({
-          users  
+            users
         })
-    }).catch(err=>{
+    }).catch(err => {
         return res.status(500).send({
-            error : err,
-            Message : "Internal server Error; Failed data base request"
+            error: err,
+            Message: "Internal server Error; Failed data base request"
         })
     })
 }
