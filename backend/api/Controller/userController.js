@@ -240,12 +240,23 @@ export function adminLogin(req, res) {
             });
         }
 
-        models.Global_Roles.findOne({
+        models.Global_Roles.findAll({
             where: {
                 id: userfound.idGlobalRole
             }
-        }).then(globalRole => {
-            if (globalRole.name == "admin" || globalRole.name == "super-admin") {
+        }).then(globalRoles => {
+            let isAdmin = false;
+            let cpt = 0;
+           
+            while(cpt < globalRoles.length && !isAdmin){
+                
+                if(globalRoles[cpt].name == "admin" || globalRoles[cpt].name == "super-admin"){
+                    isAdmin = true;
+                }
+                cpt++;
+            }
+
+            if (isAdmin) {
                 bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
 
                     if (cryptResponse) {
