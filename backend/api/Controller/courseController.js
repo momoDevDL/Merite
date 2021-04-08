@@ -60,7 +60,7 @@ export function getCourse(req, res) {
             id: id
         }
     }).then((course) => {
-        //erreur, la course existe déjà
+        
         if (course) {
             return res.status(200).send({
                 course: course
@@ -68,7 +68,7 @@ export function getCourse(req, res) {
 
         } else {
             return res.status(500).send({
-                error: "request error, the course dosn't exist"
+                error: "request error, the course doesn't exist"
             })
         }
         //erreur interne, problème surement lié au setup du serveur SQL
@@ -233,4 +233,41 @@ export async function asignStudentsToCourse(req,res){
     }else{
         return res.status(allowedToAsign.status).send(allowedToAsign.error);
     }
+}
+
+export function getUserCourses(req,res){
+    let username = req.payload.username;
+
+    models.Course_has_user.findAll({
+        where: {
+            username : username
+        }    
+    }).then( courses =>{
+        return res.status(200).send(courses);
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "internal server error; DB request failed"
+        });
+    });
+}
+
+
+export function setAsFavorite(req,res){
+    let courseID = req.body.courseID;
+
+    models.Course_has_user.update({
+        favorite: 1
+    },{
+        where:{
+            courseID: courseID
+        }
+    }).then( updatedRecord =>{
+        return res.status(200).send(updatedRecord);
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "internal server error; DB request failed"
+        });
+    });
 }

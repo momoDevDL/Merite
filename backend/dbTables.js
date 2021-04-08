@@ -63,6 +63,7 @@ let statements = [
     `CREATE TABLE Course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
+        favorite BOOLEAN DEFAULT 0,
         FOREIGN KEY (userID) REFERENCES user(username),
         FOREIGN KEY (courseID) REFERENCES courses(id)
     )`,

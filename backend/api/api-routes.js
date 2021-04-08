@@ -14,7 +14,7 @@ const { getTest, postTest } = require('./Controller/testController');
 const { register, userLogin,adminLogin, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
-const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse } = require('./Controller/courseController');
+const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse, getUserCourses, setAsFavorite } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
 const { createSection, updateSection, getSections} = require('./Controller/sectionController');
@@ -83,7 +83,7 @@ router.route('/section/:sectionId')
 
 router.route('/section/:courseId')
     .get(verifyToken,getSections);
-    //TODO retrieve all sections by course
+    
 //========================================================================
 
 //PERMISSIONS=============================================================
@@ -116,9 +116,15 @@ router.route('/course')
     .get(getCourse)
     .put(editCourse)
     .delete(deleteCourse);
-    
+
 router.route('/course/:idEnseignant')
     .post(addCourse);
+
+router.route('/course/userCourses')
+    .get(getUserCourses);
+
+router.route('/course/favorite')
+    .put(setAsFavorite);
 
 router.route('/course/:courseID')
     .put(verifyToken,asignStudentsToCourse)
