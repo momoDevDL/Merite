@@ -1,66 +1,85 @@
 var DataTypes = require("sequelize").DataTypes;
+var _Course_has_user = require("./Course_has_user");
+var _Courses = require("./Courses");
+var _Document = require("./Document");
+var _Formation_has_modules = require("./Formation_has_modules");
+var _Formations = require("./Formations");
+var _Global_Roles = require("./Global_Roles");
 var _Module = require("./Module");
-var _course = require("./course");
-var _course_has_user = require("./course_has_user");
-var _document = require("./document");
-var _module_responsable = require("./module_responsable");
-var _permission = require("./permission");
-var _role = require("./role");
-var _role_has_permission = require("./role_has_permission");
-var _section = require("./section");
-var _user = require("./user");
-var _user_has_role = require("./user_has_role");
+var _Permissions = require("./Permissions");
+var _Role_has_permissions = require("./Role_has_permissions");
+var _Roles = require("./Roles");
+var _Section = require("./Section");
+var _User = require("./User");
+var _User_Has_Formations = require("./User_Has_Formations");
+var _User_has_roles = require("./User_has_roles");
 
 function initModels(sequelize) {
+  var Course_has_user = _Course_has_user(sequelize, DataTypes);
+  var Courses = _Courses(sequelize, DataTypes);
+  var Document = _Document(sequelize, DataTypes);
+  var Formation_has_modules = _Formation_has_modules(sequelize, DataTypes);
+  var Formations = _Formations(sequelize, DataTypes);
+  var Global_Roles = _Global_Roles(sequelize, DataTypes);
   var Module = _Module(sequelize, DataTypes);
-  var course = _course(sequelize, DataTypes);
-  var course_has_user = _course_has_user(sequelize, DataTypes);
-  var document = _document(sequelize, DataTypes);
-  var module_responsable = _module_responsable(sequelize, DataTypes);
-  var permission = _permission(sequelize, DataTypes);
-  var role = _role(sequelize, DataTypes);
-  var role_has_permission = _role_has_permission(sequelize, DataTypes);
-  var section = _section(sequelize, DataTypes);
-  var user = _user(sequelize, DataTypes);
-  var user_has_role = _user_has_role(sequelize, DataTypes);
+  var Permissions = _Permissions(sequelize, DataTypes);
+  var Role_has_permissions = _Role_has_permissions(sequelize, DataTypes);
+  var Roles = _Roles(sequelize, DataTypes);
+  var Section = _Section(sequelize, DataTypes);
+  var User = _User(sequelize, DataTypes);
+  var User_Has_Formations = _User_Has_Formations(sequelize, DataTypes);
+  var User_has_roles = _User_has_roles(sequelize, DataTypes);
 
-  course.belongsTo(Module, { as: "module", foreignKey: "moduleID"});
-  Module.hasMany(course, { as: "courses", foreignKey: "moduleID"});
-  module_responsable.belongsTo(Module, { as: "module", foreignKey: "moduleID"});
-  Module.hasMany(module_responsable, { as: "module_responsables", foreignKey: "moduleID"});
-  course_has_user.belongsTo(course, { as: "course", foreignKey: "courseID"});
-  course.hasMany(course_has_user, { as: "course_has_users", foreignKey: "courseID"});
-  role.belongsTo(course, { as: "course", foreignKey: "courseID"});
-  course.hasMany(role, { as: "roles", foreignKey: "courseID"});
-  section.belongsTo(course, { as: "course", foreignKey: "courseID"});
-  course.hasMany(section, { as: "sections", foreignKey: "courseID"});
-  role_has_permission.belongsTo(permission, { as: "permission", foreignKey: "permissionID"});
-  permission.hasMany(role_has_permission, { as: "role_has_permissions", foreignKey: "permissionID"});
-  role_has_permission.belongsTo(role, { as: "role", foreignKey: "roleID"});
-  role.hasMany(role_has_permission, { as: "role_has_permissions", foreignKey: "roleID"});
-  user_has_role.belongsTo(role, { as: "role", foreignKey: "roleID"});
-  role.hasMany(user_has_role, { as: "user_has_roles", foreignKey: "roleID"});
-  document.belongsTo(section, { as: "section", foreignKey: "sectionID"});
-  section.hasMany(document, { as: "documents", foreignKey: "sectionID"});
-  course_has_user.belongsTo(user, { as: "user", foreignKey: "userID"});
-  user.hasMany(course_has_user, { as: "course_has_users", foreignKey: "userID"});
-  module_responsable.belongsTo(user, { as: "user", foreignKey: "userID"});
-  user.hasMany(module_responsable, { as: "module_responsables", foreignKey: "userID"});
-  user_has_role.belongsTo(user, { as: "user", foreignKey: "userID"});
-  user.hasMany(user_has_role, { as: "user_has_roles", foreignKey: "userID"});
+  Course_has_user.belongsTo(Courses, { as: "course", foreignKey: "courseID"});
+  Courses.hasMany(Course_has_user, { as: "Course_has_users", foreignKey: "courseID"});
+  Roles.belongsTo(Courses, { as: "course", foreignKey: "courseID"});
+  Courses.hasMany(Roles, { as: "Roles", foreignKey: "courseID"});
+  Section.belongsTo(Courses, { as: "course", foreignKey: "courseID"});
+  Courses.hasMany(Section, { as: "Sections", foreignKey: "courseID"});
+  Formation_has_modules.belongsTo(Formations, { as: "idFormation_Formation", foreignKey: "idFormation"});
+  Formations.hasMany(Formation_has_modules, { as: "Formation_has_modules", foreignKey: "idFormation"});
+  User_Has_Formations.belongsTo(Formations, { as: "idFormation_Formation", foreignKey: "idFormation"});
+  Formations.hasMany(User_Has_Formations, { as: "User_Has_Formations", foreignKey: "idFormation"});
+  User.belongsTo(Global_Roles, { as: "idGlobalRole_Global_Role", foreignKey: "idGlobalRole"});
+  Global_Roles.hasMany(User, { as: "Users", foreignKey: "idGlobalRole"});
+  Courses.belongsTo(Module, { as: "module", foreignKey: "moduleID"});
+  Module.hasMany(Courses, { as: "Courses", foreignKey: "moduleID"});
+  Formation_has_modules.belongsTo(Module, { as: "idModule_Module", foreignKey: "idModule"});
+  Module.hasMany(Formation_has_modules, { as: "Formation_has_modules", foreignKey: "idModule"});
+  Module.belongsTo(Module, { as: "parentIdModule_Module", foreignKey: "parentIdModule"});
+  Module.hasMany(Module, { as: "Modules", foreignKey: "parentIdModule"});
+  Role_has_permissions.belongsTo(Permissions, { as: "permission", foreignKey: "permissionID"});
+  Permissions.hasMany(Role_has_permissions, { as: "Role_has_permissions", foreignKey: "permissionID"});
+  Role_has_permissions.belongsTo(Roles, { as: "role", foreignKey: "roleID"});
+  Roles.hasMany(Role_has_permissions, { as: "Role_has_permissions", foreignKey: "roleID"});
+  User_has_roles.belongsTo(Roles, { as: "role", foreignKey: "roleID"});
+  Roles.hasMany(User_has_roles, { as: "User_has_roles", foreignKey: "roleID"});
+  Document.belongsTo(Section, { as: "section", foreignKey: "sectionID"});
+  Section.hasMany(Document, { as: "Documents", foreignKey: "sectionID"});
+  Course_has_user.belongsTo(User, { as: "user", foreignKey: "userID"});
+  User.hasMany(Course_has_user, { as: "Course_has_users", foreignKey: "userID"});
+  Formations.belongsTo(User, { as: "idResponsable_User", foreignKey: "idResponsable"});
+  User.hasMany(Formations, { as: "Formations", foreignKey: "idResponsable"});
+  User_Has_Formations.belongsTo(User, { as: "idUser_User", foreignKey: "idUser"});
+  User.hasMany(User_Has_Formations, { as: "User_Has_Formations", foreignKey: "idUser"});
+  User_has_roles.belongsTo(User, { as: "user", foreignKey: "userID"});
+  User.hasMany(User_has_roles, { as: "User_has_roles", foreignKey: "userID"});
 
   return {
+    Course_has_user,
+    Courses,
+    Document,
+    Formation_has_modules,
+    Formations,
+    Global_Roles,
     Module,
-    course,
-    course_has_user,
-    document,
-    module_responsable,
-    permission,
-    role,
-    role_has_permission,
-    section,
-    user,
-    user_has_role,
+    Permissions,
+    Role_has_permissions,
+    Roles,
+    Section,
+    User,
+    User_Has_Formations,
+    User_has_roles,
   };
 }
 module.exports = initModels;

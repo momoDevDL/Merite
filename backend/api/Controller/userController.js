@@ -135,139 +135,141 @@ export function login(req, res) {
             error: "missing field "
         });
     }
+        models.User.findOne({
+            attribute: ['email'],
+            where: {
+                email: email,
+            }
+        }).then((userfound) => {
 
-    console.log(models)
-    models.User.findOne({
-        attribute: ['email'],
-        where: {
-            email: email,
-        }
-    }).then((userfound) => {
+            if (userfound === null) {
 
-        if (userfound === null) {
+                return res.status(400).send({
+                    error: "User not found please verify your email"
+                });
 
-            return res.status(400).send({ error: "User not found please verify your email" });
+            } else {
+                bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
 
+                    if (cryptResponse) {
+                        let refreshToken = generateRefreshTokenforUser(userfound);
+
+                        models.User.update({
+                            refreshToken: refreshToken
+                        }, {
+                            where: {
+                                email: userfound.email
+                            }
+                        }).then((updated) => {
+                            if (updated) {
+                                console.log(updated);
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                            return res.send("DB update query failed");
+                        });
+
+                        return res.status(200).json({
+                            token: generateAccessTokenforUser(userfound),
+                            User: {
+                                email: userfound.email,
+                                username: userfound.username,
+                                first_name: userfound.first_name,
+                                last_name: userfound.last_name
+                            }
+                        });
+                        
+                    } else {
+                        return res.status(400).send({
+                            error: " Invalid password ! " + cryptErr
+                        })
+                    }
+                });
+            }
+        }).catch((err) => {
+            return res.status(500).send({
+                error: "Db request error Unable to verify User" + err
+            });
+        })
+    }
+
+
+    export function refresh(req, res) {
+        let UserAccesToken = req.body.token;
+
+        if (!UserAccesToken) {
+            return res.status(403).send("missed field : token not found in cookie");
         } else {
-            bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
+            let verifiedTokenPayload;
+            try {
+                verifiedTokenPayload = jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY);
+            } catch (error) {
+                return res.status(401).send("Failed to match Access Token the payload has been tampered with");
+            }
 
-                if (cryptResponse) {
-                    let refreshToken = generateRefreshTokenforUser(userfound);
+            let refreshToken;
 
-                    models.User.update({
-                        refreshToken: refreshToken
-                    }, {
-                        where: {
-                            email: userfound.email
-                        }
-                    }).then((updated) => {
-                        if (updated) {
-                            console.log(updated);
-                        }
-                    }).catch((error) => {
-                        console.log(error);
-                        return res.send("DB update query failed");
-                    });
-
-                    return res.status(200).json({
-                        token: generateAccessTokenforUser(userfound),
-                        User: {
-                            email: userfound.email,
-                            username: userfound.username,
-                            first_name: userfound.first_name,
-                            last_name: userfound.last_name
-                        }
-                    });
-
-                    return res.status(200).json({ token: generateAccessTokenforUser(userfound), User: userfound });
-
-                } else {
-                    return res.status(400).send({
-                        error: " Invalid password ! " + cryptErr
-                    })
+            models.User.findOne({
+                attribute: ['refreshToken'],
+                where: {
+                    email: req.body.email
                 }
+            }).then((token) => {
+                refreshToken = token;
+            }).catch((error) => {
+                return res.status(500).send("DB request failed could not retrieve refresh token");
+            });
+
+            try {
+                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            } catch (err) {
+                return res.status(401).send("failed to verify refresh Token");
+            }
+
+            let newUserToken = jwt.sign(verifiedTokenPayload, process.env.REFRESH_TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: process.env.JWT_SECRET_SIGN_KEY
+            });
+
+
+            //res.cookie("jwt",newUserToken,{httpOnly:true});
+            res.status(201).send({
+                token: newUserToken,
+                message: "token refreshed successfully"
             });
         }
-    }).catch((err) => {
-        return res.status(500).send({
-            error: "Db request error Unable to verify User" + err
-        });
-    })
-};
-
-
-export function refresh(req, res) {
-    let UserAccesToken = req.body.token;
-
-    if (!UserAccesToken) {
-        return res.status(403).send("missed field : token not found in cookie");
-    } else {
-        let verifiedTokenPayload;
-        try {
-            verifiedTokenPayload = jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY);
-        } catch (error) {
-            return res.status(401).send("Failed to match Access Token the payload has been tampered with");
-        }
-
-        let refreshToken;
-
-        models.User.findOne({
-            attribute: ['refreshToken'],
-            where: {
-                email: req.body.email
-            }
-        }).then((token) => {
-            refreshToken = token;
-        }).catch((error) => {
-            return res.status(500).send("DB request failed could not retrieve refresh token");
-        });
-
-        try {
-            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-        } catch (err) {
-            return res.status(401).send("failed to verify refresh Token");
-        }
-
-        let newUserToken = jwt.sign(verifiedTokenPayload, process.env.REFRESH_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.JWT_SECRET_SIGN_KEY
-        });
-
-
-        //res.cookie("jwt",newUserToken,{httpOnly:true});
-        res.status(201).send({ token: newUserToken, message: "token refreshed successfully" });
-    }
-};
-
-export function userInfo(req, res) {
-    let username = req.params.username;
-    
-    models.User.findOne({
-        where:{
-            username : username
-        }
-    }).then(User=>{
-        return res.status(200).send(User);
-    }).catch(err=>{
-        return res.status(500).send({
-            error : err,
-            Message : "Internal server Error; Failed data base request"
-        })
-    })
-};
-
-export function allUsers(req, res){
-    
-    models.User.findAll({
         
-    }).then(users=>{
-        return res.status(200).send({
-          users  
+    };
+
+    export function userInfo(req, res) {
+        let username = req.params.username;
+        
+        models.User.findOne({
+            where:{
+                username : username
+            }
+        }).then(user=>{
+            return res.status(200).send(user);
+        }).catch(err=>{
+            return res.status(500).send({
+                error : err,
+                Message : "Internal server Error; Failed data base request"
+            })
         })
-    }).catch(err=>{
-        return res.status(500).send({
-            error : err,
-            Message : "Internal server Error; Failed data base request"
+    };
+    
+    export function allUsers(req, res){
+        
+        models.User.findAll({
+            
+        }).then(users=>{
+            return res.status(200).send({
+              users  
+            })
+        }).catch(err=>{
+            return res.status(500).send({
+                error : err,
+                Message : "Internal server Error; Failed data base request"
+            })
         })
-    })
-}
+    }

@@ -1,11 +1,6 @@
 const Sequelize = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  return section.init(sequelize, DataTypes);
-}
-
-class section extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
-  super.init({
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('Section', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -20,13 +15,13 @@ class section extends Sequelize.Model {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'course',
+        model: 'Courses',
         key: 'id'
       }
     }
   }, {
     sequelize,
-    tableName: 'section',
+    tableName: 'Section',
     timestamps: false,
     indexes: [
       {
@@ -46,6 +41,4 @@ class section extends Sequelize.Model {
       },
     ]
   });
-  return section;
-  }
-}
+};

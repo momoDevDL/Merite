@@ -63,6 +63,7 @@
           <h1 v-if="$route.path == '/admin/utilisateurs'" class="dashboard-title">Gérez vos <span class="dashboard-title-accent">utilisateurs</span></h1>
           <h1 v-if="$route.path == '/admin/utilisateurs/ajouterUtilisateur'"  class="dashboard-title">Ajouter un <span class="dashboard-title-accent">utilisateur</span></h1>
           <h1 v-if="$route.path == '/admin/utilisateurs/modifierUtilisateur'"  class="dashboard-title">Modifier un <span class="dashboard-title-accent">utilisateur</span></h1>
+          <h1 v-if="$route.path == '/admin/roles'"  class="dashboard-title">Gerez les <span class="dashboard-title-accent">roles</span></h1>
         </div>
       </div>
       <div class="navbar-dashboard-right">

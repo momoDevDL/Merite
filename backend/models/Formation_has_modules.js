@@ -1,19 +1,17 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Module', {
-    id: {
-      autoIncrement: true,
+  return sequelize.define('Formation_has_modules', {
+    idFormation: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      references: {
+        model: 'Formations',
+        key: 'id'
+      }
     },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    parentIdModule: {
+    idModule: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'Module',
         key: 'id'
@@ -21,22 +19,21 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'Module',
+    tableName: 'Formation_has_modules',
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
-        unique: true,
+        name: "idFormation",
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "idFormation" },
         ]
       },
       {
-        name: "parentIdModule",
+        name: "idModule",
         using: "BTREE",
         fields: [
-          { name: "parentIdModule" },
+          { name: "idModule" },
         ]
       },
     ]

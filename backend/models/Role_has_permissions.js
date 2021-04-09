@@ -1,42 +1,39 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Module', {
-    id: {
-      autoIncrement: true,
+  return sequelize.define('Role_has_permissions', {
+    roleID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    parentIdModule: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
       references: {
-        model: 'Module',
+        model: 'Roles',
+        key: 'id'
+      }
+    },
+    permissionID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Permissions',
         key: 'id'
       }
     }
   }, {
     sequelize,
-    tableName: 'Module',
+    tableName: 'Role_has_permissions',
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
-        unique: true,
+        name: "roleID",
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "roleID" },
         ]
       },
       {
-        name: "parentIdModule",
+        name: "permissionID",
         using: "BTREE",
         fields: [
-          { name: "parentIdModule" },
+          { name: "permissionID" },
         ]
       },
     ]

@@ -53,7 +53,7 @@ export function getCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -89,7 +89,7 @@ export function addCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['name', 'moduleID'],
         where: {
             name: name,
@@ -103,7 +103,7 @@ export function addCourse(req, res) {
             });
             //cas standard, création d'une course
         } else {
-            const newCourse = models.course.create({
+            const newCourse = models.Courses.create({
                 name: name,
                 moduleID: moduleID
             }).then((newCourse) => {
@@ -119,7 +119,7 @@ export function addCourse(req, res) {
         //erreur interne, problème surement lié au setup du serveur SQL
     }).catch((err) => {
         return res.status(400).send({
-            error: err
+            error: err + "/ cannot create course please verify your module Id"
         })
     })
 }
@@ -134,7 +134,7 @@ export function editCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
         attribute: ['id'],
         where: {
             id: id
@@ -171,7 +171,7 @@ export function deleteCourse(req, res) {
         });
     }
 
-    models.course.findOne({
+    models.Courses.findOne({
             attribute: ['id'],
             where: {
                 id: id
