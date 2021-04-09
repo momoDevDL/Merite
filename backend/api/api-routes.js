@@ -11,15 +11,14 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register, login, allUsers, userInfo , refresh} = require('./Controller/userController');
+const { register, login, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
-const { getCourse, addCourse, deleteCourse, editCourse } = require('./Controller/courseController');
+const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
-const { createSection, updateSection } = require('./Controller/sectionController');
-const { createDocument, updateDocument,getDocumentWithId,getDocuments,downloadDocument } = require('./Controller/documentController');
-
+const { createSection, updateSection, getSections} = require('./Controller/sectionController');
+const {  createDocument, updateDocument, getDocuments, getDocumentWithId, downloadDocument} = require('./Controller/documentController');
 //Routes API
 router.route('/test')
     .get(getTest)
@@ -63,24 +62,24 @@ router.route('/user/login')
 router.route('/user/refresh')
     .post(verifyToken, refreshToken)
 
-/*router.route('/user/me')
-    .get(userInfo)*/
-
 router.route('/user/:username')
     .get(verifyToken,userInfo)
 
 router.route('/user')
     .get(verifyToken,allUsers)
-    
 /*=================================================================*/
 
 
 /*===SECTION========================================================*/
 router.route('/section')
     .post(verifyToken,createSection)  
-    
+
 router.route('/section/:sectionId')
-    .put(updateSection)
+    .put(verifyToken,updateSection)
+
+router.route('/section/:courseId')
+    .get(verifyToken,getSections);
+    //TODO retrieve all sections by course
 //========================================================================
 
 //PERMISSIONS=============================================================
@@ -97,24 +96,27 @@ router.route('/permissionOfRole')
 
 //ROLES===================================================================
 router.route('/role')
-    .post(addRole)
+    .post(verifyToken,addRole)
     .get(getRole)
-    .put(editRole)
-    .delete(deleteRole);
+    .put(verifyToken,editRole)
+    .delete(verifyToken,deleteRole);
 
 router.route('/roleOfUser')
-    .post(addRoleToUser)
-    .delete(deleteRoleToUser);
+    .post(verifyToken,addRoleToUser)
+    .delete(verifyToken,deleteRoleToUser);
 //========================================================================
 
 //COURSES=================================================================
 router.route('/course')
-    .post(addCourse)
+    .post(verifyToken,addCourse)
     .get(getCourse)
     .put(editCourse)
     .delete(deleteCourse);
 router.route('/course/:idEnseignant')
     .post(addCourse);
+
+router.route('/course/:courseID')
+    .put(verifyToken,asignStudentsToCourse)
 //========================================================================
 
 

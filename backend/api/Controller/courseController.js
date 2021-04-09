@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 const models = require('../../models');
+const {userAllowedTo} = require('./verifyPermissions');
 
 
 export function createModule(req, res) {
@@ -198,4 +199,38 @@ export function deleteCourse(req, res) {
                 error: err
             })
         });
+}
+
+export async function asignStudentsToCourse(req,res){
+    let courseID = req.params.courseID;
+    let UsersList = req.body.usersList;
+    
+    const  allowedToAsign = await userAllowedTo(courseID,req.payload,"asignToCourse");
+    
+    if (allowedToAsign.isAllowed){
+
+        UsersList.forEach(user => {
+
+            models.Course_has_user.create({
+                userID: user.username,
+                courseID:courseID
+            }).then( ()=>{
+                console.log("user : "+ user + "inserted");
+            }    
+            ).catch(err=>{
+                return res.status(500).send({
+                    error : err,
+                    Message: "Data base request error"
+                });
+
+            });
+        });
+
+        return res.status(200).send({
+            message: "All users have been asigned"
+        });
+
+    }else{
+        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+    }
 }

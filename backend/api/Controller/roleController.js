@@ -1,4 +1,9 @@
-const models = require('../../models');
+import { resolve } from "path";
+
+var initModels = require("../../models/init-models");
+var db = require("../../models/index");
+var models = initModels(db.sequelize);
+const {userAllowedTo} = require('./verifyPermissions');
 
 export function getRole(req, res) {
     let id = req.query.id;
@@ -35,51 +40,39 @@ export function getRole(req, res) {
     })
 }
 
-export function addRole(req, res) {
-    let name = req.body.name;
-    let courseID = req.body.courseID;
+export async function addRole(req, res) {
 
+    let name = req.body.name;
+    let idGlobalRole = req.payload.idGlobalRole;
+    let courseID = req.body.courseID;
+    
     //attributs incomplets
-    if (name == null || courseID == null) {
+    if (name == null || courseID == null || idGlobalRole == null) {
         return res.status(400).send({
             error: "missing field"
         });
     }
 
-    models.role.findOne({
-        attribute: ['name', 'courseID'],
-        where: {
+    const addAllowed = await userAllowedTo(courseID, req.payload,"createRole");
+
+    if (addAllowed.isAllowed === false) {
+        return res.status(addAllowed.status).send(addAllowed.error);
+    } else {
+        models.Roles.create({
             name: name,
             courseID: courseID
-        }
-    }).then((role) => {
-        //erreur, le role existe déjà
-        if (role) {
-            return res.status(500).send({
-                error: "request error role already exists"
-            });
-            //cas standard, création d'une role
-        } else {
-            const newRole = models.role.create({
-                name: name,
-                courseID: courseID
-            }).then((newRole) => {
-                return res.status(200).send({
-                    id: newRole.name,
-                    info: "new role created !"
+        }).then(newRole => {
+            return res.status(200).send({
+                    newRole
                 });
-                //erreur, la clef étrangère du cours ne correspond à aucun cours
-            }).catch((err) => {
-                return res.status(409).send({ error: "there is no course in the database with this courseID." })
+        }).catch((err) => {
+            return res.status(500).send({
+                error:"Internal server error; data base request failed"
             });
-        }
-        //erreur interne, problème surement lié au setup du serveur SQL
-    }).catch((err) => {
-        return res.status(400).send({
-            error: err
-        })
-    })
+        });
+    }
 }
+
 
 export function editRole(req, res) {
     let id = req.body.id;
