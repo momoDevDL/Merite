@@ -80,7 +80,8 @@ router.route('/section')
 
 router.route('/section/:sectionId')
     .put(verifyToken,updateSection)
-
+    
+//Récuperer la liste des sections d'un cours en passant l'id de cours 
 router.route('/section/:courseId')
     .get(verifyToken,getSections);
     
@@ -120,9 +121,11 @@ router.route('/course')
 router.route('/course/:idEnseignant')
     .post(verifyToken,addCourse);
 
+//Récuperer la liste de tout les cours d'un utilisateur
 router.route('/course/userCourses')
     .get(verifyToken ,getUserCourses);
 
+//mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
 router.route('/course/favorite')
     .put( verifyToken,setAsFavorite);
 
