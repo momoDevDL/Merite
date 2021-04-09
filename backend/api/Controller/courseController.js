@@ -240,7 +240,7 @@ export function getUserCourses(req,res){
 
     models.Course_has_user.findAll({
         where: {
-            username : username
+            userID : username
         }    
     }).then( courses =>{
         return res.status(200).send(courses);

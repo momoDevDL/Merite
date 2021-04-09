@@ -118,13 +118,13 @@ router.route('/course')
     .delete(deleteCourse);
 
 router.route('/course/:idEnseignant')
-    .post(addCourse);
+    .post(verifyToken,addCourse);
 
 router.route('/course/userCourses')
-    .get(getUserCourses);
+    .get(verifyToken ,getUserCourses);
 
 router.route('/course/favorite')
-    .put(setAsFavorite);
+    .put( verifyToken,setAsFavorite);
 
 router.route('/course/:courseID')
     .put(verifyToken,asignStudentsToCourse)
