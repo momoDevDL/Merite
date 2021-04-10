@@ -1,7 +1,7 @@
 {
     "development": {
-        "username": "phpmyadmin",
-        "password": "root",
+        "username": "admin",
+        "password": "admin",
         "database": "merite_development",
         "host": "127.0.0.1",
         "dialect": "mysql",
