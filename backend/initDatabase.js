@@ -135,8 +135,8 @@ if (process.argv[2] === undefined) {
 //connection à la base de donnée
 const con = mysql.createConnection({
     host: "localhost",
-    user: process.DB_USER,
-    password: process.DB_PASS,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
 });
 
 const superUser = {

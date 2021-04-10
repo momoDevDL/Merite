@@ -1,27 +1,25 @@
-var jwt  = require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
-    generateAccessTokenforUser: (user)=>{
-       return jwt.sign({
-            username : user.username,
+    generateAccessTokenforUser: (user) => {
+        return jwt.sign({
+            username: user.username,
             email: user.email,
-            idGlobalRole : user.idGlobalRole
-        },process.env.JWT_SECRET_SIGN_KEY,
-        {
-            algorithm:"HS256",
-            expiresIn:'1h'
+            idGlobalRole: user.idGlobalRole
+        }, process.env.JWT_SECRET_SIGN_KEY, {
+            algorithm: "HS256",
+            expiresIn: '1h'
         });
     },
 
-    generateRefreshTokenforUser: (user) =>{
+    generateRefreshTokenforUser: (user) => {
         return jwt.sign({
-            username : user.username,
+            username: user.username,
             email: user.email,
-            isAdmin : user.isAdmin
-        },process.env.REFRESH_TOKEN_SECRET,
-        {
-            algorithm:"HS256",
-            expiresIn:process.env.REFRESH_TOKEN_LIFE
+            isAdmin: user.isAdmin
+        }, process.env.REFRESH_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.REFRESH_TOKEN_LIFE
         });
     },
 
@@ -53,53 +51,52 @@ module.exports = {
     },
 
 
-    refreshToken : (req, res) => {
+    refreshToken: (req, res) => {
         let UserAccesToken = req.headers['authorization'].split(' ')[1];
-    
+
         if (!UserAccesToken) {
             return res.status(403).send("missed field : token not found in cookie");
         } else {
             console.log(req.payload);
-    
-                jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY,(err,payload) =>{
-                    if(err){
-                        return res.status(401).send("Failed to match Access Token the payload has been tampered with");
-                    }else{
-                        console.log(payload);
-                    }
-        
-                });
-            
-    
-            let refreshToken;
-    
-            models.user.findOne({
-                attribute: ['refreshToken'],
-                where:{
-                    email : req.body.email
+
+            jwt.verify(UserAccesToken, process.env.JWT_SECRET_SIGN_KEY, (err, payload) => {
+                if (err) {
+                    return res.status(401).send("Failed to match Access Token the payload has been tampered with");
+                } else {
+                    console.log(payload);
                 }
-            }).then((token) =>{
+
+            });
+
+
+            let refreshToken;
+
+            models.User.findOne({
+                attribute: ['refreshToken'],
+                where: {
+                    email: req.body.email
+                }
+            }).then((token) => {
                 refreshToken = token;
-            }).catch((error) =>{
+            }).catch((error) => {
                 return res.status(500).send("DB request failed could not retrieve refresh token");
             });
-    
-            try{
-                jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET);
-            }catch(err){
+
+            try {
+                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            } catch (err) {
                 return res.status(401).send("failed to verify refresh Token");
             }
-    
-            let newUserToken = jwt.sign(verifiedTokenPayload,process.env.REFRESH_TOKEN_SECRET,
-            {
-                algorithm:"HS256",
-                expiresIn:process.env.JWT_SECRET_SIGN_KEY
+
+            let newUserToken = jwt.sign(verifiedTokenPayload, process.env.REFRESH_TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: process.env.JWT_SECRET_SIGN_KEY
             });
-    
-            
-            
+
+
+
             //res.cookie("jwt",newUserToken,{httpOnly:true});
-            res.status(201).send({token : newUserToken ,message :"token refreshed successfully"});
+            res.status(201).send({ token: newUserToken, message: "token refreshed successfully" });
         }
     },
 };
