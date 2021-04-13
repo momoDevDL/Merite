@@ -128,19 +128,18 @@ export function register(req, res) {
 export function userLogin(req, res) {
     console.log(req.body);
 
-    var email = req.body.email;
+    var uername = req.body.username;
     var password = req.body.password;
 
-    if (email == null || password == null) {
+    if (username == null || password == null) {
         return res.status(400).send({
             error: "missing field "
         });
     }
 
     models.User.findOne({
-        attribute: ['email'],
         where: {
-            email: email,
+            username: username,
         }
     }).then((userfound) => {
 
@@ -160,7 +159,7 @@ export function userLogin(req, res) {
                         refreshToken: refreshToken
                     }, {
                         where: {
-                            email: userfound.email
+                            username: userfound.username
                         }
                     }).then((updated) => {
                         if (updated) {
@@ -218,10 +217,10 @@ async function  isAdmin(idGlobalRole) {
 export function adminLogin(req, res) {
     console.log(req.body);
 
-    var email = req.body.email;
+    var username = req.body.username;
     var password = req.body.password;
 
-    if (email == null || password == null) {
+    if (username == null || password == null) {
         return res.status(400).send({
             error: "missing field "
         });
@@ -229,7 +228,7 @@ export function adminLogin(req, res) {
 
     models.User.findOne({
         where: {
-            email: email,
+            username: username,
         }
     }).then((userfound) => {
         
@@ -267,7 +266,7 @@ export function adminLogin(req, res) {
                             refreshToken: refreshToken
                         }, {
                             where: {
-                                email: userfound.email
+                                username: userfound.username
                             }
                         }).then((updated) => {
                             if (updated) {
