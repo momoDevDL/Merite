@@ -1,3 +1,5 @@
+import { resolveSoa } from 'dns';
+
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -45,7 +47,7 @@ export function createModule(req, res) {
 }
 
 export function getCourse(req, res) {
-    let id = req.query.id;
+    let id = req.body.id;
 
     //attributs incomplets
     if (id == null) {
@@ -237,13 +239,31 @@ export async function asignStudentsToCourse(req,res){
 
 export function getUserCourses(req,res){
     let username = req.payload.username;
+    
 
     models.Course_has_user.findAll({
         where: {
             userID : username
         }    
-    }).then( courses =>{
-        return res.status(200).send(courses);
+    }).then( async courses =>{
+        let AllCourses = [];
+        for(let i = 0 ; i < courses.length ; i++){
+           const course = await models.Courses.findOne({
+                where:{
+                    id : courses[i].courseID
+                }
+            }).then(course =>{
+               return course;
+            }).catch(err=>{
+                return res.status(500).send({
+                    error : err,
+                    Message : "internal server error; DB request failed"
+                });
+            });
+            AllCourses.push(course);
+        }
+        
+        return res.status(200).send(AllCourses);
     }).catch(err=>{
         return res.status(500).send({
             error : err,

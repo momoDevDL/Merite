@@ -128,7 +128,7 @@ export function register(req, res) {
 export function userLogin(req, res) {
     console.log(req.body);
 
-    var uername = req.body.username;
+    var username = req.body.username;
     var password = req.body.password;
 
     if (username == null || password == null) {
