@@ -27,7 +27,7 @@ let statements = [
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255),
         idResponsable VARCHAR(255),
-        FOREIGN KEY(idResponsable) REFERENCES user(username)
+        FOREIGN KEY(idResponsable) REFERENCES User(username)
     )`,
     //USER_HAS_FORMATION
     `CREATE TABLE User_Has_Formations (
@@ -63,8 +63,8 @@ let statements = [
     `CREATE TABLE Course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
-        FOREIGN KEY (userID) REFERENCES user(username),
-        FOREIGN KEY (courseID) REFERENCES courses(id)
+        FOREIGN KEY (userID) REFERENCES User(username),
+        FOREIGN KEY (courseID) REFERENCES Courses(id)
     )`,
     //Section
     `CREATE TABLE Section (
@@ -72,7 +72,7 @@ let statements = [
         name VARCHAR(255),
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES courses(id)
+        FOREIGN KEY (courseID) REFERENCES Courses(id)
     )`,
     //Document
     `CREATE TABLE Document (
@@ -82,7 +82,7 @@ let statements = [
         filepath VARCHAR(255),
         sectionID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (sectionID) REFERENCES section(id)
+        FOREIGN KEY (sectionID) REFERENCES Section(id)
     )`,
     //ROLES
     `CREATE TABLE Roles (
@@ -90,7 +90,7 @@ let statements = [
         name VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY (courseID) REFERENCES courses(id)
+        FOREIGN KEY (courseID) REFERENCES Courses(id)
     )`,
     //PERMISSION
     `CREATE TABLE Permissions (
@@ -102,15 +102,15 @@ let statements = [
     `CREATE TABLE User_has_roles (
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (userID) REFERENCES user(username)
+        FOREIGN KEY (roleID) REFERENCES Roles(id),
+        FOREIGN KEY (userID) REFERENCES User(username)
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE Role_has_permissions (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
-        FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (permissionID) REFERENCES permissions(id)
+        FOREIGN KEY (roleID) REFERENCES Roles(id),
+        FOREIGN KEY (permissionID) REFERENCES Permissions(id)
     )`
 ]
 

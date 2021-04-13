@@ -12,6 +12,7 @@ backend/seeders
 backend/.env
 backend/config/config.json
 backend/assets/uploads/*
+backend/generatedUsers.txt
 
 # Frontend
 
