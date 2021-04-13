@@ -7,7 +7,6 @@
                     </v-text-field>
                 </v-col>
                 {{userName}}
-                {{$auth.storage.getUniversal('user')}}
             <div class="user-cards">
                 <div v-on:click="showSelectionRole" class="cardSelection">Ajouter un rôle </div>
                 <div class="cardSelection">Modifier un role</div>
