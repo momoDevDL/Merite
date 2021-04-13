@@ -7,6 +7,7 @@
                     </v-text-field>
                 </v-col>
                 {{userName}}
+                {{$auth.storage.getUniversal('user')}}
             <div class="user-cards">
                 <div v-on:click="showSelectionRole" class="cardSelection">Ajouter un rôle </div>
                 <div class="cardSelection">Modifier un role</div>
@@ -56,7 +57,7 @@ export default {
             try {
                 console.log(this.userToken)
                 let { users } = await this.$axios.$get('/user', {
-                    headers : { 'authorization' : this.userToken }
+                    headers : { Authorization : this.$auth.strategy.token.get() }
                 });
 
                 this.userName = users

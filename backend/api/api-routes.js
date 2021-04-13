@@ -11,10 +11,10 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register, login, allUsers, userInfo } = require('./Controller/userController');
+const { register, userLogin,adminLogin, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
-const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse } = require('./Controller/courseController');
+const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse, getUserCourses, setAsFavorite } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
 const { createSection, updateSection, getSections} = require('./Controller/sectionController');
@@ -57,12 +57,16 @@ router.route('/user/register')
     .post(verifyToken,register);
 
 router.route('/user/login')
-    .post(login);
+    .post(userLogin);
+
+router.route('/user/admin/login')
+    .post(adminLogin);
+
 
 router.route('/user/refresh')
     .post(verifyToken, refreshToken)
 
-router.route('/user/:username')
+router.route('/user/:email')
     .get(verifyToken,userInfo)
 
 router.route('/user')
@@ -76,10 +80,11 @@ router.route('/section')
 
 router.route('/section/:sectionId')
     .put(verifyToken,updateSection)
-
+    
+//Récuperer la liste des sections d'un cours en passant l'id de cours 
 router.route('/section/:courseId')
     .get(verifyToken,getSections);
-    //TODO retrieve all sections by course
+    
 //========================================================================
 
 //PERMISSIONS=============================================================
@@ -112,8 +117,17 @@ router.route('/course')
     .get(getCourse)
     .put(editCourse)
     .delete(deleteCourse);
+
 router.route('/course/:idEnseignant')
-    .post(addCourse);
+    .post(verifyToken,addCourse);
+
+//Récuperer la liste de tout les cours d'un utilisateur
+router.route('/course/userCourses')
+    .get(verifyToken ,getUserCourses);
+
+//mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
+router.route('/course/favorite')
+    .put( verifyToken,setAsFavorite);
 
 router.route('/course/:courseID')
     .put(verifyToken,asignStudentsToCourse)

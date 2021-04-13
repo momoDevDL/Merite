@@ -85,11 +85,7 @@ export default {
                         propertyName: 'token'
                     },
                     logout: false,
-                    user: {
-                        url: "/user/me",
-                        method: 'get',
-                        propertyName: 'user'
-                    },
+                    user: false
                 },
                 // tokenRequired : true,
                 // tokenType: 'bearer'

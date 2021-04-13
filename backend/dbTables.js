@@ -34,7 +34,8 @@ let statements = [
         idUser VARCHAR(255) NOT NULL,
         idFormation INT NOT NULL,
         FOREIGN KEY(idUser) REFERENCES User(username),
-        FOREIGN KEY(idFormation) REFERENCES Formations(id)
+        FOREIGN KEY(idFormation) REFERENCES Formations(id),
+        CONSTRAINT PK_User_has_roles PRIMARY KEY (idUser,idFormation)
     )`,
     //MODULE
     `CREATE TABLE Module (
@@ -49,7 +50,8 @@ let statements = [
         idFormation INT NOT NULL,
         idModule INT NOT NULL,
         FOREIGN KEY (idFormation) REFERENCES Formations(id),
-        FOREIGN KEY (idModule) REFERENCES Module(id)
+        FOREIGN KEY (idModule) REFERENCES Module(id),
+        CONSTRAINT PK_User_has_roles PRIMARY KEY (idFormation,idModule)
     )`,
     //COURSE
     `CREATE TABLE Courses (
@@ -63,8 +65,10 @@ let statements = [
     `CREATE TABLE Course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
+        favorite BOOLEAN DEFAULT 0,
         FOREIGN KEY (userID) REFERENCES user(username),
-        FOREIGN KEY (courseID) REFERENCES courses(id)
+        FOREIGN KEY (courseID) REFERENCES courses(id),
+        CONSTRAINT PK_Course_has_user PRIMARY KEY (userID,courseID)
     )`,
     //Section
     `CREATE TABLE Section (
@@ -103,14 +107,16 @@ let statements = [
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (userID) REFERENCES user(username)
+        FOREIGN KEY (userID) REFERENCES user(username),
+        CONSTRAINT PK_User_has_roles PRIMARY KEY (roleID,userID)
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE Role_has_permissions (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
         FOREIGN KEY (roleID) REFERENCES roles(id),
-        FOREIGN KEY (permissionID) REFERENCES permissions(id)
+        FOREIGN KEY (permissionID) REFERENCES permissions(id),
+        CONSTRAINT PK_User_has_roles PRIMARY KEY (roleID,permissionID)
     )`
 ]
 
