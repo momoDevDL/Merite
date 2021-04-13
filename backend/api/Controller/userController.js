@@ -358,6 +358,8 @@ export function userInfo(req, res) {
     let username = req.params.username;
 
     models.User.findOne({
+        attributes:['email','username','idGlobalRole','numEtud','birthdate',
+        'formation','INE','phoneNumber','address','town','pinCode'],
         where: {
             username: username
         }
