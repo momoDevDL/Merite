@@ -4,6 +4,8 @@ use merite_development;
 DELETE from Courses;
 DELETE from Module;
 
+INSERT INTO User (idGlobalRole,username,password,email,birthdate,phoneNumber,address,town,pinCode) VALUES ( 1, 'admin','admin','admin@admin.com','1980-06-17','0000000','ahahah','balti','000');
+
 INSERT INTO Module (id, name) VALUES 
     (1, 'DL'),
     (2, 'IGAI'),
@@ -22,3 +24,11 @@ INSERT INTO Course_has_user (userID, courseID) VALUES
     ('admin', 2),
     ('admin', 3),
     ('admin', 4);
+
+DELETE from user_has_roles;
+DELETE from Roles;
+DELETE from Document;
+DELETE from Section;
+DELETE from Course_has_user;
+DELETE from Courses;
+DELETE from Module;

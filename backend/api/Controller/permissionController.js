@@ -11,21 +11,21 @@ export function getPermission(req, res) {
         });
     }
 
-    models.permission.findOne({
+    models.Permissions.findOne({
         attribute: ['name'],
         where: {
             name: name
         }
-    }).then((permission) => {
-        //erreur, la permission existe déjà
-        if (permission) {
+    }).then((Permissions) => {
+        //erreur, la Permissions existe déjà
+        if (Permissions) {
             return res.status(200).send({
-                permission: permission
+                Permissions: Permissions
             });
 
         } else {
             return res.status(500).send({
-                error: "request error, the permission dosn't exist"
+                error: "request error, the Permissions dosn't exist"
             })
         }
         //erreur interne, problème surement lié au setup du serveur SQL
@@ -46,25 +46,25 @@ export function addPermission(req, res) {
         });
     }
 
-    models.permission.findOne({
+    models.Permissions.findOne({
         attribute: ['name'],
         where: {
             name: name
         }
-    }).then((permission) => {
-        //erreur, la permission existe déjà
-        if (permission) {
+    }).then((Permissions) => {
+        //erreur, la Permissions existe déjà
+        if (Permissions) {
             return res.status(500).send({
-                error: "request error permission already exists"
+                error: "request error Permissions already exists"
             });
-            //cas standard, création d'une permission
+            //cas standard, création d'une Permissions
         } else {
-            const newPermission = models.permission.create({
+            const newPermission = models.Permissions.create({
                 name: name
             }).then((newPermission) => {
                 return res.status(200).send({
                     name: newPermission.name,
-                    info: "new permission created !"
+                    info: "new Permissions created !"
                 });
             });
         }
@@ -86,23 +86,23 @@ export function deletePermission(req, res) {
         });
     }
 
-    models.permission.findOne({
+    models.Permissions.findOne({
         attribute: ['name'],
         where: {
             name: name
         }
-    }).then((permission) => {
-        //la permission existe, on la supprime
-        if (permission) {
-            permission.destroy();
+    }).then((Permissions) => {
+        //la Permissions existe, on la supprime
+        if (Permissions) {
+            Permissions.destroy();
             return res.status(200).send({
-                info: "permission sucessufully deleted !"
+                info: "Permissions sucessufully deleted !"
             });
 
-            //si la permission n'existe pas
+            //si la Permissions n'existe pas
         } else {
             return res.status(500).send({
-                error: "cannot delete : the permission doesn't exist"
+                error: "cannot delete : the Permissions doesn't exist"
             });
         }
         //erreur interne, problème surement lié au setup du serveur SQL
@@ -124,24 +124,24 @@ export function editPermission(req, res) {
         });
     }
 
-    models.permission.findOne({
+    models.Permissions.findOne({
         attribute: ['name'],
         where: {
             name: oldName
         }
-    }).then((permission) => {
-        //la permission existe, on la modifie
-        if (permission) {
-            permission.name = newName;
-            permission.save();
+    }).then((Permissions) => {
+        //la Permissions existe, on la modifie
+        if (Permissions) {
+            Permissions.name = newName;
+            Permissions.save();
             return res.status(200).send({
-                info: "permission sucessufully edited !"
+                info: "Permissions sucessufully edited !"
             });
 
-            //si la permission n'existe pas
+            //si la Permissions n'existe pas
         } else {
             return res.status(500).send({
-                error: "cannot edit : the permission doesn't exist"
+                error: "cannot edit : the Permissions doesn't exist"
             });
         }
         //erreur interne, problème surement lié au setup du serveur SQL

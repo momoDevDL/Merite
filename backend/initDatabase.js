@@ -4,7 +4,15 @@
 const mysql = require("mysql2");
 const statements = require('./dbTables');
 var bcrypt = require('bcrypt');
+const fs = require("fs");
 require('dotenv').config();
+
+const permissions = [
+    ["modification", 1],
+    ["lecture", 2],
+    ["suppression", 3],
+    ["ajout", 4]
+];
 
 //lance le script de création de la base de donnée
 async function launchScript() {
@@ -13,9 +21,32 @@ async function launchScript() {
     await switchToDatabase("merite_development");
     await createTables();
     await createSuperUserRole();
+    await createStudentRole();
+    await createTeacherRole();
     await createSuperUser();
+    await addPermissions();
+    fs.writeFileSync('generatedUsers.txt', ``);
     console.log("Database is now up and running !")
     con.end();
+}
+
+async function addPermissions() {
+    return new Promise(async(resolve, reject) => {
+        let prepareStmt = ` INSERT INTO 
+                Permissions(id, name) values (?,?)`;
+        let cpt = 0;
+        permissions.forEach(permission => {
+            values = [permission[1], permission[0]];
+            con.query(prepareStmt, values, (err, result) => {
+                if (err) throw err;
+                cpt++;
+                console.log(`Ajout de la permission ${permission[0]}`);
+                if (cpt === permissions.length) {
+                    resolve();
+                }
+            });
+        });
+    });
 }
 
 //se connecte sur la base de donnée
@@ -27,7 +58,7 @@ async function switchToDatabase(databaseName) {
                 reject();
             };
             resolve();
-        })
+        });
     });
 }
 
@@ -46,13 +77,12 @@ async function createSuperUser() {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log("super admin created with success.")
+                        console.log("super admin created with success.");
                         resolve();
                     }
                 });
             }
-
-        })
+        });
     });
 }
 
@@ -65,6 +95,34 @@ async function createSuperUserRole() {
                 reject();
             } else {
                 console.log("Super-admin role created.");
+                resolve();
+            }
+        });
+    });
+}
+
+async function createStudentRole() {
+    return new Promise(async(resolve, reject) => {
+        con.query("INSERT INTO Global_Roles(name) VALUES ( 'Etudiant' )", (err, result) => {
+            if (err) {
+                console.log("error while creating the super admin");
+                reject();
+            } else {
+                console.log("Etudiant role created.");
+                resolve();
+            }
+        });
+    });
+}
+
+async function createTeacherRole() {
+    return new Promise(async(resolve, reject) => {
+        con.query("INSERT INTO Global_Roles(name) VALUES ( 'Professeur' )", (err, result) => {
+            if (err) {
+                console.log("error while creating the super admin");
+                reject();
+            } else {
+                console.log("Professeur role created.");
                 resolve();
             }
         });
@@ -122,14 +180,6 @@ async function createTables() {
             });
         });
     });
-}
-
-if (process.argv[2] === undefined) {
-    console.log("missing arg : no username given");
-    process.exit();
-} else if (process.argv[3] === undefined) {
-    console.log("missing arg : no password given");
-    //process.exit();
 }
 
 //connection à la base de donnée
