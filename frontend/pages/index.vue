@@ -4,14 +4,6 @@
 		<PersonnalNotes></PersonnalNotes>
 		<Classes></Classes>
 		<Instagram></Instagram> -->
-<<<<<<< HEAD
-    <div @click="logout" class="notifications">
-      <a href="#"><img src="../img/vector_ek3.png" class="vector" /></a>
-    </div>
-    <div class="personnal_info_instagram">
-      <PersonnalInfo></PersonnalInfo>
-      <Instagram></Instagram>
-=======
     <div class="notifications">
       <a href="#"
         ><img src="~/assets/home/component-parameter.svg" class="vector"
@@ -74,7 +66,6 @@
       <div class="component component4"></div>
       <div class="component component5"></div>
       <div class="component component6"></div>
->>>>>>> corentin-dev
     </div>
   </div>
 </template>
@@ -83,34 +74,6 @@
 import Classes from "~/components/Classes.vue";
 export default {
   components: {
-<<<<<<< HEAD
-    Classes,
-  },
-  layout: "homeLayout",
-  methods : {
-	  async logout() {
-		  await this.$auth.logout()
-		  console.log("logout");
-		  this.$route.push('/login')
-	  }
-  }
-};
-</script>
-
-<style lang ="scss">
-.notifications {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 20px;
-}
-
-.personnal_info_instagram {
-  display: flex;
-  flex-direction: column;
-}
-</style>
-=======
     Classes
   },
   layout: "homeLayout"
@@ -234,4 +197,3 @@ export default {
   color: #215fff !important;
 }
 </style>
->>>>>>> corentin-dev

@@ -13,11 +13,7 @@
           @change="verifyForm"
           outlined
           v-model="user.role"
-<<<<<<< HEAD
-          :items="roles"
-=======
           :items="Object.keys(roles)"
->>>>>>> corentin-dev
           label="Rôle"
         ></v-select>
         <p class="title-form">Etat civil</p>
@@ -166,11 +162,7 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel fixe',
-<<<<<<< HEAD
-              example: 'Exemple tel :',
-=======
               example: 'Exemple tel :'
->>>>>>> corentin-dev
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -185,11 +177,7 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel mobile',
-<<<<<<< HEAD
-              example: 'Exemple tel :',
-=======
               example: 'Exemple tel :'
->>>>>>> corentin-dev
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -218,105 +206,6 @@
           </v-select>
         </div>
 
-<<<<<<< HEAD
-        <div v-if="user.role == 'Administrateur'" class="student-form">
-          <p class="title-form">Informations administrateurs</p>
-          <v-divider class="divider-form"></v-divider>
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-text-field
-            @keydown="verifyForm"
-            v-model="user.numEtudiant"
-            outlined
-            label="Admin test"
-            placeholder="20212596Y"
-          />
-          <v-select
-            @change="verifyForm"
-            outlined
-            v-model="user.formation"
-            :items="mergeWithNewData"
-            label="Formation"
-          >
-          </v-select>
-        </div>
-=======
->>>>>>> corentin-dev
 
         <v-btn
           :loading="loadingResponse"
@@ -384,31 +273,17 @@
             <span class="prefill" v-else>1970</span>
           </p>
           <p>
-<<<<<<< HEAD
-            Rue : 
-=======
             Rue :
->>>>>>> corentin-dev
             <span class="card-user-filled" v-if="user.numRue">{{
               user.numRue
             }}</span>
             <span class="prefill" v-else>57</span>
-<<<<<<< HEAD
-            <span class="card-user-filled" v-if="user.rue">{{
-              user.rue
-            }}</span>
-=======
             <span class="card-user-filled" v-if="user.rue">{{ user.rue }}</span>
->>>>>>> corentin-dev
             <span class="prefill" v-else>Rue de la république</span>
           </p>
 
           <p>
-<<<<<<< HEAD
-            Ville : 
-=======
             Ville :
->>>>>>> corentin-dev
             <span class="card-user-filled" v-if="user.codePostal">{{
               user.codePostal
             }}</span>
@@ -420,34 +295,16 @@
           </p>
 
           <p>
-<<<<<<< HEAD
-            Tel fixe : 
-            <span class="card-user-filled" v-if="phoneFixeResults.formatInternational">{{
-              phoneFixeResults.formatInternational
-            }}</span>
-=======
             Tel fixe :
             <span
               class="card-user-filled"
               v-if="phoneFixeResults.formatInternational"
               >{{ phoneFixeResults.formatInternational }}</span
             >
->>>>>>> corentin-dev
             <span class="prefill" v-else>05 63 74 44 44</span>
           </p>
 
           <p>
-<<<<<<< HEAD
-            Tel mobile : 
-            <span class="card-user-filled" v-if="phoneMobileResults.formatInternational">{{
-              phoneMobileResults.formatInternational
-            }}</span>
-            <span class="prefill" v-else>06 06 06 06 06</span>
-          </p>
-
-          
-
-=======
             Tel mobile :
             <span
               class="card-user-filled"
@@ -457,7 +314,6 @@
             <span class="prefill" v-else>06 06 06 06 06</span>
           </p>
 
->>>>>>> corentin-dev
           <div v-if="user.role == 'Etudiant'" class="bloc-etudiant">
             <p>
               Numéro étudiant :
@@ -927,7 +783,6 @@ export default {
 .phone-input {
   margin-bottom: 22px;
 }
-<<<<<<< HEAD
 
 .header-dashboard-page {
   display: flex;
@@ -945,25 +800,6 @@ export default {
     text-transform: none;
     transition: 0.3s;
 
-=======
-
-.header-dashboard-page {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 50px;
-  align-items: center;
-
-  .dashboard-page-title {
-    font-size: 1.6em;
-    margin-bottom: 0 !important;
-  }
-
-  .dashboard-page-title-link {
-    text-decoration: none;
-    text-transform: none;
-    transition: 0.3s;
-
->>>>>>> corentin-dev
     span.arrow {
       transition: 0.3s;
       display: inline-block;
@@ -1091,19 +927,4 @@ input.maz-input__input:focus {
   border-color: blue;
 }
 
-// div.input-phone-number  {
-//   border: 1px solid #96989b;
-//     border-top-right-radius:5px !important ;
-//   border-bottom-right-radius:5px !important ;
-//   border-top-left-radius:0px !important ;
-//   border-bottom-left-radius:0px !important ;
-
-//     &:hover {
-//     border: 1px solid #222323;
-//   }
-
-//   &:focus {
-//     border-color : blue;
-//   }
-// }
 </style>

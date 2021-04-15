@@ -2,7 +2,9 @@ import createPersistedState from 'vuex-persistedstate'
 import * as Cookies from 'js-cookie'
 
 export const state = () => ({
-    token: ''
+    token: '',
+    var1: '',
+    var2: ''
 })
 
 export const mutations = {
@@ -12,5 +14,8 @@ export const mutations = {
     },
     deleteToken(state) {
         state.token = ''
+    },
+    changeVar2(state) {
+        state.var2 = "Var changed !"
     }
 }
