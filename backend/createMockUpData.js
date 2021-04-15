@@ -277,7 +277,7 @@ async function addRoles() {
 async function addPermissionsToRole(role, roleID) {
     return new Promise(async(resolve, reject) => {
         let prepareStmt = ` INSERT INTO 
-                role_has_permissions(roleID,permissionID) values (?,?)`;
+                Role_has_permissions(roleID,permissionID) values (?,?)`;
         if (role === "Etudiant") {
             values = [roleID, 2];
             con.query(prepareStmt, values, async(err, result) => {
@@ -303,7 +303,7 @@ async function addPermissionsToRole(role, roleID) {
 async function addRolesToUsers() {
     return new Promise(async(resolve, reject) => {
         let prepareStmt = ` INSERT INTO 
-                user_has_roles(roleID,userID) values (?,?)`;
+                User_has_roles(roleID,userID) values (?,?)`;
         let cpt = 0;
         const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
         bar.start(usernames.length * courses.length, 0);
