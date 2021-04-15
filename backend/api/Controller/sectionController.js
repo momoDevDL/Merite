@@ -167,7 +167,7 @@ export async function createSection(req, res) {
 };
 
 
-export function updateSection(req, res) {
+export async function updateSection(req, res) {
     let sectionToUpdateId = req.params.sectionId;
     let courseID = req.params.courseID;
 

@@ -66,13 +66,8 @@ router.route('/user/admin/login')
 router.route('/user/refresh')
     .post(verifyToken, refreshToken)
 
-<<<<<<< HEAD
 router.route('/user/:username')
     .get(verifyToken, userInfo)
-=======
-router.route('/user/:email')
-    .get(verifyToken,userInfo)
->>>>>>> dev_ana
 
 router.route('/user')
     .get(verifyToken, allUsers)
