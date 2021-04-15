@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {verifyToken,refreshToken} = require('./Controller/jwt.token');
+const { verifyToken, refreshToken } = require('./Controller/jwt.token');
 
 
 router.get('/', function(req, res) {
@@ -17,8 +17,8 @@ const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleCon
 const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
-const { createSection, updateSection, getSections} = require('./Controller/sectionController');
-const {  createDocument, updateDocument, getDocuments, getDocumentWithId, downloadDocument} = require('./Controller/documentController');
+const { createSection, updateSection, getSections } = require('./Controller/sectionController');
+const { createDocument, updateDocument, getDocuments, getDocumentWithId, downloadDocument } = require('./Controller/documentController');
 //Routes API
 router.route('/test')
     .get(getTest)
@@ -54,32 +54,32 @@ router.route('/testUser')
 
 //USERS ==================================================================
 router.route('/user/register')
-    .post(verifyToken,register);
+    .post(verifyToken, register);
 
 router.route('/user/login')
     .post(login);
 
 router.route('/user/refresh')
-    .post(verifyToken,refreshToken)
+    .post(verifyToken, refreshToken)
 
 router.route('/user/:username')
-    .get(verifyToken,userInfo)
+    .get(verifyToken, userInfo)
 
 router.route('/user')
-    .get(verifyToken,allUsers)
-/*=================================================================*/
+    .get(verifyToken, allUsers)
+    /*=================================================================*/
 
 
 /*===SECTION========================================================*/
 router.route('/section')
-    .post(verifyToken,createSection)  
+    .post(verifyToken, createSection)
 
 router.route('/section/:sectionId')
-    .put(verifyToken,updateSection)
+    .put(verifyToken, updateSection)
 
 router.route('/section/:courseId')
-    .get(verifyToken,getSections);
-    //TODO retrieve all sections by course
+    .get(verifyToken, getSections);
+//TODO retrieve all sections by course
 //========================================================================
 
 //PERMISSIONS=============================================================
@@ -96,42 +96,42 @@ router.route('/permissionOfRole')
 
 //ROLES===================================================================
 router.route('/role')
-    .post(verifyToken,addRole)
+    .post(verifyToken, addRole)
     .get(getRole)
-    .put(verifyToken,editRole)
-    .delete(verifyToken,deleteRole);
+    .put(verifyToken, editRole)
+    .delete(verifyToken, deleteRole);
 
 router.route('/roleOfUser')
-    .post(verifyToken,addRoleToUser)
-    .delete(verifyToken,deleteRoleToUser);
+    .post(verifyToken, addRoleToUser)
+    .delete(verifyToken, deleteRoleToUser);
 //========================================================================
 
 //COURSES=================================================================
 router.route('/course')
-    .post(verifyToken,addCourse)
+    .post(verifyToken, addCourse)
     .get(getCourse)
-    .put(editCourse)
-    .delete(deleteCourse);
+    .put(verifyToken, editCourse)
+    .delete(verifyToken, deleteCourse);
 router.route('/course/:idEnseignant')
-    .post(addCourse);
+    .post(verifyToken, addCourse);
 
 router.route('/course/:courseID')
-    .put(verifyToken,asignStudentsToCourse)
-//========================================================================
+    .put(verifyToken, asignStudentsToCourse)
+    //========================================================================
 
 
 
 /*===DOCUMENT========================================================*/
 router.route('/document')
-    .post(verifyToken,createDocument)
-    .get(verifyToken,getDocuments)
-  
+    .post(verifyToken, createDocument)
+    .get(verifyToken, getDocuments)
+
 router.route('/document/:documentId')
-    .put(verifyToken,updateDocument)
-    .get(verifyToken,getDocumentWithId)
+    .put(verifyToken, updateDocument)
+    .get(verifyToken, getDocumentWithId)
 
 router.route('/document/download/:documentId')
-    .get(verifyToken,downloadDocument)
-/*=================================================================*/
+    .get(verifyToken, downloadDocument)
+    /*=================================================================*/
 
 export default router;
