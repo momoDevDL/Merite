@@ -275,12 +275,14 @@ export function getUserCourses(req,res){
 
 export function setAsFavorite(req,res){
     let courseID = req.body.courseID;
+    let username = req.payload.username;
 
     models.Course_has_user.update({
         favorite: 1
     },{
         where:{
-            courseID: courseID
+            courseID: courseID,
+            userID: username
         }
     }).then( updatedRecord =>{
         return res.status(200).send(updatedRecord);
