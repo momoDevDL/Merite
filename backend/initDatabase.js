@@ -21,13 +21,8 @@ async function launchScript() {
     await switchToDatabase("merite_development");
     await createTables();
     await createSuperUserRole();
-<<<<<<< HEAD
     await createStudentRole();
     await createTeacherRole();
-=======
-    await createAdminRole();
-    await createStudentRole();
->>>>>>> corentin-dev
     await createSuperUser();
     await addPermissions();
     fs.writeFileSync('generatedUsers.txt', ``);
@@ -106,7 +101,6 @@ async function createSuperUserRole() {
     });
 }
 
-<<<<<<< HEAD
 async function createStudentRole() {
     return new Promise(async(resolve, reject) => {
         con.query("INSERT INTO Global_Roles(name) VALUES ( 'Etudiant' )", (err, result) => {
@@ -115,24 +109,12 @@ async function createStudentRole() {
                 reject();
             } else {
                 console.log("Etudiant role created.");
-=======
-//crée le rôle super utilisateur
-async function createAdminRole() {
-    return new Promise(async(resolve, reject) => {
-        con.query("INSERT INTO Global_Roles(name) VALUES ( 'admin' )", (err, result) => {
-            if (err) {
-                console.log("error while creating the admin");
-                reject();
-            } else {
-                console.log("Admin role created.");
->>>>>>> corentin-dev
                 resolve();
             }
         });
     });
 }
 
-<<<<<<< HEAD
 async function createTeacherRole() {
     return new Promise(async(resolve, reject) => {
         con.query("INSERT INTO Global_Roles(name) VALUES ( 'Professeur' )", (err, result) => {
@@ -141,17 +123,6 @@ async function createTeacherRole() {
                 reject();
             } else {
                 console.log("Professeur role created.");
-=======
-//crée le rôle super utilisateur
-async function createStudentRole() {
-    return new Promise(async(resolve, reject) => {
-        con.query("INSERT INTO Global_Roles(name) VALUES ( 'etudiant' )", (err, result) => {
-            if (err) {
-                console.log("error while creating the student");
-                reject();
-            } else {
-                console.log("Student role created.");
->>>>>>> corentin-dev
                 resolve();
             }
         });
