@@ -11,9 +11,8 @@ backend/.DS_Store
 backend/seeders
 backend/.env
 backend/config/config.json
-backend/assets/uploads/*
+backend/assets/uploads/*.jpg
 backend/generatedUsers.txt
-
 # Frontend
 
 # dependencies

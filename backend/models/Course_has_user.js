@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey:true,
       references: {
         model: 'Courses',
         key: 'id'

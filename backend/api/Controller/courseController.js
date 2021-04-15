@@ -1,3 +1,5 @@
+import { resolveSoa } from 'dns';
+
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -45,7 +47,7 @@ export function createModule(req, res) {
 }
 
 export function getCourse(req, res) {
-    let id = req.query.id;
+    let id = req.body.id;
 
     //attributs incomplets
     if (id == null) {
@@ -60,7 +62,7 @@ export function getCourse(req, res) {
             id: id
         }
     }).then((course) => {
-        //erreur, la course existe déjà
+        
         if (course) {
             return res.status(200).send({
                 course: course
@@ -68,7 +70,7 @@ export function getCourse(req, res) {
 
         } else {
             return res.status(500).send({
-                error: "request error, the course dosn't exist"
+                error: "request error, the course doesn't exist"
             })
         }
         //erreur interne, problème surement lié au setup du serveur SQL
@@ -255,4 +257,61 @@ export async function asignStudentsToCourse(req, res) {
     } else {
         return res.status(allowedToAsign.status).send(allowedToAsign.error);
     }
+}
+
+export function getUserCourses(req,res){
+    let username = req.payload.username;
+    
+
+    models.Course_has_user.findAll({
+        where: {
+            userID : username
+        }    
+    }).then( async courses =>{
+        let AllCourses = [];
+        for(let i = 0 ; i < courses.length ; i++){
+           const course = await models.Courses.findOne({
+                where:{
+                    id : courses[i].courseID
+                }
+            }).then(course =>{
+               return course;
+            }).catch(err=>{
+                return res.status(500).send({
+                    error : err,
+                    Message : "internal server error; DB request failed"
+                });
+            });
+            AllCourses.push(course);
+        }
+        
+        return res.status(200).send(AllCourses);
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "internal server error; DB request failed"
+        });
+    });
+}
+
+
+export function setAsFavorite(req,res){
+    let courseID = req.body.courseID;
+    let username = req.payload.username;
+
+    models.Course_has_user.update({
+        favorite: 1
+    },{
+        where:{
+            courseID: courseID,
+            userID: username
+        }
+    }).then( updatedRecord =>{
+        return res.status(200).send(updatedRecord);
+    }).catch(err=>{
+        return res.status(500).send({
+            error : err,
+            Message : "internal server error; DB request failed"
+        });
+    });
 }
