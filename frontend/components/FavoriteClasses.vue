@@ -2,6 +2,7 @@
     <div class = "content-container">   
         <div class="container_favorite_classes">
             <div class="text_favorite_classes"> Mes cours favoris</div>
+            <div class="text_no_classes">{{noFavoriteCourse}}</div>
             <i class="fas fa-graduation-cap"></i>
             <div class="all_favorite_classes">
                 <div v-if="this.favoriteCourseNewContainer">
@@ -25,6 +26,7 @@ export default {
     data : function() {
         return {
             favoriteCourseName : null,
+            noFavoriteCourse : "Il n'y a pas de cours favoris",
             favoriteCourseNewContainer : false
         }
     },
@@ -36,6 +38,7 @@ export default {
             console.log(data)
             this.favoriteCourseNewContainer = true;
             this.favoriteCourseName = data.name;
+            this.noFavoriteCourse = null
 
             try {
                 let favoriteCourse = await this.$axios.$put('/course/favorite', {
@@ -94,11 +97,21 @@ export default {
         margin-top: 20px;
     }
 
+    .text_no_classes {
+        font-size: 16px;
+        text-align: left;
+        line-height: 0px;
+        font-family: "Poppins", sans-serif;
+        margin-left: 25px;
+        margin-top: 20px;
+        color: red;
+    }
+
     .container_classes {
         height: 170px;
         min-width: 220px;
         background: #DDE4F8;
-        margin-top: 20px;
+        margin-top: 0px;
         margin-left: 20px;
         -ms-border-radius: 24px;
         -o-border-radius: 24px;
