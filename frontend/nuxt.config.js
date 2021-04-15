@@ -36,7 +36,10 @@ export default {
     css: [],
 
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-    plugins: [],
+    plugins: [
+        { src: '~/plugins/maz.js', mode: 'client' },
+        { src: '~/plugins/mask.js', mode: 'client' }
+    ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
     components: true,
@@ -81,15 +84,8 @@ export default {
                         method: 'post',
                         propertyName: 'token'
                     },
-                    logout: {
-                        url: "/testLogout",
-                        method: 'delete'
-                    },
-                    user: {
-                        url: "/user/me",
-                        method: 'get',
-                        propertyName: 'user'
-                    },
+                    logout: false,
+                    user: false
                 },
                 // tokenRequired : true,
                 // tokenType: 'bearer'

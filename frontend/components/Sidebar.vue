@@ -57,7 +57,7 @@
         z-index: 999;
         padding: 3rem 20px 2rem 0px;
         width: 300px;
-                font-family: 'Poppins';
+        font-family: 'Poppins';
         font-weight: 500;
     }
 </style>

@@ -2,12 +2,12 @@
   <div class="vertical_menu_container">
     <div class="photo_name_container">
       <img src="../img/ellipse_1.png" class="photo"/>
-      <div class="name"><!--{{$auth.$storage.getUniversal('user').username}}--></div>
+      <div class="name">{{$auth.$storage.getUniversal('user').username}}</div>
     </div>
       <div class="menu_top_container">
         <ul>
           <li><div class="personnal_space"><a href="#">Espace personnel</a></div></li>
-          <li><div class="my_classes"><a href="#">Mes cours</a></div></li>
+          <li><nuxt-link to="/classes/student" class="my_classes">Mes cours</nuxt-link></li>
           <li><div class="my_grades"><a href="#">Mes notes</a></div></li>
           <li><div class="my_drive"><a href="#">Mon drive</a></div></li>
           <li><div class="my_mails"><a href="#">Mes e-mails</a></div></li>
@@ -122,6 +122,7 @@ export default {
     font-weight: 600;
     transition: .4s;
   }
+  
   .personnal_space {
     width: 200px;
     font-family: "Poppins", sans-serif;
