@@ -13,7 +13,11 @@
           @change="verifyForm"
           outlined
           v-model="user.role"
+<<<<<<< HEAD
           :items="roles"
+=======
+          :items="Object.keys(roles)"
+>>>>>>> corentin-dev
           label="Rôle"
         ></v-select>
         <p class="title-form">Etat civil</p>
@@ -162,7 +166,11 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel fixe',
+<<<<<<< HEAD
               example: 'Exemple tel :',
+=======
+              example: 'Exemple tel :'
+>>>>>>> corentin-dev
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -177,7 +185,11 @@
               countrySelectorLabel: 'Code pays',
               countrySelectorError: 'Choisir un pays',
               phoneNumberLabel: 'Tel mobile',
+<<<<<<< HEAD
               example: 'Exemple tel :',
+=======
+              example: 'Exemple tel :'
+>>>>>>> corentin-dev
             }"
             default-country-code="FR"
             :preferred-countries="['FR', 'US', 'BE', 'GB', 'DE']"
@@ -206,6 +218,7 @@
           </v-select>
         </div>
 
+<<<<<<< HEAD
         <div v-if="user.role == 'Administrateur'" class="student-form">
           <p class="title-form">Informations administrateurs</p>
           <v-divider class="divider-form"></v-divider>
@@ -302,6 +315,8 @@
           >
           </v-select>
         </div>
+=======
+>>>>>>> corentin-dev
 
         <v-btn
           :loading="loadingResponse"
@@ -369,19 +384,31 @@
             <span class="prefill" v-else>1970</span>
           </p>
           <p>
+<<<<<<< HEAD
             Rue : 
+=======
+            Rue :
+>>>>>>> corentin-dev
             <span class="card-user-filled" v-if="user.numRue">{{
               user.numRue
             }}</span>
             <span class="prefill" v-else>57</span>
+<<<<<<< HEAD
             <span class="card-user-filled" v-if="user.rue">{{
               user.rue
             }}</span>
+=======
+            <span class="card-user-filled" v-if="user.rue">{{ user.rue }}</span>
+>>>>>>> corentin-dev
             <span class="prefill" v-else>Rue de la république</span>
           </p>
 
           <p>
+<<<<<<< HEAD
             Ville : 
+=======
+            Ville :
+>>>>>>> corentin-dev
             <span class="card-user-filled" v-if="user.codePostal">{{
               user.codePostal
             }}</span>
@@ -393,14 +420,24 @@
           </p>
 
           <p>
+<<<<<<< HEAD
             Tel fixe : 
             <span class="card-user-filled" v-if="phoneFixeResults.formatInternational">{{
               phoneFixeResults.formatInternational
             }}</span>
+=======
+            Tel fixe :
+            <span
+              class="card-user-filled"
+              v-if="phoneFixeResults.formatInternational"
+              >{{ phoneFixeResults.formatInternational }}</span
+            >
+>>>>>>> corentin-dev
             <span class="prefill" v-else>05 63 74 44 44</span>
           </p>
 
           <p>
+<<<<<<< HEAD
             Tel mobile : 
             <span class="card-user-filled" v-if="phoneMobileResults.formatInternational">{{
               phoneMobileResults.formatInternational
@@ -410,6 +447,17 @@
 
           
 
+=======
+            Tel mobile :
+            <span
+              class="card-user-filled"
+              v-if="phoneMobileResults.formatInternational"
+              >{{ phoneMobileResults.formatInternational }}</span
+            >
+            <span class="prefill" v-else>06 06 06 06 06</span>
+          </p>
+
+>>>>>>> corentin-dev
           <div v-if="user.role == 'Etudiant'" class="bloc-etudiant">
             <p>
               Numéro étudiant :
@@ -457,7 +505,7 @@ export default {
   layout: "dashboardAdmin",
   data() {
     return {
-      roles: ["Professeur", "Etudiant", "Administrateur", "Secrétaire"],
+      roles: { Professeur: 0, Etudiant: 3, Administrateur: 2, Secrétaire: 0 },
       formations: [
         "DL",
         "IHM",
@@ -470,26 +518,26 @@ export default {
         "Histoire",
         "Géopolitique",
         "Géographie",
-        "Histoire de l'art",
+        "Histoire de l'art"
       ],
       user: {
-        nom: "",
-        prenom: "",
-        numEtudiant: "",
+        nom: "Gobbo",
+        prenom: "Corentin",
+        numEtudiant: "202020Y",
         birthday: {
-          day: "",
-          month: "",
-          years: "",
+          day: "30",
+          month: "7",
+          years: "1996"
         },
-        genre: "",
+        genre: "Mr",
         formation: "",
         role: "",
-        email: "",
-        ville: "",
-        rue : "",
-        numRue : "",
-        codePostal: "",
-        complement : ""
+        email: "eleve@gmail.com",
+        ville: "Toulouse",
+        rue: "rue Saint Antoine",
+        numRue: "30",
+        codePostal: "81000",
+        complement: ""
       },
       snackbar: false,
       textSnackbar: "",
@@ -505,24 +553,24 @@ export default {
       menu: false,
       menu2: false,
       showCard: false,
-      ruleNom: [(v) => v.length <= 30 || "Nombre de caractères max : 30"],
-      ruleVille: [(v) => v.length <= 70 || "Nombre de caractères max : 70"],
+      ruleNom: [v => v.length <= 30 || "Nombre de caractères max : 30"],
+      ruleVille: [v => v.length <= 70 || "Nombre de caractères max : 70"],
       ruleEmail: [
-        (v) => this.validateEmail(v) || "L'adresse e-mail doit être valide",
+        v => this.validateEmail(v) || "L'adresse e-mail doit être valide"
       ],
-      ruleDay: [(v) => (v > 0 && v <= 31) || ""],
-      ruleCodePostal: [(v) => true || ""],
-      ruleMonth: [(v) => (v > 0 && v <= 12) || ""],
-      ruleYear: [(v) => (v > 1900 && v <= new Date().getFullYear()) || ""],
+      ruleDay: [v => (v > 0 && v <= 31) || ""],
+      ruleCodePostal: [v => true || ""],
+      ruleMonth: [v => (v > 0 && v <= 12) || ""],
+      ruleYear: [v => (v > 1900 && v <= new Date().getFullYear()) || ""],
       formValidate: false,
       checkIfCorrect: false,
-      isDateValid: true,
+      isDateValid: true
     };
   },
   computed: {
     mergeWithNewData() {
       return [...new Set(this.formations)].sort();
-    },
+    }
   },
   methods: {
     tet() {
@@ -555,17 +603,17 @@ export default {
           this.user.birthday.years > 1900 &&
             this.user.birthday.years <= new Date().getFullYear()
         );
-        ok.push(this.user.numRue !== "")
-        ok.push(this.user.rue !== "")
-        ok.push(this.user.ville !== "")
-        ok.push(this.user.codePostal !== "")
+        ok.push(this.user.numRue !== "");
+        ok.push(this.user.rue !== "");
+        ok.push(this.user.ville !== "");
+        ok.push(this.user.codePostal !== "");
 
         if (this.user.role == "Etudiant") {
           ok.push(this.user.formation != "");
           ok.push(this.user.numEtudiant != "");
         }
 
-        this.formValidate = ok.every((v) => v == true);
+        this.formValidate = ok.every(v => v == true);
       }, 100);
     },
     updatePhoneFixeInformations($event) {
@@ -585,14 +633,16 @@ export default {
       }
     },
     checkUser() {
+      let user = this.user;
 
-      let user = this.user
+      if (user.role == "Etudiant") {
+      }
 
       user = {
         ...user,
-        phoneFixe : this.phoneFixeResults,
-        phoneMobile : this.phoneMobileResults
-      }
+        phoneFixe: this.phoneFixeResults,
+        phoneMobile: this.phoneMobileResults
+      };
 
       this.loadingResponse = true;
       if (this.formValidate) {
@@ -603,6 +653,7 @@ export default {
           `${this.user.birthday.years}-${this.user.birthday.month}-${this.user.birthday.day}`
         );
         if (date == "Invalid Date") {
+        // if (true) {
           this.loadingResponse = false;
           this.snackbarTimeout = 2000;
           this.textSnackbar = "La date n'est pas valide.";
@@ -613,23 +664,29 @@ export default {
             .$post(
               "/user/register",
               {
-                ... user,
+                email : this.user.email,
                 username: username,
-                email: this.user.email,
                 password: "default",
-                userIsAdmin: 1,
-                newUserIsAdmin: 1,
+                idGlobalRole: this.roles[this.user.role],
+                numEtud: this.user.numEtudiant,
+                birthdate : `${this.user.birthday.years}-${this.user.birthday.month}-${this.user.birthday.day}`,
+                formation : this.user.formation,
+                ine : this.user.numEtudiant,
+                town : this.user.ville,
+                pinCode : this.user.codePostal,
+                phoneNumber : this.phoneMobileResults.formatInternational,
+                address : `${this.user.numRue} ${this.user.rue}`,
                 firstName: this.user.prenom,
-                lastName: this.user.nom,
+                lastName: this.user.nom
               },
               {
                 headers: {
                   "Content-Type": "application/json",
-                   Authorization: this.$auth.strategy.token.get(),
-                },
+                  Authorization: this.$auth.strategy.token.get()
+                }
               }
             )
-            .then((res) => {
+            .then(res => {
               setTimeout(() => {
                 this.loadingResponse = false;
                 this.snackbarTimeout = 2000;
@@ -645,32 +702,31 @@ export default {
                 this.phone = "";
                 this.mobile = "";
 
-                this.phoneFixeResults = { isValid: false },
-                this.phoneMobileResults = { isValid: false },
-
-                this.user = {
-                  nom: "",
-                  prenom: "",
-                  numEtudiant: "",
-                  birthday: {
-                    day: "",
-                    month: "",
-                    year: "",
-                  },
-                  genre: "",
-                  formation: "",
-                  role: "",
-                  email: "",
-                  numRue: "",
-                  rue:"",
-                  ville : "",
-                  codePostal : ""
-                };
+                (this.phoneFixeResults = { isValid: false }),
+                  (this.phoneMobileResults = { isValid: false }),
+                  (this.user = {
+                    nom: "",
+                    prenom: "",
+                    numEtudiant: "",
+                    birthday: {
+                      day: "",
+                      month: "",
+                      year: ""
+                    },
+                    genre: "",
+                    formation: "",
+                    role: "",
+                    email: "",
+                    numRue: "",
+                    rue: "",
+                    ville: "",
+                    codePostal: ""
+                  });
 
                 this.verifyForm();
               }, 1000);
             })
-            .catch((err) => {
+            .catch(err => {
               console.log(err);
               this.loadingResponse = false;
               this.snackbarTimeout = 5000;
@@ -681,8 +737,8 @@ export default {
             });
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -871,6 +927,7 @@ export default {
 .phone-input {
   margin-bottom: 22px;
 }
+<<<<<<< HEAD
 
 .header-dashboard-page {
   display: flex;
@@ -888,6 +945,25 @@ export default {
     text-transform: none;
     transition: 0.3s;
 
+=======
+
+.header-dashboard-page {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+  align-items: center;
+
+  .dashboard-page-title {
+    font-size: 1.6em;
+    margin-bottom: 0 !important;
+  }
+
+  .dashboard-page-title-link {
+    text-decoration: none;
+    text-transform: none;
+    transition: 0.3s;
+
+>>>>>>> corentin-dev
     span.arrow {
       transition: 0.3s;
       display: inline-block;

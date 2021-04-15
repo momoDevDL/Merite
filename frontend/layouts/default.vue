@@ -15,6 +15,10 @@
   justify-content: space-between;
 }
 
+button {
+  outline: none;
+}
+
 .nav-title {
   padding-left: 50px;
 }

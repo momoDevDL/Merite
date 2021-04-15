@@ -65,10 +65,15 @@ let statements = [
     `CREATE TABLE Course_has_user (
         userID VARCHAR(255) NOT NULL,
         courseID INT NOT NULL,
+<<<<<<< HEAD
         favorite BOOLEAN DEFAULT 0,
         FOREIGN KEY (userID) REFERENCES User(username),
         FOREIGN KEY (courseID) REFERENCES Courses(id),
         CONSTRAINT PK_Course_has_user PRIMARY KEY (userID,courseID)
+=======
+        FOREIGN KEY (userID) REFERENCES User(username),
+        FOREIGN KEY (courseID) REFERENCES Courses(id)
+>>>>>>> corentin-dev
     )`,
     //Section
     `CREATE TABLE Section (
@@ -107,16 +112,24 @@ let statements = [
         roleID INT NOT NULL,
         userID VARCHAR(255) NOT NULL,
         FOREIGN KEY (roleID) REFERENCES Roles(id),
+<<<<<<< HEAD
         FOREIGN KEY (userID) REFERENCES User(username),
         CONSTRAINT PK_User_has_roles PRIMARY KEY (roleID,userID)
+=======
+        FOREIGN KEY (userID) REFERENCES User(username)
+>>>>>>> corentin-dev
     )`,
     //ROLE_HAS_PERMISSION
     `CREATE TABLE Role_has_permissions (
         roleID INT NOT NULL,
         permissionID INT NOT NULL,
         FOREIGN KEY (roleID) REFERENCES Roles(id),
+<<<<<<< HEAD
         FOREIGN KEY (permissionID) REFERENCES Permissions(id),
         CONSTRAINT PK_User_has_roles PRIMARY KEY (roleID,permissionID)
+=======
+        FOREIGN KEY (permissionID) REFERENCES Permissions(id)
+>>>>>>> corentin-dev
     )`
 ]
 

@@ -230,9 +230,15 @@ export async function asignStudentsToCourse(req, res) {
     let courseID = req.params.courseID;
     let UsersList = req.body.usersList;
 
+<<<<<<< HEAD
     const allowedTo = await userAllowedTo(courseID, req.payload, "ajout");
 
     if (allowedTo.isAllowed) {
+=======
+    const allowedToAsign = await userAllowedTo(courseID, req.payload, "asignToCourse");
+
+    if (allowedToAsign.isAllowed) {
+>>>>>>> corentin-dev
 
         UsersList.forEach(user => {
 

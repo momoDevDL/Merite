@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template v-on:add-favorite-course-clicked="onAddFavoriteCourseClicked">
     <div class = "content-container">   
         <div class="container_favorite_classes">
@@ -11,6 +12,24 @@
                             <img src="../img/graduation.png" class="graduation_icon_new">
                             <div class="name">{{favoriteCourseName}}</div>
                         </div>
+=======
+<template>
+    <div class = "content-container">   
+        <div class="container_favorite_classes">
+            <div class="text_favorite_classes"> Mes cours favoris</div>
+            <i class="fas fa-graduation-cap"></i>
+            <div class="all_favorite_classes">
+                <div v-for="cl in classes" :key="cl.className">
+                    <div class="container_classes">
+                        <br>
+                        <div class="class_name">
+                            <img src="../img/graduation.png" class="graduation_icon">
+                            {{cl.className}}
+                        </div>
+                        <img src="../img/link.png" class="link_icon">
+                        <br>
+                        <img src="../img/download.png" class="link_icon">
+>>>>>>> corentin-dev
                     </div>
                 </div>
             </div>
@@ -19,6 +38,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { EventBus } from '../Bus'
 
 export default {
@@ -64,6 +84,23 @@ export default {
 
 
 
+=======
+export default {
+    data : function() {
+        return {
+            classes : [
+                { className : 'MCO'},
+                { className : 'MCS'},
+                { className : 'CISI'},
+                { className : 'WebX'},
+                { className : 'ComFlex'},
+                { className : 'UCD-UX'}
+            ]   
+        }
+    }
+    
+}
+>>>>>>> corentin-dev
 </script>
 
 <style scoped>
@@ -97,6 +134,7 @@ export default {
         margin-top: 20px;
     }
 
+<<<<<<< HEAD
     .text_no_classes {
         font-size: 16px;
         text-align: left;
@@ -112,6 +150,13 @@ export default {
         min-width: 220px;
         background: #DDE4F8;
         margin-top: 0px;
+=======
+    .container_classes {
+        height: 170px;
+        min-width: 199px;
+        background: #DDE4F8;
+        margin-top: 20px;
+>>>>>>> corentin-dev
         margin-left: 20px;
         -ms-border-radius: 24px;
         -o-border-radius: 24px;
@@ -140,6 +185,7 @@ export default {
         margin-right: 10px;
     }
 
+<<<<<<< HEAD
     .graduation_icon_new {
         height: 25px;
         width: 25px;
@@ -151,6 +197,8 @@ export default {
         margin-top : 20px;
     }
 
+=======
+>>>>>>> corentin-dev
     .link_icon {
         height: 25px;
         width: 25px;

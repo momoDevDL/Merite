@@ -44,7 +44,7 @@ export function register(req, res) {
             email: email,
             username: username
         }
-    }).then(function (userfound) {
+    }).then(function(userfound) {
         if (userfound !== null) {
             return res.status(500).send({
                 error: "request error user already exist"
@@ -71,7 +71,7 @@ export function register(req, res) {
                             error: "request error you don't have the right to add new user"
                         });
                     } else {
-                        bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+                        bcrypt.hash(password, 5, function(err, bcryptedPassword) {
                             if (err) {
                                 return res.status(500).send({
                                     error: err
@@ -118,7 +118,7 @@ export function register(req, res) {
 
 
         }
-    }).catch(function (err) {
+    }).catch(function(err) {
         return res.status(500).send({
             error: err + " / findOne User request Error"
         });
@@ -194,8 +194,8 @@ export function userLogin(req, res) {
     })
 };
 
-async function  isAdmin(idGlobalRole) {
-    return new Promise((resolve,reject)=>{
+async function isAdmin(idGlobalRole) {
+    return new Promise((resolve, reject) => {
         models.Global_Roles.findOne({
             where: {
                 id: idGlobalRole
@@ -205,13 +205,13 @@ async function  isAdmin(idGlobalRole) {
             if (globalRole.name == "admin" || globalRole.name == "super-admin") {
                 resolve(true);
             } else {
-                reject({status:400,Message:"You don't have admin rights to access this domain",isAdmin:false});
+                reject({ status: 400, Message: "You don't have admin rights to access this domain", isAdmin: false });
             }
         }).catch(err => {
-            reject({status:500,Message:"internal server error; DB request failed",isAdmin:false});
+            reject({ status: 500, Message: "internal server error; DB request failed", isAdmin: false });
         });
     });
-    
+
 }
 
 export function adminLogin(req, res) {
@@ -231,7 +231,7 @@ export function adminLogin(req, res) {
             username: username,
         }
     }).then((userfound) => {
-        
+
 
         if (userfound == null) {
             return res.status(400).send({
@@ -246,10 +246,10 @@ export function adminLogin(req, res) {
         }).then(globalRoles => {
             let isAdmin = false;
             let cpt = 0;
-           
-            while(cpt < globalRoles.length && !isAdmin){
-                
-                if(globalRoles[cpt].name == "admin" || globalRoles[cpt].name == "super-admin"){
+
+            while (cpt < globalRoles.length && !isAdmin) {
+
+                if (globalRoles[cpt].name == "admin" || globalRoles[cpt].name == "super-admin") {
                     isAdmin = true;
                 }
                 cpt++;
@@ -259,9 +259,9 @@ export function adminLogin(req, res) {
                 bcrypt.compare(password, userfound.password, (cryptErr, cryptResponse) => {
 
                     if (cryptResponse) {
-    
+
                         let refreshToken = generateRefreshTokenforUser(userfound);
-    
+
                         models.User.update({
                             refreshToken: refreshToken
                         }, {
@@ -276,7 +276,7 @@ export function adminLogin(req, res) {
                             console.log(error);
                             return res.send("DB update query failed");
                         });
-    
+
                         return res.status(200).send({
                             token: generateAccessTokenforUser(userfound),
                             user: {
@@ -285,8 +285,8 @@ export function adminLogin(req, res) {
                                 idGlobalRole: userfound.idGlobalRole
                             }
                         });
-    
-    
+
+
                     } else {
                         return res.status(400).send({
                             error: " Invalid password ! " + cryptErr
@@ -294,10 +294,10 @@ export function adminLogin(req, res) {
                     }
                 });
             } else {
-                return res.status(400).send({Message:"You don't have admin rights to access this domain",isAdmin:false});
+                return res.status(400).send({ Message: "You don't have admin rights to access this domain", isAdmin: false });
             }
         }).catch(err => {
-            return res.status(500).send({Message:"internal server error; DB request failed",isAdmin:false});
+            return res.status(500).send({ Message: "internal server error; DB request failed", isAdmin: false });
         });
 
     }).catch((err) => {
@@ -357,8 +357,9 @@ export function userInfo(req, res) {
     let email = req.params.email;
 
     models.User.findOne({
-        attributes:['email','username','idGlobalRole','numEtud','birthdate',
-        'formation','INE','phoneNumber','address','town','pinCode'],
+        attributes: ['email', 'username', 'idGlobalRole', 'numEtud', 'birthdate',
+            'formation', 'INE', 'phoneNumber', 'address', 'town', 'pinCode'
+        ],
         where: {
             email: email
         }
