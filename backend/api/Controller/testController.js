@@ -1,7 +1,18 @@
 export function getTest(req, res) {
-    res.header("Content-Type", "application/json")
-    console.log(req.headers.authorization);
-    res.send({ data: "Get works !" })
+    console.log("===================================================");
+    console.log("===================================================");
+    console.log("===================================================");
+    console.log("server");
+    console.log(req.headers);
+    console.log("===================================================");
+    console.log("===================================================");
+    console.log("===================================================");
+    res.json({
+        user: {
+            username: "Pedro",
+            email: "pedro@gmail.com"
+        }
+    })
 };
 
 export function postTest(req, res) {

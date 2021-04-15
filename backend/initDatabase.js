@@ -13,6 +13,8 @@ async function launchScript() {
     await switchToDatabase("merite_development");
     await createTables();
     await createSuperUserRole();
+    await createAdminRole();
+    await createStudentRole();
     await createSuperUser();
     console.log("Database is now up and running !")
     con.end();
@@ -65,6 +67,36 @@ async function createSuperUserRole() {
                 reject();
             } else {
                 console.log("Super-admin role created.");
+                resolve();
+            }
+        });
+    });
+}
+
+//crée le rôle super utilisateur
+async function createAdminRole() {
+    return new Promise(async(resolve, reject) => {
+        con.query("INSERT INTO Global_Roles(name) VALUES ( 'admin' )", (err, result) => {
+            if (err) {
+                console.log("error while creating the admin");
+                reject();
+            } else {
+                console.log("Admin role created.");
+                resolve();
+            }
+        });
+    });
+}
+
+//crée le rôle super utilisateur
+async function createStudentRole() {
+    return new Promise(async(resolve, reject) => {
+        con.query("INSERT INTO Global_Roles(name) VALUES ( 'etudiant' )", (err, result) => {
+            if (err) {
+                console.log("error while creating the student");
+                reject();
+            } else {
+                console.log("Student role created.");
                 resolve();
             }
         });

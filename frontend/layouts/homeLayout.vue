@@ -8,7 +8,7 @@
           <div class="school_name" > Paul Sabatier </div>
         </div>
         <div class="nav_burger_container">
-          <a href="#"><img src="../img/vector.png" id="notifications"/></a>
+          <a href="#"><img src="../assets/home/notif.svg" id="notifications"/></a>
           <button class="menu" > 
             <label for="check">
               <input type="checkbox" id="check" @click="sidebar = !sidebar"/> 
@@ -30,6 +30,7 @@
 import VerticalMenu from '~/components/VerticalMenu.vue';
 
 export default {
+  middleware : ["forbidAdmin"],
   components : {
     VerticalMenu
   },
@@ -52,6 +53,10 @@ export default {
     overflow-x:hidden;
   }
 
+  button {
+  outline: none;
+}
+
   .right_container {
     display: flex;
     flex-direction: column;
@@ -65,8 +70,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 100px;
-    padding: 0 20px; 
     width: 100%;
+    padding-top: 30px;
   }
 
   .merite {
@@ -190,6 +195,10 @@ export default {
     width:50%;
     transform: translate(22px,-5px) rotatez(45deg);
     background: white;
+  }
+
+  #notifications {
+    height: 40px;
   }
 
 </style>

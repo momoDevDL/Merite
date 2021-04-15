@@ -41,6 +41,16 @@ export function register(req, res) {
         town == null ||
         pinCode == null
     ) {
+        console.log(email);
+        console.log(password);
+        console.log(idGlobalRoleCreator);
+        console.log(username);
+        console.log(birthdate);
+        console.log(birthdate);
+        console.log(phoneNumber);
+        console.log(address);
+        console.log(town);
+        console.log(pinCode);
         return res.status(400).send({
             error: "missing field",
         });
@@ -135,19 +145,19 @@ export function register(req, res) {
 export function login(req, res) {
     console.log(req.body);
 
-    var email = req.body.email;
+    var username = req.body.username;
     var password = req.body.password;
 
-    if (email == null || password == null) {
+    if (username == null || password == null) {
         return res.status(400).send({
             error: "missing field ",
         });
     }
     models.User
         .findOne({
-            attribute: ["email"],
+            attribute: ["username"],
             where: {
-                email: email,
+                username: username,
             },
         })
         .then((userfound) => {
@@ -261,6 +271,7 @@ export function refresh(req, res) {
 }
 
 export function userInfo(req, res) {
+    console.log(req.params);
     let username = req.params.username;
 
     models.User.findOne({

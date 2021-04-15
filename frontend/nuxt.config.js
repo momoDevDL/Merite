@@ -38,7 +38,8 @@ export default {
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
         { src: '~/plugins/maz.js', mode: 'client' },
-        { src: '~/plugins/mask.js', mode: 'client' }
+        { src: '~/plugins/mask.js', mode: 'client' },
+        { src: '~/plugins/scrollbar.js', mode: 'client' }
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -77,7 +78,8 @@ export default {
 
     auth: {
         strategies: {
-            local: {
+            student: {
+                scheme: "local",
                 endpoints: {
                     login: {
                         url: "/user/login",
@@ -86,21 +88,42 @@ export default {
                     },
                     logout: false,
                     user: {
-                        url: "/user/me",
+                        url: "/test",
                         method: 'get',
                         propertyName: 'user'
                     },
                 },
+                redirect: {
+                    login: '/login',
+                    logout: '/login',
+                    callback: false,
+                    home: '/'
+                }
                 // tokenRequired : true,
                 // tokenType: 'bearer'
-            }
+            },
+            admin: {
+                scheme: "local",
+                endpoints: {
+                    login: {
+                        url: "/user/login",
+                        method: 'post',
+                        propertyName: 'token'
+                    },
+                    logout: false,
+                    user: false
+                },
+                redirect: {
+                    login: '/admin/login',
+                    logout: '/admin/login',
+                    callback: false,
+                    home: '/admin'
+                }
+                // tokenRequired : true,
+                // tokenType: 'bearer'
+            },
         },
-        redirect: {
-            login: '/login',
-            logout: '/login',
-            callback: false,
-            home: '/'
-        }
+
     }
 
 }
