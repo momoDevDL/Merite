@@ -164,28 +164,6 @@ a {
     font-weight: 600;
     transition: .4s;
   }
-<<<<<<< HEAD
-  
-  .personnal_space {
-    width: 200px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    text-align: left;
-    line-height: 18px;
-    color: #215fff;
-  }
-
-  .support , .services, .my_mails, .my_drive, .my_grades, .my_classes, .help, .params, .sing_out{
-	  width: 181px;
-	  font-size: 18px;
-	  text-align: left;
-	  line-height: 18px;
-    color:#215FFF;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-  }
-=======
    */
 .personnal_space {
   width: 200px;
@@ -196,7 +174,6 @@ a {
   line-height: 18px;
   color: #215fff;
 }
->>>>>>> corentin-dev
 
 .support,
 .services,
