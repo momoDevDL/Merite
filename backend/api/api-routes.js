@@ -66,8 +66,13 @@ router.route('/user/admin/login')
 router.route('/user/refresh')
     .post(verifyToken, refreshToken)
 
+<<<<<<< HEAD
 router.route('/user/:username')
     .get(verifyToken, userInfo)
+=======
+router.route('/user/:email')
+    .get(verifyToken,userInfo)
+>>>>>>> dev_ana
 
 router.route('/user')
     .get(verifyToken, allUsers)
@@ -126,7 +131,7 @@ router.route('/course/userCourses')
 
 //mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
 router.route('/course/favorite')
-    .put( verifyToken,setAsFavorite);
+    .put( verifyToken,setAsFavorite)
 
 router.route('/course/:courseID')
     .put(verifyToken, asignStudentsToCourse)
@@ -135,7 +140,7 @@ router.route('/course/:courseID')
 
 
 /*===DOCUMENT========================================================*/
-router.route('/document')
+    router.route('/document')
     .post(verifyToken, createDocument)
     .get(verifyToken, getDocuments)
 
@@ -145,6 +150,7 @@ router.route('/document/:documentId')
 
 router.route('/document/download/:documentId')
     .get(verifyToken, downloadDocument)
-    /*=================================================================*/
+/*=================================================================*/
+
 
 export default router;

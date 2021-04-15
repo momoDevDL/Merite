@@ -264,6 +264,9 @@ export function getUserCourses(req,res){
     
 
     models.Course_has_user.findAll({
+        // include : [{
+        //     model : models.Courses,
+        // }],
         where: {
             userID : username
         }    
@@ -293,7 +296,6 @@ export function getUserCourses(req,res){
         });
     });
 }
-
 
 export function setAsFavorite(req,res){
     let courseID = req.body.courseID;
