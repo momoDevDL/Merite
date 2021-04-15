@@ -127,7 +127,7 @@ router.route('/course/userCourses')
 
 //mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
 router.route('/course/favorite')
-    .put( verifyToken,setAsFavorite);
+    .put( verifyToken,setAsFavorite)
 
 router.route('/course/:courseID')
     .put(verifyToken,asignStudentsToCourse)

@@ -35,7 +35,6 @@
             <h2>Content de vous <span class="accentuated-word">revoir</span></h2>
             <p v-if="errorIdentifiant" class="warning-message-login">L'indentifiant ou le mot de passe que vous avez rentré est incorrect. Rééssayez.</p>
             <div class="input-container"><input type="text" v-model="form.username" class="login-form-input" placeholder="Nom d'utilisateur"></div>
-
             <div class="input-container"><input type="password" v-model="form.password" class="login-form-input" placeholder="Mot de passe"></div>
             <div class="mdpoublie">
               <div class="stay-connect">

@@ -1,19 +1,15 @@
-<template>
+<template v-on:add-favorite-course-clicked="onAddFavoriteCourseClicked">
     <div class = "content-container">   
         <div class="container_favorite_classes">
             <div class="text_favorite_classes"> Mes cours favoris</div>
             <i class="fas fa-graduation-cap"></i>
             <div class="all_favorite_classes">
-                <div v-for="cl in classes" :key="cl.className">
+                <div v-if="this.favoriteCourseNewContainer">
                     <div class="container_classes">
-                        <br>
                         <div class="class_name">
-                            <img src="../img/graduation.png" class="graduation_icon">
-                            {{cl.className}}
+                            <img src="../img/graduation.png" class="graduation_icon_new">
+                            <div class="name">{{favoriteCourseName}}</div>
                         </div>
-                        <img src="../img/link.png" class="link_icon">
-                        <br>
-                        <img src="../img/download.png" class="link_icon">
                     </div>
                 </div>
             </div>
@@ -22,21 +18,49 @@
 </template>
 
 <script>
+import { EventBus } from '../Bus'
+
 export default {
+    props : ["userCourses"],
     data : function() {
         return {
-            classes : [
-                { className : 'MCO'},
-                { className : 'MCS'},
-                { className : 'CISI'},
-                { className : 'WebX'},
-                { className : 'ComFlex'},
-                { className : 'UCD-UX'}
-            ]   
+            favoriteCourseName : null,
+            favoriteCourseNewContainer : false
         }
-    }
-    
+    },
+    methods: {
+        onAddFavoriteCourseClicked(allCoursesNames) {
+            console.log(allCoursesNames)
+        },
+        async addFavoriteClass(data) {
+            console.log(data)
+            this.favoriteCourseNewContainer = true;
+            this.favoriteCourseName = data.name;
+
+            try {
+                let favoriteCourse = await this.$axios.$put('/course/favorite', {
+                    userID : this.$auth.$storage.getUniversal('user').username,
+                    courseID : data.id,
+                    headers : { Authorization : this.$auth.strategy.token.get() }
+            });
+            console.log(favoriteCourse)
+
+            }
+            catch (e) {
+                console.error(e)
+            }
+        }
+    },
+    mounted() {
+        EventBus.$on('add-favorite-course-clicked', this.addFavoriteClass);
+    } 
+
 }
+
+
+
+
+
 </script>
 
 <style scoped>
@@ -72,7 +96,7 @@ export default {
 
     .container_classes {
         height: 170px;
-        min-width: 199px;
+        min-width: 220px;
         background: #DDE4F8;
         margin-top: 20px;
         margin-left: 20px;
@@ -101,6 +125,17 @@ export default {
         height: 25px;
         width: 25px;
         margin-right: 10px;
+    }
+
+    .graduation_icon_new {
+        height: 25px;
+        width: 25px;
+        margin-right: 10px;
+        margin-top: 20px;
+    }
+
+    .name {
+        margin-top : 20px;
     }
 
     .link_icon {
