@@ -14,7 +14,7 @@ const { getTest, postTest } = require('./Controller/testController');
 const { register, userLogin,adminLogin, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
-const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse, getUserCourses, setAsFavorite } = require('./Controller/courseController');
+const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse, getUserCourses, setAsFavorite, getFavoriteCourses } = require('./Controller/courseController');
 const { addPermissionToRole, deletePermissionToRole } = require('./Controller/permissionOfRole');
 const { addRoleToUser, deleteRoleToUser } = require('./Controller/roleOfUser');
 const { createSection, updateSection, getSections} = require('./Controller/sectionController');
@@ -127,7 +127,8 @@ router.route('/course/userCourses')
 
 //mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
 router.route('/course/favorite')
-    .put( verifyToken,setAsFavorite)
+    .put(verifyToken, setAsFavorite)
+    .get(verifyToken, getFavoriteCourses)
 
 router.route('/course/:courseID')
     .put(verifyToken,asignStudentsToCourse)

@@ -5,6 +5,18 @@
             <div class="text_no_classes">{{noFavoriteCourse}}</div>
             <i class="fas fa-graduation-cap"></i>
             <div class="all_favorite_classes">
+                <div v-for="cl in allFavoriteUserCourses" :key="cl">
+                    <div class="container_classes">
+                        <br>
+                        <div class="class_name">
+                            <img src="../img/graduation.png" class="graduation_icon">
+                            {{cl}}
+                        </div>
+                        <img src="../img/link.png" class="link_icon">
+                        <br>
+                        <img src="../img/download.png" class="link_icon">
+                    </div>
+                </div>
                 <div v-if="this.favoriteCourseNewContainer">
                     <div class="container_classes">
                         <div class="class_name">
@@ -27,7 +39,8 @@ export default {
         return {
             favoriteCourseName : null,
             noFavoriteCourse : "Il n'y a pas de cours favoris",
-            favoriteCourseNewContainer : false
+            favoriteCourseNewContainer : false,
+            allFavoriteUserCourses : null
         }
     },
     methods: {
@@ -36,13 +49,11 @@ export default {
         },
         async addFavoriteClass(data) {
             console.log(data)
-            this.favoriteCourseNewContainer = true;
             this.favoriteCourseName = data.name;
             this.noFavoriteCourse = null
 
             try {
                 let favoriteCourse = await this.$axios.$put('/course/favorite', {
-                    userID : this.$auth.$storage.getUniversal('user').username,
                     courseID : data.id,
                     headers : { Authorization : this.$auth.strategy.token.get() }
             });
@@ -52,17 +63,38 @@ export default {
             catch (e) {
                 console.error(e)
             }
-        }
+
+            if(this.favoriteCourseName === this.allFavoriteUserCourses.find(el => el === this.favoriteCourseName)) {
+                this.favoriteCourseNewContainer = false
+                alert("Ce cours existe déjà parmis vos cours favoris");
+            } else {
+                this.favoriteCourseNewContainer = true
+            }
+
+        }, 
     },
-    mounted() {
+    async mounted() {
         EventBus.$on('add-favorite-course-clicked', this.addFavoriteClass);
+
+        try {
+            let allFavoriteCourses = await this.$axios.$get('/course/favorite', {
+            headers : { Authorization : this.$auth.strategy.token.get() }
+            });
+            console.log(allFavoriteCourses)
+
+            this.allFavoriteUserCourses = allFavoriteCourses.map(favoriteCourse => favoriteCourse.name)
+            console.log(this.allFavoriteUserCourses)
+
+            if(this.allFavoriteUserCourses != null) {
+                this.noFavoriteCourse = null
+            }
+        }
+        catch (e) {
+            console.error(e)
+        }
     } 
 
 }
-
-
-
-
 
 </script>
 
