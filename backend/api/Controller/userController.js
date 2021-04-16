@@ -354,14 +354,14 @@ export function refresh(req, res) {
 };
 
 export function userInfo(req, res) {
-    let email = req.params.email;
+    let username = req.params.username;
 
     models.User.findOne({
         attributes: ['email', 'username', 'idGlobalRole', 'numEtud', 'birthdate',
             'formation', 'INE', 'phoneNumber', 'address', 'town', 'pinCode'
         ],
         where: {
-            email: email
+            username: username
         }
     }).then(user => {
         return res.status(200).send(user);

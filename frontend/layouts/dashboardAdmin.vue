@@ -1,5 +1,8 @@
 <template>
   <div class="dashboard">
+    <div v-if="$store.state.loading" class="loading">
+      <h1>MERITE</h1>
+    </div>
     <div
       :class="{ active: sidebar }"
       @click="sidebar = false"
@@ -32,13 +35,23 @@
           <user-icone number="2" :active="current" />
           <p num="2" class="sidebar-item-link">Utilisateurs</p>
         </nuxt-link>
-        <nuxt-link :class="{active : this.$route.path.includes('/admin/roles')}" @click.native="changeSelectedLink" num="6" to="/admin/roles"
-          class="sidebar-item">
+        <nuxt-link
+          :class="{ active: this.$route.path.includes('/admin/roles') }"
+          @click.native="changeSelectedLink"
+          num="6"
+          to="/admin/roles"
+          class="sidebar-item"
+        >
           <user-icone number="6" :active="current" />
           <p num="6" class="sidebar-item-link">Gestion des rôles</p>
         </nuxt-link>
-        <nuxt-link :class="{active : current == 3}" @click.native="changeSelectedLink" num="3" to="/admin/"
-          class="sidebar-item">
+        <nuxt-link
+          :class="{ active: current == 3 }"
+          @click.native="changeSelectedLink"
+          num="3"
+          to="/admin/"
+          class="sidebar-item"
+        >
           <chart-icone number="3" :active="current" />
           <p num="3" class="sidebar-item-link">Statistiques</p>
         </nuxt-link>
@@ -112,7 +125,7 @@
 
 <script>
 export default {
-  middleware : ["forbidStudents"],
+  middleware: ["forbidStudents"],
   data() {
     return {
       current: 1,
@@ -125,17 +138,24 @@ export default {
       title: "Admin"
     };
   },
+  mounted() {
+    setTimeout(()=> {
+      this.$store.commit("setLoading", false);
+    },500)
+  },
   methods: {
     changeSelectedLink(e) {
       this.current = parseInt(e.target.getAttribute("num"));
-
     },
     async logout() {
       await this.$auth.logout();
-      console.log("logout");
-      this.$cookies.remove("user")
-        this.$cookies.remove("auth.user")
-      this.$router.push("/login");
+      this.$cookies.remove("user");
+      this.$cookies.remove("auth.user");
+      this.$cookies.remove("auth.strategy");
+      this.$cookies.remove("auth._token.admin");
+      this.$cookies.remove("auth.redirect");
+      this.$cookies.remove("auth._token_expiration.admin");
+      this.$router.push("/admin/login");
     }
   }
 };
@@ -431,6 +451,24 @@ button {
 
   .nuxt {
     padding: 20px;
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      color: rgb(233, 233, 233);
+      font-weight: 700;
+    }
   }
 }
 </style>

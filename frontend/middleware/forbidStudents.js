@@ -1,5 +1,12 @@
 export default function({ app, redirect, $auth }) {
-    if (app.$cookies.get("auth.user").idGlobalRole == 3) {
-        return redirect('/')
+    console.log(app.$cookies.get("auth.strategy"));
+    if (app.$cookies.get("auth.strategy") == 'student') {
+        redirect("/");
+    } else if (!app.$cookies.get("auth.strategy")) {
+        $auth.logout();
+        redirect("/login");
     }
+    // if (app.$cookies.get("auth.user").idGlobalRole == 1) {
+    //     return redirect('/')
+    // }
 }

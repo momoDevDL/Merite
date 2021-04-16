@@ -55,6 +55,10 @@ export default {
           this.$auth.$storage.removeUniversal("user");
           this.$cookies.remove("user");
           this.$cookies.remove("auth.user");
+          this.$cookies.remove("auth.strategy");
+          this.$cookies.remove("auth._token.student");
+          this.$cookies.remove("auth._token_expiration.student");
+          this.$cookies.remove("auth.redirect");
           this.$router.push("/login");
         })
         .catch(err => {

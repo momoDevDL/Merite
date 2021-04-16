@@ -1,5 +1,9 @@
 <template>
   <div class="home_layout_container">
+    <client-only>
+    <div v-if="$store.state.loading" class="loading">
+      <h1 >MERITE</h1>
+    </div>
     <VerticalMenu class="vertical_menu" :class="{open:sidebar}"></VerticalMenu>
     <div class="right_container">
       <div class="nav_bar">  
@@ -22,6 +26,7 @@
       <Nuxt class="nuxt_home" />
     </div>
     <div class="background_layout" :class="{active:sidebar}" @click="sidebar=false"></div>
+    </client-only>
   </div>
 </template>
 
@@ -38,6 +43,11 @@ export default {
     return {
       sidebar : false
 		}
+  },
+  mounted() {
+    setTimeout(()=> {
+      this.$store.commit("setLoading", false);
+    },500)
   }
 }
 </script>
@@ -199,6 +209,25 @@ export default {
 
   #notifications {
     height: 40px;
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      color: rgb(233, 233, 233);
+      font-weight: 700;
+    }
+    
   }
 
 </style>

@@ -3,8 +3,8 @@ import * as Cookies from 'js-cookie'
 
 export const state = () => ({
     token: '',
-    var1: '',
-    var2: ''
+    loading: '',
+    firstConnexion: true
 })
 
 export const mutations = {
@@ -15,7 +15,10 @@ export const mutations = {
     deleteToken(state) {
         state.token = ''
     },
-    changeVar2(state) {
-        state.var2 = "Var changed !"
+    setLoading(state, value) {
+        state.loading = value
+    },
+    changeFirstConnexion(state) {
+        state.firstConnexion = false;
     }
 }

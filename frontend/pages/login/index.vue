@@ -100,8 +100,8 @@ export default {
         width: 0
       },
       form: {
-        username: this.username,
-        password: this.password
+        username: "",
+        password: ""
       },
       errorIdentifiant: false
     };
@@ -149,26 +149,29 @@ export default {
     async connect() {
       try {
         let connexion = await this.$auth.loginWith("student", {
-        data: this.form
-      });
-      this.$toast.success("Vous êtes connecté !", {
-        theme: "toasted-primary",
-        position: "bottom-center",
-        duration: 1000
-      });
+          data: this.form
+        });
+        this.$toast.success("Vous êtes connecté !", {
+          theme: "toasted-primary",
+          position: "bottom-center",
+          duration: 1000
+        });
 
-      let user = await this.$axios.get(`/user/${this.form.username}`);
-      this.$auth.setUser(user.data);
-      this.$auth.$storage.setUniversal("user", user.data, true);
+        let user = await this.$axios.get(`/user/${this.form.username}`);
+        await this.$auth.setUser(user.data);
+        console.log(this.$auth.user);
+        this.$store.commit("setLoading", true);
+        this.$router.push('/');
       } catch (err) {
-        this.$toast.error("Le nom d'utilisateur ou le mot de passe est incorrect", {
-        theme: "toasted-primary",
-        position: "bottom-center",
-        duration: 1000
-      });
+        this.$toast.error(
+          "Le nom d'utilisateur ou le mot de passe est incorrect",
+          {
+            theme: "toasted-primary",
+            position: "bottom-center",
+            duration: 1000
+          }
+        );
       }
-      
-
     },
     winResize(e) {
       if (process.client) {

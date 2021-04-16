@@ -87,17 +87,7 @@ export default {
                         propertyName: 'token'
                     },
                     logout: false,
-                    user: {
-                        url: "/test",
-                        method: 'get',
-                        propertyName: 'user'
-                    },
-                },
-                redirect: {
-                    login: '/login',
-                    logout: '/login',
-                    callback: false,
-                    home: '/'
+                    user: false
                 }
                 // tokenRequired : true,
                 // tokenType: 'bearer'
@@ -106,23 +96,24 @@ export default {
                 scheme: "local",
                 endpoints: {
                     login: {
-                        url: "/user/login",
+                        url: "/user/admin/login",
                         method: 'post',
                         propertyName: 'token'
                     },
                     logout: false,
                     user: false
                 },
-                redirect: {
-                    login: '/admin/login',
-                    logout: '/admin/login',
-                    callback: false,
-                    home: '/admin'
-                }
+
                 // tokenRequired : true,
                 // tokenType: 'bearer'
             },
         },
+        redirect: {
+            login: '/login',
+            logout: false,
+            callback: false,
+            home: false
+        }
 
     }
 
