@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes) {
         model: 'Courses',
         key: 'id'
       }
+    },
+    favorite: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      default:0
     }
   }, {
     sequelize,
