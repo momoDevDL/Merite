@@ -294,7 +294,7 @@ export function getUserCourses(req, res) {
     });
 }
 
-export function setAsFavorite(req, res) {
+export function changeFavoriteState(req, res) {
     let courseID = req.body.courseID;
     let username = req.payload.username;
     
@@ -306,7 +306,8 @@ export function setAsFavorite(req, res) {
     }).then(courseFound =>{
 
         if(courseFound){
-        courseFound.favorite = 1 ;
+
+        courseFound.favorite = (courseFound.favorite == 0 ? 1: 0)  ;
         courseFound.save();
        
         return res.status(200).send(courseFound);
@@ -326,37 +327,6 @@ export function setAsFavorite(req, res) {
     
 }
 
-export function setAsNotFavorite(req, res) {
-    let courseID = req.body.courseID;
-    let username = req.payload.username;
-    
-    models.Course_has_user.findOne({
-        where: {
-            courseID: courseID,
-            userID: username
-        }
-    }).then(courseFound =>{
-
-        if(courseFound){
-        courseFound.favorite = 0 ;
-        courseFound.save();
-    
-        return res.status(200).send(courseFound);
-        }else{
-            return res.status(500).send({
-                error: err,
-                Message: "Course Not Found"
-            });
-        }
-    })
-    .catch(err => {
-        return res.status(500).send({
-            error: err,
-            Message: "internal server error; DB request failed"
-        });
-    });
-    
-}
 
 export function getFavoriteCourses(req,res){
     let username = req.payload.username;
