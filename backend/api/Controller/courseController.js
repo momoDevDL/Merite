@@ -264,9 +264,6 @@ export function getUserCourses(req, res) {
 
 
     models.Course_has_user.findAll({
-        // include : [{
-        //     model : models.Courses,
-        // }],
         where: {
             userID: username
         }
@@ -300,16 +297,62 @@ export function getUserCourses(req, res) {
 export function setAsFavorite(req, res) {
     let courseID = req.body.courseID;
     let username = req.payload.username;
-
-    models.Course_has_user.update({
-        favorite: 1
-    }, {
+    
+    models.Course_has_user.findOne({
         where: {
             courseID: courseID,
-            userID: username
+            userID: username,
         }
-    }).then(updatedRecord => {
-        return res.status(200).send(updatedRecord);
+    }).then(courseFound =>{
+
+        if(courseFound){
+        courseFound.favorite = 1 ;
+        courseFound.save();
+        console.log(courseFound);
+        return res.status(200).send(courseFound);
+        }else{
+            return res.status(500).send({
+                error: err,
+                Message: "Course Not Found"
+            });
+        }
+    })
+    .catch(err => {
+        return res.status(500).send({
+            error: err,
+            Message: "internal server error; DB request failed"
+        });
+    });
+    
+}
+
+export function getFavoriteCourses(req,res){
+    let username = req.payload.username;
+
+    models.Course_has_user.findAll({
+        where: {
+            userID: username,
+            favorite: true
+        }
+    }).then(async courses => {
+        let AllCourses = [];
+        for (let i = 0; i < courses.length; i++) {
+            const course = await models.Courses.findOne({
+                where: {
+                    id: courses[i].courseID
+                }
+            }).then(course => {
+                return course;
+            }).catch(err => {
+                return res.status(500).send({
+                    error: err,
+                    Message: "internal server error; DB request failed"
+                });
+            });
+            AllCourses.push(course);
+        }
+
+        return res.status(200).send(AllCourses);
     }).catch(err => {
         return res.status(500).send({
             error: err,

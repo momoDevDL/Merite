@@ -10,7 +10,7 @@
             <nuxt-link class="vertical-menu-link" to="/">Espace personnel</nuxt-link>
         </li>
         <li>
-            <nuxt-link class="vertical-menu-link" to="/classes">Mes cours</nuxt-link>
+            <nuxt-link class="vertical-menu-link" to="/classes/student">Mes cours</nuxt-link>
         </li>
         <li>
             <nuxt-link class="vertical-menu-link" to="/">Mes notes</nuxt-link>
