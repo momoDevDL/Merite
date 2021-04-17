@@ -301,7 +301,7 @@ export function setAsFavorite(req, res) {
     models.Course_has_user.findOne({
         where: {
             courseID: courseID,
-            userID: username
+            userID: username,
         }
     }).then(courseFound =>{
 
