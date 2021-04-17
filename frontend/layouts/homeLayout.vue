@@ -87,7 +87,6 @@ export default {
     flex-direction: column;
   }
   
-
   .vertical_menu {
     position: absolute;
     top : 0px;

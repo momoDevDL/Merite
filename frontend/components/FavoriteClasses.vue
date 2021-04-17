@@ -11,6 +11,9 @@
                         <div class="class_name">
                             <img src="../img/graduation.png" class="graduation_icon">
                             {{cl}}
+                            <!--<div class="cancel_icon">
+                                <img src="../img/cancel-512.png">
+                            </div> -->
                         </div>
                         <img src="../img/link.png" class="link_icon">
                         <br>
@@ -22,6 +25,7 @@
                         <div class="class_name">
                             <img src="../img/graduation.png" class="graduation_icon_new">
                             <div class="name">{{favoriteCourseName}}</div>
+                            <img src="../img/cancel-512.png" class="graduation_icon_new">
                         </div>
                     </div>
                 </div>
@@ -150,7 +154,6 @@ export default {
         -moz-border-radius: 24px;
         -webkit-border-radius: 24px;
         cursor: pointer;
-        /*overflow: scroll;*/
 
     }
 
@@ -187,6 +190,14 @@ export default {
         height: 25px;
         width: 25px;
         margin-left: 20px;
+    }
+
+    .cancel_icon {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 5px;
+        height: 20px;
+        width: 20px;
     }  
 
 </style>
