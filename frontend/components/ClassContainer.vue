@@ -1,5 +1,5 @@
 <template>
-    <div class="class_container">
+    <div class="sub_class_container">
         <div class="general_information">
             <div class="text_general_information">Généralités</div>
             <div class="class_ressource_container"></div>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-    .class_container {
+    .sub_class_container {
         width: 100%;
     }
     .general_information {

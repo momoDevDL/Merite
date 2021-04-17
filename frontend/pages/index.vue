@@ -123,6 +123,7 @@ export default {
       margin-left: 30px;
       margin-top: 10px;
       overflow: hidden;
+      height: 70px;
 
       &:hover {
         overflow-x: scroll;
@@ -132,6 +133,7 @@ export default {
         padding: 10px 20px;
         font-weight: 600;
         margin-right: 20px;
+        height: 45px;
         color: #215fff;
         background: #2160ff10;
         border-radius: 80px;

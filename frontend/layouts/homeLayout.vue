@@ -70,7 +70,7 @@ export default {
   .right_container {
     display: flex;
     flex-direction: column;
-    width: calc(100vw - 217px);
+    width: calc(98vw - 200px);
     margin-left: 217px;
     padding: 0 50px;
   }

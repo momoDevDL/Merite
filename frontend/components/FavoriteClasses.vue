@@ -1,6 +1,7 @@
+// Favorite Classes
 <template v-on:add-favorite-course-clicked="onAddFavoriteCourseClicked">
     <div class = "content-container">   
-        <div class="container_favorite_classes">
+        <perfect-scrollbar class="container_favorite_classes">
             <div class="text_favorite_classes"> Mes cours favoris</div>
             <div class="text_no_classes">{{noFavoriteCourse}}</div>
             <i class="fas fa-graduation-cap"></i>
@@ -30,7 +31,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </perfect-scrollbar>
     </div>
 </template>
 
@@ -115,7 +116,7 @@ export default {
         height: 251px;
         width: 100%;
         flex-direction: column;
-        overflow-x: scroll;
+        /* overflow-x: scroll; */
     }
 
     .all_favorite_classes {
@@ -200,4 +201,4 @@ export default {
         width: 20px;
     }  
 
-</style>
+</style>				

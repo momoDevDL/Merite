@@ -1,6 +1,6 @@
 <template >
-    <div class="main_container">
-        <div class="list_container">
+    <div class="main_container_classes">
+        <perfect-scrollbar class="list_container">
             <div class="text_all_classes"> Tous mes cours </div>
             <div v-for="cl in allCoursesNames" :key="cl">
                 <div class="container_classes">
@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </perfect-scrollbar>
         <div v-if="displayDetails" class="class_container">
             <div class="header">
                 <div class="text_name_class">
@@ -68,15 +68,16 @@ export default {
 <style scoped>
     .list_container {
         background: white;
-        border-radius: 24px 0px 0px 24px;
+        border-radius: 24px 24px;
         display: flex;
         height: 80vh;
         width: 21%;
         flex-direction:column;
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
     }
 
-    .main_container {
+    .main_container_classes {
+        margin-top: 20px;
         display: flex;
         flex-direction: row;
         width: 100%;
@@ -122,13 +123,13 @@ export default {
 
     .class_container {
         background: white;
-        border-radius: 0px 24px 24px 0px;
+        border-radius: 24px;
         display: flex;
         height: 80vh;
         width: 78%;
-        overflow-y: scroll;
         display: flex;
         flex-direction: column;
+        margin-left: 20px;
     }
 
     .text_name_class {

@@ -1,14 +1,10 @@
 <template>
     <div class = "content-container">   
-        <div class="dark_theme">
-		    <a href="#"><img src="../img/vector_ek3.png" class="vector"></a>	
-        </div>
         <div class="main_container">
             <div class="favorite_class_container">
                 <FavoriteClasses></FavoriteClasses>
             </div>
             <div class="list_class_container">
-                <br>
                 <ListClasses></ListClasses>
             </div>
         </div>
@@ -31,6 +27,7 @@ export default {
 	}
 
     .main_container {
+        margin-top: 100px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
