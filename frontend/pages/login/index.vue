@@ -1,5 +1,6 @@
 <template>
   <div>
+    <client-only>
     <Sidebar v-if="window.width < 660">
       <ul class="sidebar-panel-nav">
         <li>
@@ -78,9 +79,10 @@
         </div>
       </div>
       <div class="login-footer">
-        <p class="login-copyright">© Copyright Merite.com</p>
+        <p class="login-copyright">© Copyright Merite.com {{ new Date().getFullYear() }}</p>
       </div>
     </div>
+    </client-only>
   </div>
 </template>
 

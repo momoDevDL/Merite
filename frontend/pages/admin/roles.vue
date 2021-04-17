@@ -24,7 +24,6 @@
 </template>
 <script>
 export default {
-    auth:false,
     layout : 'dashboardAdmin',  
     data() {
         return {

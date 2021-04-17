@@ -19,7 +19,6 @@
 export default {
     auth : false,
     layout : "homeLayout"
-    
 }
 </script>
 

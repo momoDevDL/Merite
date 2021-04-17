@@ -1,83 +1,92 @@
 <template>
   <div>
-      <no-ssr>
-    <Sidebar v-if="window.width < 660">
-      <ul class="sidebar-panel-nav">
-        <li>
-          <nuxt-link class="item" to="/about">à propos</nuxt-link>
-        </li>
-        <li>
-          <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
-        </li>
-      </ul>
-    </Sidebar>
+    <client-only>
+      <Sidebar v-if="window.width < 660">
+        <ul class="sidebar-panel-nav">
+          <li>
+            <nuxt-link class="item" to="/about">à propos</nuxt-link>
+          </li>
+          <li>
+            <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
+          </li>
+        </ul>
+      </Sidebar>
 
-    <div class="login-background">
-      <div class="left"></div>
-      <div class="right"></div>
-    </div>
-    <div class="login-container">
-      <div class="nav-login">
-        <div class="login-title">
-          <h1>Merite administation</h1>
-        </div>
-
-        <div v-if="window.width > 660" class="items">
-          <nuxt-link class="item" to="/about">à propos</nuxt-link>
-          <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
-        </div>
-        <Burger v-else></Burger>
+      <div class="login-background">
+        <div class="left"></div>
+        <div class="right"></div>
       </div>
+      <div class="login-container">
+        <div class="nav-login">
+          <div class="login-title">
+            <h1>Merite administation</h1>
+          </div>
 
-      <div class="login-body">
-        <div class="login-form-container">
-          <form ref="connect_form" @submit.prevent="connect" class="login-form">
-            <h2>
-              Content de vous <span class="accentuated-word">revoir</span>
-            </h2>
-            <p v-if="errorIdentifiant" class="warning-message-login">
-              L'indentifiant ou le mot de passe que vous avez rentré est
-              incorrect. Rééssayez.
-            </p>
-            <div class="input-container">
-              <input
-                type="text"
-                v-model="form.username"
-                class="login-form-input"
-                placeholder="Nom d'utilisateur"
-              />
-            </div>
+          <div v-if="window.width > 660" class="items">
+            <nuxt-link class="item" to="/about">à propos</nuxt-link>
+            <nuxt-link class="item" to="/">besoin d'aide ?</nuxt-link>
+          </div>
+          <Burger v-else></Burger>
+        </div>
 
-            <div class="input-container">
-              <input
-                type="password"
-                v-model="form.password"
-                class="login-form-input"
-                placeholder="Mot de passe"
-              />
-            </div>
-            <div class="mdpoublie">
-              <div class="stay-connect">
-                <input type="checkbox" name="stay-connect" id="" /><label for="stay-connect">Rester connecté ? </label>
+        <div class="login-body">
+          <div class="login-form-container">
+            <form
+              ref="connect_form"
+              @submit.prevent="connect"
+              class="login-form"
+            >
+              <h2>
+                Content de vous <span class="accentuated-word">revoir</span>
+              </h2>
+              <p v-if="errorIdentifiant" class="warning-message-login">
+                L'indentifiant ou le mot de passe que vous avez rentré est
+                incorrect. Rééssayez.
+              </p>
+              <div class="input-container">
+                <input
+                  type="text"
+                  v-model="form.username"
+                  class="login-form-input"
+                  placeholder="Nom d'utilisateur"
+                />
               </div>
-              <nuxt-link class="mdpstyle" to="/">mot de passe oublié ?</nuxt-link>
-            </div>
-            <button id="login-connexion">Connexion</button>
-          </form>
+
+              <div class="input-container">
+                <input
+                  type="password"
+                  v-model="form.password"
+                  class="login-form-input"
+                  placeholder="Mot de passe"
+                />
+              </div>
+              <div class="mdpoublie">
+                <div class="stay-connect">
+                  <input type="checkbox" name="stay-connect" id="" /><label
+                    for="stay-connect"
+                    >Rester connecté ?
+                  </label>
+                </div>
+                <nuxt-link class="mdpstyle" to="/"
+                  >mot de passe oublié ?</nuxt-link
+                >
+              </div>
+              <button id="login-connexion">Connexion</button>
+            </form>
+          </div>
+          <div class="login-content">
+            <img
+              id="login-content-illustration"
+              src="~/assets/login/work.svg"
+              alt="illustration"
+            />
+          </div>
         </div>
-        <div class="login-content">
-          <img
-            id="login-content-illustration"
-            src="~/assets/login/work.svg"
-            alt="illustration"
-          />
+        <div class="login-footer">
+          <p class="login-copyright">© Copyright Merite.com</p>
         </div>
       </div>
-      <div class="login-footer">
-        <p class="login-copyright">© Copyright Merite.com</p>
-      </div>
-    </div>
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
@@ -161,7 +170,7 @@ export default {
         // this.$cookies.set("user", user.data);
         console.log(this.$auth.user);
         this.$store.commit("setLoading", true);
-        this.$router.push('/admin');
+        this.$router.push("/admin");
       } catch (err) {
         this.$toast.error(
           "Le nom d'utilisateur ou le mot de passe est incorrect",

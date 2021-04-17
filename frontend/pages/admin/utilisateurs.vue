@@ -11,7 +11,6 @@
 
 <script>
   export default {
-    auth: false,
     layout: 'dashboardAdmin'
   }
 

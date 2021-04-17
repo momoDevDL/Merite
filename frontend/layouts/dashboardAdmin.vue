@@ -42,18 +42,18 @@
           to="/admin/roles"
           class="sidebar-item"
         >
-          <user-icone number="6" :active="current" />
+          <user-icone-roles number="6" :active="current" />
           <p num="6" class="sidebar-item-link">Gestion des rôles</p>
         </nuxt-link>
         <nuxt-link
-          :class="{ active: current == 3 }"
+          :class="{ active: current == 7 }"
           @click.native="changeSelectedLink"
           num="3"
           to="/admin/"
           class="sidebar-item"
         >
-          <chart-icone number="3" :active="current" />
-          <p num="3" class="sidebar-item-link">Statistiques</p>
+          <chart-icone number="7" :active="current" />
+          <p num="7" class="sidebar-item-link">Statistiques</p>
         </nuxt-link>
       </div>
 
@@ -112,6 +112,12 @@
             class="dashboard-title"
           >
             Modifier un <span class="dashboard-title-accent">utilisateur</span>
+          </h1>
+          <h1
+            v-if="$route.path == '/admin/roles'"
+            class="dashboard-title"
+          >
+            Gerez les <span class="dashboard-title-accent">rôles</span>
           </h1>
         </div>
       </div>
