@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@dattn/dnd-grid": "0.0.14",
     "@nuxtjs/auth-next": "5.0.0-1611574754.9020f2a",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/proxy": "^2.1.0",

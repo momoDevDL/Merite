@@ -1,5 +1,9 @@
 <template>
   <div class="home_layout_container">
+    <client-only>
+    <div v-if="$store.state.loading" class="loading">
+      <h1 >MERITE</h1>
+    </div>
     <VerticalMenu class="vertical_menu" :class="{open:sidebar}"></VerticalMenu>
     <div class="right_container">
       <div class="nav_bar">  
@@ -8,7 +12,7 @@
           <div class="school_name" > Paul Sabatier </div>
         </div>
         <div class="nav_burger_container">
-          <a href="#"><img src="../img/vector.png" id="notifications"/></a>
+          <a href="#"><img src="../assets/home/notif.svg" id="notifications"/></a>
           <button class="menu" > 
             <label for="check">
               <input type="checkbox" id="check" @click="sidebar = !sidebar"/> 
@@ -22,6 +26,7 @@
       <Nuxt class="nuxt_home" />
     </div>
     <div class="background_layout" :class="{active:sidebar}" @click="sidebar=false"></div>
+    </client-only>
   </div>
 </template>
 
@@ -30,6 +35,7 @@
 import VerticalMenu from '~/components/VerticalMenu.vue';
 
 export default {
+  middleware : ["forbidAdmin"],
   components : {
     VerticalMenu
   },
@@ -37,6 +43,11 @@ export default {
     return {
       sidebar : false
 		}
+  },
+  mounted() {
+    setTimeout(()=> {
+      this.$store.commit("setLoading", false);
+    },500)
   }
 }
 </script>
@@ -52,6 +63,10 @@ export default {
     overflow-x:hidden;
   }
 
+  button {
+  outline: none;
+}
+
   .right_container {
     display: flex;
     flex-direction: column;
@@ -65,8 +80,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 100px;
-    padding: 0 20px; 
     width: 100%;
+    padding-top: 30px;
   }
 
   .merite {
@@ -189,6 +204,29 @@ export default {
     width:50%;
     transform: translate(22px,-5px) rotatez(45deg);
     background: white;
+  }
+
+  #notifications {
+    height: 40px;
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      color: rgb(233, 233, 233);
+      font-weight: 700;
+    }
+    
   }
 
 </style>

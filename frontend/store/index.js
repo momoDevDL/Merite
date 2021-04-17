@@ -2,7 +2,9 @@ import createPersistedState from 'vuex-persistedstate'
 import * as Cookies from 'js-cookie'
 
 export const state = () => ({
-    token: ''
+    token: '',
+    loading: '',
+    firstConnexion: true
 })
 
 export const mutations = {
@@ -12,5 +14,11 @@ export const mutations = {
     },
     deleteToken(state) {
         state.token = ''
+    },
+    setLoading(state, value) {
+        state.loading = value
+    },
+    changeFirstConnexion(state) {
+        state.firstConnexion = false;
     }
 }

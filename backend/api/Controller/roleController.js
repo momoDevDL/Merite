@@ -3,7 +3,7 @@ import { resolve } from "path";
 var initModels = require("../../models/init-models");
 var db = require("../../models/index");
 var models = initModels(db.sequelize);
-const {userAllowedTo} = require('./verifyPermissions');
+const { userAllowedTo } = require('./verifyPermissions');
 
 export function getRole(req, res) {
     let id = req.query.id;
@@ -45,7 +45,7 @@ export async function addRole(req, res) {
     let name = req.body.name;
     let idGlobalRole = req.payload.idGlobalRole;
     let courseID = req.body.courseID;
-    
+
     //attributs incomplets
     if (name == null || courseID == null || idGlobalRole == null) {
         return res.status(400).send({
@@ -53,7 +53,7 @@ export async function addRole(req, res) {
         });
     }
 
-    const addAllowed = await userAllowedTo(courseID, req.payload,"createRole");
+    const addAllowed = await userAllowedTo(courseID, req.payload, "createRole");
 
     if (addAllowed.isAllowed === false) {
         return res.status(addAllowed.status).send(addAllowed.error);
@@ -63,11 +63,11 @@ export async function addRole(req, res) {
             courseID: courseID
         }).then(newRole => {
             return res.status(200).send({
-                    newRole
-                });
+                newRole
+            });
         }).catch((err) => {
             return res.status(500).send({
-                error:"Internal server error; data base request failed"
+                error: "Internal server error; data base request failed"
             });
         });
     }

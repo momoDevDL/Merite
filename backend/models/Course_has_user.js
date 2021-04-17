@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     favorite: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       default:0
     }

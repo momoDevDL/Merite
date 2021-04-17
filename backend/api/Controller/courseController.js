@@ -62,7 +62,7 @@ export function getCourse(req, res) {
             id: id
         }
     }).then((course) => {
-        
+
         if (course) {
             return res.status(200).send({
                 course: course
@@ -259,40 +259,37 @@ export async function asignStudentsToCourse(req, res) {
     }
 }
 
-export function getUserCourses(req,res){
+export function getUserCourses(req, res) {
     let username = req.payload.username;
-    
+
 
     models.Course_has_user.findAll({
-        // include : [{
-        //     model : models.Courses,
-        // }],
         where: {
-            userID : username
-        }    
-    }).then( async courses =>{
+            userID: username
+        }
+    }).then(async courses => {
         let AllCourses = [];
-        for(let i = 0 ; i < courses.length ; i++){
-           const course = await models.Courses.findOne({
-                where:{
-                    id : courses[i].courseID
+        for (let i = 0; i < courses.length; i++) {
+            const course = await models.Courses.findOne({
+                where: {
+                    id: courses[i].courseID
                 }
-            }).then(course =>{
-               return course;
-            }).catch(err=>{
+            }).then(course => {
+                return course;
+            }).catch(err => {
                 return res.status(500).send({
-                    error : err,
-                    Message : "internal server error; DB request failed"
+                    error: err,
+                    Message: "internal server error; DB request failed"
                 });
             });
             AllCourses.push(course);
         }
-        
+
         return res.status(200).send(AllCourses);
-    }).catch(err=>{
+    }).catch(err => {
         return res.status(500).send({
-            error : err,
-            Message : "internal server error; DB request failed"
+            error: err,
+            Message: "internal server error; DB request failed"
         });
     });
 }

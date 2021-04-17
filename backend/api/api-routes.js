@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 
 // Controllers
 const { getTest, postTest } = require('./Controller/testController');
-const { register, userLogin,adminLogin, allUsers, userInfo } = require('./Controller/userController');
+const { register, userLogin, adminLogin, allUsers, userInfo } = require('./Controller/userController');
 const { getPermission, addPermission, deletePermission, editPermission } = require('./Controller/permissionController');
 const { getRole, addRole, deleteRole, editRole } = require('./Controller/roleController');
 const { getCourse, addCourse, deleteCourse, editCourse, asignStudentsToCourse, getUserCourses, setAsFavorite, getFavoriteCourses } = require('./Controller/courseController');
@@ -118,16 +118,16 @@ router.route('/course')
     .delete(verifyToken, deleteCourse);
 
 router.route('/course/:idEnseignant')
-    .post(verifyToken,addCourse);
+    .post(verifyToken, addCourse);
 
 //Récuperer la liste de tout les cours d'un utilisateur
 router.route('/course/userCourses')
-    .get(verifyToken ,getUserCourses);
+    .get(verifyToken, getUserCourses);
 
 //mettre un cours comme favoris. Il faut envoyer l'id de cours dans le body de la requête
 router.route('/course/favorite')
     .put(verifyToken, setAsFavorite)
-    .get(verifyToken, getFavoriteCourses)
+    .get(verifyToken,getFavoriteCourses)
 
 router.route('/course/:courseID')
     .put(verifyToken, asignStudentsToCourse)
@@ -136,7 +136,7 @@ router.route('/course/:courseID')
 
 
 /*===DOCUMENT========================================================*/
-    router.route('/document')
+router.route('/document')
     .post(verifyToken, createDocument)
     .get(verifyToken, getDocuments)
 
@@ -146,7 +146,7 @@ router.route('/document/:documentId')
 
 router.route('/document/download/:documentId')
     .get(verifyToken, downloadDocument)
-/*=================================================================*/
+    /*=================================================================*/
 
 
 export default router;
