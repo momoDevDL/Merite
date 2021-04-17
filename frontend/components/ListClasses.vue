@@ -15,7 +15,7 @@
         <div v-if="displayDetails" class="class_container">
             <div class="header">
                 <div class="text_name_class">
-                    {{this.classNameSelected}}
+                    {{ classNameSelected }}
                 </div>
                 <img v-on:click="onClickIconPlus" src="../img/plus.png" class="plus_icon">
             </div>
@@ -38,7 +38,8 @@ export default {
     data : function() {
         return {
             displayDetails : false,
-            selectedCourse : null
+            selectedCourse : null,
+            classNameSelected : null
         }
     }, 
     mounted() {
@@ -47,8 +48,9 @@ export default {
         onClickClass: function(event, className) {
             this.displayDetails = true
             this.classNameSelected = className
-            console.log(this.classNameSelected)
+            console.log(this.classNameSelected);
         },
+
         onClickIconPlus() {
             EventBus.$emit('add-favorite-course-clicked', this.userCourses.find(course => course.name === this.classNameSelected));
         }
