@@ -308,7 +308,39 @@ export function setAsFavorite(req, res) {
         if(courseFound){
         courseFound.favorite = 1 ;
         courseFound.save();
-        console.log(courseFound);
+       
+        return res.status(200).send(courseFound);
+        }else{
+            return res.status(500).send({
+                error: err,
+                Message: "Course Not Found"
+            });
+        }
+    })
+    .catch(err => {
+        return res.status(500).send({
+            error: err,
+            Message: "internal server error; DB request failed"
+        });
+    });
+    
+}
+
+export function setAsNotFavorite(req, res) {
+    let courseID = req.body.courseID;
+    let username = req.payload.username;
+    
+    models.Course_has_user.findOne({
+        where: {
+            courseID: courseID,
+            userID: username
+        }
+    }).then(courseFound =>{
+
+        if(courseFound){
+        courseFound.favorite = 0 ;
+        courseFound.save();
+    
         return res.status(200).send(courseFound);
         }else{
             return res.status(500).send({
