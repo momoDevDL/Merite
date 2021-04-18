@@ -1,4 +1,6 @@
 import { resolveSoa } from 'dns';
+import { stat } from 'fs';
+import { getDocuments } from './documentController';
 
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -45,7 +47,42 @@ export function createModule(req, res) {
             })
     }
 }
+async function getCourseSections(courseID) {
+    return new Promise((resolve, reject) => {
+        models.Section.findAll({
+            where: {
+                courseID: courseID
+            }
+        }).then(sections => {
+            resolve(sections);
+        }).catch(err => {
+            reject({
+                error: err,
+                status: 500,
+                Message: "Internal server error Db request Failed"
+            });
+        })
+    });
+}
 
+
+async function getDocumentsOfSection(sectionID) {
+    return new Promise((resolve, reject) => {
+        models.Document.findAll({
+            where: {
+                sectionID: sectionID
+            }
+        }).then(documents => {
+            resolve(documents);
+        }).catch(err => {
+            reject({
+                error: err,
+                status: 500,
+                Message: "Internal server error Db request Failed"
+            });
+        })
+    });
+}
 export function getCourse(req, res) {
     let id = req.body.id;
 
@@ -61,11 +98,25 @@ export function getCourse(req, res) {
         where: {
             id: id
         }
-    }).then((course) => {
-
+    }).then(async(course) => {
+        let result = {course};
+        
         if (course) {
+            console.log(course.id);
+            let sections = await getCourseSections(course.id).catch(err=>{
+                return res.status(err.status).send(err.Message);
+            });
+            result["sections"] = sections;
+            
+            for(let i = 0 ; i < sections.length ; i++){
+                let documents = await getDocumentsOfSection(sections[i].id).catch(err=>{
+                    return res.status(err.status).send(err.Message);
+                });
+                result.sections[i].dataValues.documents = documents;
+                result.sections[i]["documents"] = documents;
+            }
             return res.status(200).send({
-                course: course
+                result
             });
 
         } else {
@@ -259,9 +310,25 @@ export async function asignStudentsToCourse(req, res) {
     }
 }
 
+async function getCourseInfo(courseID){
+    return new Promise((resolve,reject)=>{
+        models.Courses.findOne({
+            where: {
+                id: courseID
+            }
+        }).then(course => {
+            resolve(course);
+        }).catch(err => {
+            reject({
+                status:500,
+                error: err,
+                Message: "internal server error; DB request failed"
+            });
+        });
+    })
+} 
 export function getUserCourses(req, res) {
     let username = req.payload.username;
-
 
     models.Course_has_user.findAll({
         where: {
@@ -270,19 +337,22 @@ export function getUserCourses(req, res) {
     }).then(async courses => {
         let AllCourses = [];
         for (let i = 0; i < courses.length; i++) {
-            const course = await models.Courses.findOne({
-                where: {
-                    id: courses[i].courseID
-                }
-            }).then(course => {
-                return course;
-            }).catch(err => {
-                return res.status(500).send({
-                    error: err,
-                    Message: "internal server error; DB request failed"
-                });
+            let course = await getCourseInfo(courses[i].courseID).catch(err=>{
+                return res.status(err.status).send(err.Message);
             });
-            AllCourses.push(course);
+            
+            let sections = await getCourseSections(course.id).catch(err=>{
+                return res.status(err.status).send(err.Message);
+            });
+            
+            AllCourses.push({course, favorite : courses[i].favorite,sections: sections});
+            console.log(AllCourses);
+            for (let j = 0; j < sections.length; j++) {
+                let documents = await getDocumentsOfSection(sections[j].id).catch(err=>{
+                    return res.status(err.status).send(err.Message);
+                });
+                AllCourses[i].sections[j].dataValues.documents = documents;                
+            }
         }
 
         return res.status(200).send(AllCourses);
@@ -294,7 +364,7 @@ export function getUserCourses(req, res) {
     });
 }
 
-export function setAsFavorite(req, res) {
+export function changeFavoriteState(req, res) {
     let courseID = req.body.courseID;
     let username = req.payload.username;
     
@@ -306,9 +376,10 @@ export function setAsFavorite(req, res) {
     }).then(courseFound =>{
 
         if(courseFound){
-        courseFound.favorite = 1 ;
+
+        courseFound.favorite = (courseFound.favorite == 0 ? 1: 0)  ;
         courseFound.save();
-        console.log(courseFound);
+       
         return res.status(200).send(courseFound);
         }else{
             return res.status(500).send({
@@ -325,6 +396,7 @@ export function setAsFavorite(req, res) {
     });
     
 }
+
 
 export function getFavoriteCourses(req,res){
     let username = req.payload.username;
