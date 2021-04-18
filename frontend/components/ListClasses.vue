@@ -3,13 +3,7 @@
         <perfect-scrollbar class="list_container">
             <div class="text_all_classes"> Tous mes cours </div>
             <div v-for="cl in allCoursesNames" :key="cl">
-                <div class="container_classes">
-                    <br>
-                    <div class="class_name">
-                        <img src="../img/graduation.png" class="graduation_icon">
-                        <div :id=cl v-on:click="(ev) => onClickClass(ev, cl)">{{cl}}</div>
-                    </div>
-                </div>
+                        <div class="class_name_vertical" :id="cl" @click="onClickClass(cl)">{{cl}}</div>
             </div>
         </perfect-scrollbar>
         <div v-if="displayDetails" class="class_container">
@@ -45,7 +39,7 @@ export default {
     mounted() {
     },
     methods :  {
-        onClickClass: function(event, className) {
+        onClickClass: function(className) {
             this.displayDetails = true
             this.classNameSelected = className
             console.log(this.classNameSelected);
@@ -58,20 +52,20 @@ export default {
     computed : {
         allCoursesNames () {
             if(this.userCourses) {
-                return this.userCourses.map(cours => cours.name);
+                    return this.userCourses.map(cours => cours.name);
             }
         }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .list_container {
         background: white;
         border-radius: 24px 24px;
         display: flex;
         height: 80vh;
-        width: 21%;
+        width: 250px;
         flex-direction:column;
         /* overflow-y: scroll; */
     }
@@ -89,8 +83,9 @@ export default {
         line-height: 18px;
         font-family: "Poppins", sans-serif;
         font-weight: 600;
-        margin-left: 25px;
+        margin-left: 20px;
         margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .graduation_icon {
@@ -99,26 +94,20 @@ export default {
         margin-right: 10px;
     }
 
-    .class_name {
+    .class_name_vertical {
+        width: 100%;
         color: #215FFF;
-        font-size: 18px;
-        text-align: left;
-        line-height: 18px;
-        font-family: "Poppins", sans-serif;
         font-weight: 600;
-        margin-left: 10%;
-        display: flex;
-        flex-direction: row;
-        transition: .4s;
-    }
-
-    .class_name:hover div{
-        width: 180px;
-        height: 30px;
-        padding-left: 8px;
-        background-color: #f0f8ff;
         cursor: pointer;
-        border-radius: 57px;
+        border-radius: 80px;
+        transition: .4s;
+        border-radius: 0;
+        padding: 15px ;
+        padding-left: 20px;
+
+        &:hover {
+            background-color: #f0f8ff;
+        }
     }
 
     .class_container {
@@ -138,7 +127,7 @@ export default {
         line-height: 18px;
         font-family: "Poppins", sans-serif;
         font-weight: 600;
-        margin-left: 3%;
+        margin-left: 20px;
         margin-top: 20px;
     }
 
@@ -160,21 +149,23 @@ export default {
     @media only screen and (max-width: 1246px){ 
         .class_container {display: flex; flex-direction: column;}
     	.resources_chat_container {display: flex; flex-direction: column;}
-        .ressources_container { width: 95%; height: 50vh; overflow: scroll;}
-        .chat_container { width: 95%; height: 50vh; overflow: scroll;}
-        .general_information {width: 95%; height: 50vh; overflow: scroll;}
-        .list_container {width:186px;}
+        .ressources_container { width: 95%; height: 50vh; }
+        .chat_container { width: 95%; height: 50vh; }
+        .general_information {width: 95%; height: 50vh; }
+        // .list_container {width:186px;}
 
     } 
 
     @media only screen and (max-width: 1177px){ 
         .graduation_icon { height: 0px; width: 0px;}
         .class_container {display: flex; flex-direction: column;}
-        .text_all_classes { font-size: 0em;}
-        .list_container {width:190px;}
-        .ressources_container { width: 100%; margin-right: 0%; margin-left: 0%; height: 50vh; overflow: scroll;}
-        .chat_container { width: 100%; height: 50vh; margin-right: 0%; margin-left: 0%; overflow: scroll;}
-        .general_information {width: 100%; margin-right: 0%; margin-left: 0%; height: 50vh; overflow: scroll;}
     }
+
+
+    @media only screen and (max-width: 730px){ 
+        .list_container { display: none;}
+    }
+
+
 
 </style>

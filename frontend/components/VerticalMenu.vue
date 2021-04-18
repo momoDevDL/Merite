@@ -2,7 +2,7 @@
   <div class="vertical_menu_container">
     <div class="photo_name_container">
       <img src="../img/ellipse_1.png" class="photo" />
-      <div class="name">{{ $auth.$storage.getUniversal("user").username }}</div>
+      <div class="name">{{ $auth.$storage.getUniversal("user").username}}</div>
     </div>
     <div class="menu_top_container">
       <ul>
@@ -34,7 +34,7 @@
             <nuxt-link class="vertical-menu-link" to="/">Paramètres</nuxt-link>
         </li>
         <li @click.stop.prevent="logout">
-            <nuxt-link class="vertical-menu-link"  to="/">Deconnexion</nuxt-link>
+            <nuxt-link class="vertical-menu-link"  to="/">Déconnexion</nuxt-link>
         </li>
       </ul>
     </div>
@@ -64,7 +64,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-      t;
     }
   }
 };

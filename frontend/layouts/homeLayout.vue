@@ -35,6 +35,9 @@
 import VerticalMenu from '~/components/VerticalMenu.vue';
 
 export default {
+  async asyncData({$auth}) {
+    console.log("async data");
+  },
   middleware : ["forbidAdmin"],
   components : {
     VerticalMenu
@@ -115,7 +118,7 @@ export default {
 
   .nuxt_home {
     position: relative;
-
+    margin-right: 20px;
   }
 
   .nav_burger_container {
@@ -127,9 +130,10 @@ export default {
   .menu {
     display: none;
     z-index: 1000;
+    margin-right: 10px;
   }
 
-  @media only screen and (max-width: 700px){ 
+  @media only screen and (max-width: 1000px){ 
     	.right_container {margin-left: 0px; width: 100vw;padding: 0 10px;}
       .vertical_menu {left:-217px; &.open{ left:0px};}
       .menu {display: inline-block;}

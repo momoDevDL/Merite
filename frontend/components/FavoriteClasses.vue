@@ -1,24 +1,15 @@
-// Favorite Classes
 <template v-on:add-favorite-course-clicked="onAddFavoriteCourseClicked">
     <div class = "content-container">   
-        <perfect-scrollbar class="container_favorite_classes">
+        <div class="container_favorite_classes">
             <div class="text_favorite_classes"> Mes cours favoris</div>
             <div class="text_no_classes">{{noFavoriteCourse}}</div>
             <i class="fas fa-graduation-cap"></i>
-            <div class="all_favorite_classes">
-                <div v-for="cl in allFavoriteUserCourses" :key="cl">
+            <perfect-scrollbar class="all_favorite_classes">
+                <div v-for="cl in allFavoriteUserCourses" :key="cl.id">
                     <div class="container_classes">
-                        <br>
                         <div class="class_name">
-                            <img src="../img/graduation.png" class="graduation_icon">
-                            {{cl}}
-                            <!--<div class="cancel_icon">
-                                <img src="../img/cancel-512.png">
-                            </div> -->
+                            {{cl.name}}
                         </div>
-                        <img src="../img/link.png" class="link_icon">
-                        <br>
-                        <img src="../img/download.png" class="link_icon">
                     </div>
                 </div>
                 <div v-if="this.favoriteCourseNewContainer">
@@ -30,8 +21,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </perfect-scrollbar>
+            </perfect-scrollbar>
+        </div>
     </div>
 </template>
 
@@ -87,7 +78,7 @@ export default {
             });
             console.log(allFavoriteCourses)
 
-            this.allFavoriteUserCourses = allFavoriteCourses.map(favoriteCourse => favoriteCourse.name)
+            this.allFavoriteUserCourses = allFavoriteCourses
             console.log(this.allFavoriteUserCourses)
 
             if(this.allFavoriteUserCourses != null) {
@@ -121,7 +112,9 @@ export default {
 
     .all_favorite_classes {
         display: flex;
-        flex-direction: row;    
+        flex-direction: row;   
+        margin-left: 25px; 
+        padding-bottom: 17px;
     }
 
     .text_favorite_classes {
@@ -147,13 +140,10 @@ export default {
     .container_classes {
         height: 170px;
         min-width: 220px;
-        background: #DDE4F8;
+        background: #2160ff10;
         margin-top: 0px;
-        margin-left: 20px;
-        -ms-border-radius: 24px;
-        -o-border-radius: 24px;
-        -moz-border-radius: 24px;
-        -webkit-border-radius: 24px;
+        margin-right: 20px;
+        border-radius: 24px;
         cursor: pointer;
 
     }
@@ -200,5 +190,9 @@ export default {
         height: 20px;
         width: 20px;
     }  
+
+    @media only screen and (max-width: 730px){ 
+        .container_favorite_classes { display: none;}
+    }
 
 </style>				

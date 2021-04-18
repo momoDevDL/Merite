@@ -1,9 +1,5 @@
 <template>
   <div class="content-container">
-    <!--<Timetable></Timetable>
-		<PersonnalNotes></PersonnalNotes>
-		<Classes></Classes>
-		<Instagram></Instagram> -->
     <div class="notifications">
       <a href="#"
         ><img src="~/assets/home/component-parameter.svg" class="vector"
@@ -11,54 +7,32 @@
     </div>
 
     <div class="home-components">
-      <!-- <PersonnalInfo></PersonnalInfo>
-      <Instagram></Instagram> -->
       <div class="component courses">
         <div class="title-bar">
           <div class="title">Mes cours favoris</div>
-          <nuxt-link to="/classes" class="options">Tous les cours</nuxt-link>
+          <nuxt-link to="/classes/student" class="options">Tous les cours</nuxt-link>
         </div>
         <perfect-scrollbar class="cours">
-          <span class="cours-item">MCO</span>
-          <span class="cours-item">MCPR</span>
-          <span class="cours-item">CISI</span>
-          <span class="cours-item">Algo</span>
-          <span class="cours-item">MAPI</span>
-          <span class="cours-item">Projet</span>
-          <span class="cours-item">WebX</span>
-          <span class="cours-item">MCO</span>
-          <span class="cours-item">MCPR</span>
-          <span class="cours-item">CISI</span>
-          <span class="cours-item">Algo</span>
-          <span class="cours-item">MAPI</span>
-          <span class="cours-item">Projet</span>
-          <span class="cours-item">WebX</span>
-          <span class="cours-item">MCO</span>
-          <span class="cours-item">MCPR</span>
-          <span class="cours-item">CISI</span>
-          <span class="cours-item">Algo</span>
-          <span class="cours-item">MAPI</span>
-          <span class="cours-item">Projet</span>
-          <span class="cours-item">WebX</span>
+          <span v-for="favoriteCourse in allFavoriteCourses" :key="favoriteCourse.id" class="cours-item">{{favoriteCourse.name}}</span>
         </perfect-scrollbar>
       </div>
       <div class="component personnal-infos">
         <div class="title-bar">
           <div class="title">Infos personnelles</div>
-          <nuxt-link to="/classes" class="options">...</nuxt-link>
+          <nuxt-link to="/" class="options">...</nuxt-link>
         </div>
         <div class="infos-container">
           <div class="info">
             <div class="title">Pseudo</div>
-            <div class="content">coco</div>
+            <div class="content">{{$auth.$storage.getUniversal("user").username}}</div>
           </div>
           <div class="info">
             <div class="title">Email</div>
-            <div class="content">email</div>
+            <div class="content">{{$auth.$storage.getUniversal("user").email}}</div>
           </div>
           <div class="info">
             <div class="title">Role</div>
-            <div class="content">Etudiant</div>
+            <div class="content">{{roleTable[$auth.$storage.getUniversal("user").idGlobalRole]}}</div>
           </div>
         </div>
       </div>
@@ -73,6 +47,22 @@
 <script>
 import Classes from "~/components/Classes.vue";
 export default {
+  async asyncData({ $axios, $auth }) {
+    let allFavoriteCourses = await $axios.$get("/course/favorite", {
+      headers: { Authorization: $auth.strategy.token.get() }
+    });
+
+    return {allFavoriteCourses};
+  },
+  data() {
+    return {
+      roleTable : {
+        1 : 'Admin',
+        2 : 'Etudiant',
+        3 : 'Professeur'
+      }
+    }
+  },
   components: {
     Classes
   },
@@ -92,7 +82,7 @@ export default {
   width: 100%;
 
   .vector {
-    height: 30px;
+    height: 40px;
   }
 }
 
@@ -101,14 +91,13 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
-  // grid-auto-rows: minmax(120px, auto);
+  grid-auto-rows: minmax(120px, auto);
 }
 
 .component {
   background: #fff;
   border-radius: 20px;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -143,7 +132,9 @@ export default {
   }
 
   &.personnal-infos {
+    grid-column: 1/2;
     grid-row: 2/ 4;
+    min-width: 200px;;
   }
 
   .title-bar {
@@ -197,5 +188,21 @@ export default {
 .ps-scrollbar-y-rail {
   background: #215fff !important;
   color: #215fff !important;
+}
+
+@media screen and (max-width: 1500px) {
+.personnal-infos {
+    grid-column: 1/3 !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .home-components {
+  display: flex;
+  flex-direction: column;
+}
+
+.component {
+  min-width: 200px;
+}
 }
 </style>

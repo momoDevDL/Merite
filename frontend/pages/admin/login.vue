@@ -166,8 +166,8 @@ export default {
 
         let user = await this.$axios.get(`/user/${this.form.username}`);
         this.$auth.setUser(user.data);
-        // this.$auth.$storage.setUniversal("user", user.data, true);
-        // this.$cookies.set("user", user.data);
+        this.$auth.$storage.setUniversal("user", user.data, true);
+        this.$cookies.set("user", user.data);
         console.log(this.$auth.user);
         this.$store.commit("setLoading", true);
         this.$router.push("/admin");
