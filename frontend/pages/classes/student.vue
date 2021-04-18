@@ -1,14 +1,13 @@
 <template>
-    <div class = "content-container">   
+    <div class="content-container">   
         <div class="main_container">
-            <div class="favorite_class_container">
-                <FavoriteClasses v-bind:allCoursesNames="allCoursesNames"></FavoriteClasses>
+            <div  class="favorite_class_container">
+                <FavoriteClasses></FavoriteClasses>
             </div>
             <div class="list_class_container">
                 <br>
                 <ListClasses v-bind:userCourses="userCourses"></ListClasses>
             </div>
-            <nuxt-child></nuxt-child>
         </div>
     </div>
 </template>
@@ -19,23 +18,11 @@ export default {
     data() {
         return {
             userCourses : null,
-            allCoursesNames : null
         }
 
     },
     async mounted() {
-        try {
-            let courses = await this.$axios.$get('/course/userCourses', {
-                headers : { Authorization : this.$auth.strategy.token.get() }
-            });
-
-            this.userCourses = courses
-            console.log(this.userCourses);
-            this.allCoursesNames = this.userCourses.map(cours => cours.name);
-        }
-        catch (e) {
-            console.error(e)
-        }
+        
     },
     methods : {
         onAddFavoriteCourseClicked(allCoursesNames) {

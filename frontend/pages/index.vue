@@ -10,10 +10,29 @@
       <div class="component courses">
         <div class="title-bar">
           <div class="title">Mes cours favoris</div>
-          <nuxt-link to="/classes/student" class="options">Tous les cours</nuxt-link>
+          <nuxt-link to="/classes/student" class="options"
+            >Tous les cours</nuxt-link
+          >
         </div>
         <perfect-scrollbar class="cours">
-          <span v-for="favoriteCourse in allFavoriteCourses" :key="favoriteCourse.id" class="cours-item">{{favoriteCourse.name}}</span>
+          <p
+            class="favorite-phrase"
+            v-if="
+              $store.state.courses.filter(course => course.favorite).length == 0
+            "
+          >
+            Pensez à ajouter des cours favoris
+          </p>
+
+          <span
+            v-for="favoriteCourse in $store.state.courses.filter(
+              course => course.favorite
+            )"
+            :key="favoriteCourse.id"
+            @click="goToCourse(favoriteCourse)"
+            class="cours-item"
+            >{{ favoriteCourse.course.name }}</span
+          >
         </perfect-scrollbar>
       </div>
       <div class="component personnal-infos">
@@ -24,15 +43,21 @@
         <div class="infos-container">
           <div class="info">
             <div class="title">Pseudo</div>
-            <div class="content">{{$auth.$storage.getUniversal("user").username}}</div>
+            <div class="content">
+              {{ $auth.$storage.getUniversal("user").username }}
+            </div>
           </div>
           <div class="info">
             <div class="title">Email</div>
-            <div class="content">{{$auth.$storage.getUniversal("user").email}}</div>
+            <div class="content">
+              {{ $auth.$storage.getUniversal("user").email }}
+            </div>
           </div>
           <div class="info">
             <div class="title">Role</div>
-            <div class="content">{{roleTable[$auth.$storage.getUniversal("user").idGlobalRole]}}</div>
+            <div class="content">
+              {{ roleTable[$auth.$storage.getUniversal("user").idGlobalRole] }}
+            </div>
           </div>
         </div>
       </div>
@@ -52,21 +77,27 @@ export default {
       headers: { Authorization: $auth.strategy.token.get() }
     });
 
-    return {allFavoriteCourses};
+    return { allFavoriteCourses };
   },
   data() {
     return {
-      roleTable : {
-        1 : 'Admin',
-        2 : 'Etudiant',
-        3 : 'Professeur'
+      roleTable: {
+        1: "Admin",
+        2: "Etudiant",
+        3: "Professeur"
       }
-    }
+    };
   },
   components: {
     Classes
   },
-  layout: "homeLayout"
+  layout: "homeLayout",
+  methods: {
+    goToCourse(cl) {
+      this.$store.commit("setCurrentCourse", cl);
+      this.$router.push("/classes/student");
+    }
+  }
 };
 </script>
 
@@ -134,7 +165,7 @@ export default {
   &.personnal-infos {
     grid-column: 1/2;
     grid-row: 2/ 4;
-    min-width: 200px;;
+    min-width: 200px;
   }
 
   .title-bar {
@@ -191,18 +222,18 @@ export default {
 }
 
 @media screen and (max-width: 1500px) {
-.personnal-infos {
+  .personnal-infos {
     grid-column: 1/3 !important;
   }
 }
 @media screen and (max-width: 600px) {
   .home-components {
-  display: flex;
-  flex-direction: column;
-}
+    display: flex;
+    flex-direction: column;
+  }
 
-.component {
-  min-width: 200px;
-}
+  .component {
+    min-width: 200px;
+  }
 }
 </style>

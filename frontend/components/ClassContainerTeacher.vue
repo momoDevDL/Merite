@@ -164,7 +164,7 @@ export default {
     } 
 
     @media only screen and (max-width: 1177px){ 
-        .class_container {display: flex; flex-direction: column; min-width: }
+        .class_container {display: flex; flex-direction: column;  }
         .ressources_container { width: 100%; margin-right: 0%; margin-left: 0%; height: 50vh; }
         .chat_container { width: 100%; height: 50vh; margin-right: 0%; margin-left: 0%; }
         .general_information {width: 100%; margin-right: 0%; margin-left: 0%; height: 30vh; }

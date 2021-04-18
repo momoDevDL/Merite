@@ -47,7 +47,21 @@ export default {
       sidebar : false
 		}
   },
-  mounted() {
+  async mounted() {
+    try {
+            let courses = await this.$axios.$get('/course/userCourses', {
+                headers : { Authorization : this.$auth.strategy.token.get() }
+            });
+
+            this.$store.commit('setCourses',courses);
+
+            this.userCourses = courses
+            console.log(this.userCourses);
+            this.allCoursesNames = this.userCourses.map(cours => cours.name);
+        }
+        catch (e) {
+            console.error(e)
+        }
     setTimeout(()=> {
       this.$store.commit("setLoading", false);
     },500)

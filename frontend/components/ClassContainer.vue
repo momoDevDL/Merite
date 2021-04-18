@@ -1,99 +1,127 @@
 <template>
-    <div class="sub_class_container">
-        <div class="general_information">
-            <div class="text_general_information">Généralités</div>
-            <div class="class_ressource_container"></div>
-        </div>
-        <div class="resources_chat_container">
-            <div class="ressources_container">
-                <div class="text_general_information">Ressources & Dépot</div>
-                <div class="class_ressource_container"></div>
-                <div class="class_ressource_container"></div>
-            </div>
-            <div class="chat_container">
-                <div class="text_general_information">Chat & Notifications</div>
-                <div class="class_ressource_container"></div>
-                <div class="class_ressource_container"></div>
-            </div>
-        </div>
+  <div class="sub_class_container">
+    <div class="general_information">
+      <h3 class="title-class-section">Généralités</h3>
+      <p>
+        Bienvenu dans ce cours de {{ $store.state.currentCourse.course.name }},
+        au programme nous allons voir les differents aspects de Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Eum obcaecati repellendus
+        maiores possimus quis aut iusto, error distinctio esse exercitationem
+        nihil doloremque corrupti officiis placeat inventore molestias omnis.
+        Soluta, eligendi.
+      </p>
+      <h4 class="contact">Contacts</h4>
+      <ul>
+        <li>
+          Frédéric Migeon :
+          <span class="adresse-mail">frederic.migeon@irit.fr</span>
+        </li>
+        <li>
+          Jean Paul Arcangeli :
+          <span class="adresse-mail">jeanpaul.arcangeli@irit.fr</span>
+        </li>
+      </ul>
     </div>
+    <div class="resources_chat_container">
+      <div class="ressources_container">
+        <h3 class="title-class-section">Ressources & Dépot</h3>
+        <SectionCourse v-for="(section,i) in $store.state.currentCourse.sections" :key="i" :section="section"></SectionCourse>
+      </div>
+      <div class="chat_container">
+        <h3 class="title-class-section">Chat & Notifications</h3>
+        <div class="class_ressource_container"></div>
+        <div class="class_ressource_container"></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-    
-}
+export default {};
 </script>
 
-<style scoped>
-    .sub_class_container {
-        width: 100%;
-    }
-    .general_information {
-        background: #DDE4F8;
-        height: 30%;
-        width: 95%;
-        margin-top: 3%;
-        margin-left: 3%;
-        border-radius: 24px;
-    }
+<style lang="scss" scoped>
+.sub_class_container {
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
 
-    .text_general_information {
-        font-size: 20px;
-        text-align: left;
-        line-height: 18px;
-        font-family: "Poppins", sans-serif;
-        font-weight: 600;
-        margin-left: 25px;
-        margin-top: 20px;
-        
-    }
+.general_information {
+  border-radius: 24px;
+  background: #2160ff10;
+  padding: 25px 20px;
+  margin-top: 50px;
 
+  .contact {
+    margin-top: 20px;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .adresse-mail {
+    color: #2160ff;
+  }
+}
+
+  .title-class-section {
+    color: #2160ff;
+  }
+
+.resources_chat_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.ressources_container {
+  border-radius: 24px;
+  background: #2160ff10;
+  padding: 25px 20px;
+  width: 65%;
+  margin-right: 40px;
+}
+
+.chat_container {
+  border-radius: 24px;
+  background: #2160ff10;
+  padding: 25px 20px;
+  width: 35%;
+  align-self: flex-start;
+  position: sticky;
+  top: 40px;
+  align-self: flex-start;
+}
+
+@media screen and (max-width: 1200px) {
     .resources_chat_container {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        height: 70%;
+        flex-direction: column-reverse;
+
     }
 
-    .ressources_container {
-        background: #DDE4F8;
-        width: 60%;
-        margin-top: 3%;
-        margin-left: 3%;
-        border-radius: 24px;
+    .ressources_container, .chat_container {
+        width: 100%;
     }
 
     .chat_container {
-        background: #DDE4F8;
-        width: 40%;
-        margin-top: 3%;
-        margin-left: 3%;
-        border-radius: 24px;
-        margin-right: 3%;
+        position: inherit;
+        top: 0;
+        margin-bottom: 40px;
     }
 
-    .class_ressource_container {
-        background: #E3E3E3;
-        border-radius: 24px;
-        height: 20%;
-        margin-top: 3%;
-        margin-left: 3%;
-        margin-right: 3%;
-    }
+}
 
-    @media only screen and (max-width: 1246px){ 
-    	.resources_chat_container {display: flex; flex-direction: column;}
-        .ressources_container { width: 95%; height: 50vh; }
-        .chat_container { width: 95%; height: 50vh; }
-        .general_information {width: 95%; height: 30vh; }
-    } 
+@media screen and (max-width: 730px) {
+    .sub_class_container {
 
-    @media only screen and (max-width: 1177px){ 
-        .class_container {display: flex; flex-direction: column; min-width: }
-        .ressources_container { width: 100%; margin-right: 0%; margin-left: 0%; height: 50vh; }
-        .chat_container { width: 100%; height: 50vh; margin-right: 0%; margin-left: 0%; }
-        .general_information {width: 100%; margin-right: 0%; margin-left: 0%; height: 30vh; }
-    }
+  padding: 0px;
 
+}
+
+
+}
 </style>
