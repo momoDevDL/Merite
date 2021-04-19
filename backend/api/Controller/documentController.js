@@ -78,7 +78,7 @@ export async function createDocument(req, res) {
             });
         })
     } else {
-        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+        return res.status(allowedTo.status).send(allowedTo.error);
     }
 
 };
@@ -122,7 +122,7 @@ export async function updateDocument(req, res) {
             }
         )
     } else {
-        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+        return res.status(allowedTo.status).send(allowedTo.error);
     }
 
 }
