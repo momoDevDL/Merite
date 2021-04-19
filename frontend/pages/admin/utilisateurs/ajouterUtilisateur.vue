@@ -354,9 +354,6 @@
 // import { MazPhoneNumberInput } from 'maz-ui'
 
 export default {
-  // components : {
-  //   MazPhoneNumberInput
-  // },
   auth: false,
   layout: "dashboardAdmin",
   data() {
@@ -377,22 +374,22 @@ export default {
         "Histoire de l'art"
       ],
       user: {
-        nom: "Gobbo",
-        prenom: "Corentin",
-        numEtudiant: "202020Y",
+        nom: "",
+        prenom: "",
+        numEtudiant: "",
         birthday: {
-          day: "30",
-          month: "7",
-          years: "1996"
+          day: "",
+          month: "",
+          years: ""
         },
-        genre: "Mr",
+        genre: "",
         formation: "",
         role: "",
-        email: "eleve@gmail.com",
-        ville: "Toulouse",
-        rue: "rue Saint Antoine",
-        numRue: "30",
-        codePostal: "81000",
+        email: "",
+        ville: "",
+        rue: "",
+        numRue: "",
+        codePostal: "",
         complement: ""
       },
       snackbar: false,
