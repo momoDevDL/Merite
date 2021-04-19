@@ -1,7 +1,8 @@
 <template>
   <div class="vertical_menu_container">
     <div class="photo_name_container">
-      <img src="../img/ellipse_1.png" class="photo" />
+      <avatar-homme class="avatar-add-user"></avatar-homme>
+      <!-- <img src="../img/ellipse_1.png" class="photo" /> -->
       <div class="name">{{ $auth.$storage.getUniversal("user").username}}</div>
     </div>
     <div class="menu_top_container">
@@ -199,5 +200,14 @@ a {
 .photo {
   width: 111px;
   height: 104px;
+}
+
+.avatar-add-user {
+  height: 125px;
+  width: 125px;
+  background: #0000002d;
+  border-radius: 50%;
+  box-shadow: 0 4px 26px rgba(39, 24, 252, 0.2);
+  margin-bottom: 10px;
 }
 </style>
