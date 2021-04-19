@@ -29,8 +29,6 @@
       </div>
       <div class="chat_container">
         <h3 class="title-class-section">Chat & Notifications</h3>
-        <div class="class_ressource_container"></div>
-        <div class="class_ressource_container"></div>
       </div>
     </div>
   </div>

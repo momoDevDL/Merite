@@ -34,7 +34,7 @@
         </div>
         <img
           v-on:click="onClickIconPlus"
-          src="../img/plus.png"
+          src="~/assets/settings.svg"
           class="plus_icon"
         />
       </div>
@@ -182,6 +182,7 @@ export default {
   flex-direction: column;
   margin-left: 20px;
   padding: 0 10px;
+  margin-bottom: 50px;
 }
 
 .text_name_class {
