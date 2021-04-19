@@ -99,17 +99,17 @@ export function getCourse(req, res) {
             id: id
         }
     }).then(async(course) => {
-        let result = {course};
-        
+        let result = { course };
+
         if (course) {
             console.log(course.id);
-            let sections = await getCourseSections(course.id).catch(err=>{
+            let sections = await getCourseSections(course.id).catch(err => {
                 return res.status(err.status).send(err.Message);
             });
             result["sections"] = sections;
-            
-            for(let i = 0 ; i < sections.length ; i++){
-                let documents = await getDocumentsOfSection(sections[i].id).catch(err=>{
+
+            for (let i = 0; i < sections.length; i++) {
+                let documents = await getDocumentsOfSection(sections[i].id).catch(err => {
                     return res.status(err.status).send(err.Message);
                 });
                 result.sections[i].dataValues.documents = documents;
@@ -143,7 +143,7 @@ export function addCourse(req, res) {
         });
     }
 
-    if (payload.idGlobalRole == 1) {
+    if (req.payload.idGlobalRole == 1) {
         models.Courses.findOne({
             attribute: ['name', 'moduleID'],
             where: {
@@ -185,7 +185,6 @@ export function addCourse(req, res) {
 export async function editCourse(req, res) {
     let id = req.body.id;
     let name = req.body.name;
-    let courseID = req.body.courseID;
     //attributs incomplets
     if (id == null | name == null) {
         return res.status(400).send({
@@ -193,7 +192,7 @@ export async function editCourse(req, res) {
         });
     }
 
-    const allowedTo = await userAllowedTo(courseID, req.payload, "modification");
+    const allowedTo = await userAllowedTo(id, req.payload, "modification");
 
     if (allowedTo.isAllowed) {
 
@@ -225,7 +224,7 @@ export async function editCourse(req, res) {
         })
 
     } else {
-        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+        return res.status(allowedTo.status).send(allowedTo.error);
     }
 
 }
@@ -273,7 +272,7 @@ export async function deleteCourse(req, res) {
             });
 
     } else {
-        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+        return res.status(allowedTo.status).send(allowedTo.error);
     }
 }
 
@@ -306,12 +305,12 @@ export async function asignStudentsToCourse(req, res) {
         });
 
     } else {
-        return res.status(allowedToAsign.status).send(allowedToAsign.error);
+        return res.status(allowedTo.status).send(allowedTo.error);
     }
 }
 
-async function getCourseInfo(courseID){
-    return new Promise((resolve,reject)=>{
+async function getCourseInfo(courseID) {
+    return new Promise((resolve, reject) => {
         models.Courses.findOne({
             where: {
                 id: courseID
@@ -320,13 +319,13 @@ async function getCourseInfo(courseID){
             resolve(course);
         }).catch(err => {
             reject({
-                status:500,
+                status: 500,
                 error: err,
                 Message: "internal server error; DB request failed"
             });
         });
     })
-} 
+}
 export function getUserCourses(req, res) {
     let username = req.payload.username;
 
@@ -337,21 +336,21 @@ export function getUserCourses(req, res) {
     }).then(async courses => {
         let AllCourses = [];
         for (let i = 0; i < courses.length; i++) {
-            let course = await getCourseInfo(courses[i].courseID).catch(err=>{
+            let course = await getCourseInfo(courses[i].courseID).catch(err => {
                 return res.status(err.status).send(err.Message);
             });
-            
-            let sections = await getCourseSections(course.id).catch(err=>{
+
+            let sections = await getCourseSections(course.id).catch(err => {
                 return res.status(err.status).send(err.Message);
             });
-            
-            AllCourses.push({course, favorite : courses[i].favorite,sections: sections});
+
+            AllCourses.push({ course, favorite: courses[i].favorite, sections: sections });
             console.log(AllCourses);
             for (let j = 0; j < sections.length; j++) {
-                let documents = await getDocumentsOfSection(sections[j].id).catch(err=>{
+                let documents = await getDocumentsOfSection(sections[j].id).catch(err => {
                     return res.status(err.status).send(err.Message);
                 });
-                AllCourses[i].sections[j].dataValues.documents = documents;                
+                AllCourses[i].sections[j].dataValues.documents = documents;
             }
         }
 
@@ -367,38 +366,38 @@ export function getUserCourses(req, res) {
 export function changeFavoriteState(req, res) {
     let courseID = req.body.courseID;
     let username = req.payload.username;
-    
+
     models.Course_has_user.findOne({
-        where: {
-            courseID: courseID,
-            userID: username,
-        }
-    }).then(courseFound =>{
+            where: {
+                courseID: courseID,
+                userID: username,
+            }
+        }).then(courseFound => {
 
-        if(courseFound){
+            if (courseFound) {
 
-        courseFound.favorite = (courseFound.favorite == 0 ? 1: 0)  ;
-        courseFound.save();
-       
-        return res.status(200).send(courseFound);
-        }else{
+                courseFound.favorite = (courseFound.favorite == 0 ? 1 : 0);
+                courseFound.save();
+
+                return res.status(200).send(courseFound);
+            } else {
+                return res.status(500).send({
+                    error: err,
+                    Message: "Course Not Found"
+                });
+            }
+        })
+        .catch(err => {
             return res.status(500).send({
                 error: err,
-                Message: "Course Not Found"
+                Message: "internal server error; DB request failed"
             });
-        }
-    })
-    .catch(err => {
-        return res.status(500).send({
-            error: err,
-            Message: "internal server error; DB request failed"
         });
-    });
-    
+
 }
 
 
-export function getFavoriteCourses(req,res){
+export function getFavoriteCourses(req, res) {
     let username = req.payload.username;
 
     models.Course_has_user.findAll({
